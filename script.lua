@@ -43,7 +43,7 @@ Name = <string> - The name of the section.
 
 
 
-Tab:AddSlider({
+local Speed = Tab:AddSlider({
 	Name = "SpeedHack",
 	Min = 0,
 	Max = 500,
@@ -55,7 +55,23 @@ Tab:AddSlider({
 		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
   end
 })
+Tab:AddButton({
+	Name = "+",
+	Callback = function()
+		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.WalkSpeed + 1)
+	end
+})
+Tab:AddButton({
+	Name = "-",
+	Callback = function()
+		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.WalkSpeed - 1)
+	end    
+})
 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
 Tab:AddSlider({
 	Name = "JumpHack",
 	Min = 0,
@@ -69,6 +85,18 @@ Tab:AddSlider({
   end
 })
 
+Tab:AddButton({
+	Name = "+",
+	Callback = function()
+		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 1)
+	end
+})
+Tab:AddButton({
+	Name = "-",
+	Callback = function()
+		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 1)
+	end    
+})
 --[[
 Name = <string> - The name of the slider.
 Min = <number> - The minimal value of the slider.
