@@ -1,51 +1,89 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Robojini/Tuturial_UI_Library/main/UI_Template_1"))()
---[[ 
-В данный момент стоит тема "RJTheme3" ,
-вы можете использовать другую тему приведённую ниже -
-"RJTheme1"
-"RJTheme2"
-"RJTheme3"
-"RJTheme4"
-"RJTheme5"
-"RJTheme6"
-"RJTheme7"
-"RJTheme8"
-//////////////////////////////////////////////////////////////////
+local Window = OrionLib:MakeWindow({Name = "Ҝ卂丂 卄ㄩ乃", HidePremium = false, SaveConfig = false, IntroEnabled = true, IntroText="Ҝ卂丂 卄ㄩ乃 script is loading...", IntroIcon="https://cdn.discordapp.com/icons/1001137956280615023/c8eaab1cf61154d18fac6bea60c683ec.png?size=1024", Icon="https://cdn.discordapp.com/icons/1001137956280615023/c8eaab1cf61154d18fac6bea60c683ec.png?size=1024"})
 
-Что бы сделать свою тему , уберите часть скрипта из "комминтариев" ,
-который находится чуть ниже , и вместо "RJTheme3" в переменной "Windows" - 
-напишите переменную которая используется в скрипте чуть ниже .
+--[[
+Name = <string> - The name of the UI.
+HidePremium = <bool> - Whether or not the user details shows Premium status or not.
+SaveConfig = <bool> - Toggles the config saving in the UI.
+ConfigFolder = <string> - The name of the folder where the configs are saved.
+IntroEnabled = <bool> - Whether or not to show the intro animation.
+IntroText = <string> - Text to show in the intro animation.
+IntroIcon = <string> - URL to the image you want to use in the intro animation.
+Icon = <string> - URL to the image you want displayed on the window.
+CloseCallback = <function> - Function to execute when the window is closed.
 ]]
-local colors = {
-	-- Цвет фона у Секций
-    SchemeColor = Color3.fromRGB(150, 72, 148),
-	-- Цвет фона в правой части UI
-	Background = Color3.fromRGB(15,15,15),
-	-- Цвет фона в левой части UI
-    Header = Color3.fromRGB(15,15,15),
-	-- Цвет текста
-    TextColor = Color3.fromRGB(255,255,255),
-	-- Цвет фона у кнопок
-    ElementColor = Color3.fromRGB(20, 20, 20)
-}
 
--- Создать окно UI
-local Window = Library.CreateLib("Ҝ卂丂 卄ㄩ乃", "RJTheme3")
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://15046690373",
+	PremiumOnly = false
+})
 
--- Секция
-local Tab = Window:NewTab("Main")
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
 
--- Подсекция
-local Section = Tab:NewSection("Hucks")
+--[[
+Title = <string> - The title of the notification.
+Content = <string> - The content of the notification.
+Image = <string> - The icon of the notification.
+Time = <number> - The duration of the notfication.
+]]
 
--- Заголовок
-Section:NewLabel("😰")
+local Section = Tab:AddSection({
+	Name = "Hacks"
+})
 
-Section:NewSlider("SpeedHack", "Change youre speed!", 500, 0, function(s) -- 500 (Макс. значение) | 0 (Мин. значение)
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
-end)
+--[[
+Name = <string> - The name of the section.
+]]
 
-Section:NewSlider("JumpHack", "Change youre jump power!", 500, 0, function(s) -- 500 (Макс. значение) | 0 (Мин. значение)
-    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
-end)
+
+
+Tab:AddSlider({
+	Name = "SpeedHack",
+	Min = 0,
+	Max = 9999,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Speed value",
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+  end
+})
+
+Tab:AddSlider({
+	Name = "JumpHack",
+	Min = 0,
+	Max = 9999,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Jump value",
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+  end
+})
+
+--[[
+Name = <string> - The name of the slider.
+Min = <number> - The minimal value of the slider.
+Max = <number> - The maxium value of the slider.
+Increment = <number> - How much the slider will change value when dragging.
+Default = <number> - The default value of the slider.
+ValueName = <string> - The text after the value number.
+Callback = <function> - The function of the slider.
+]]
+
+OrionLib:MakeNotification({
+	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
+	Content = "Thanks for using this script😀",
+	Image = "rbxassetid://15046690373",
+	Time = 5
+})
+
+OrionLib:Init()
