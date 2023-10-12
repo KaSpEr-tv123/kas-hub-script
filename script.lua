@@ -46,8 +46,8 @@ Name = <string> - The name of the section.
 Tab:AddSlider({
 	Name = "SpeedHack",
 	Min = 0,
-	Max = 9999,
-	Default = 5,
+	Max = 500,
+	Default = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Speed value",
@@ -59,8 +59,8 @@ Tab:AddSlider({
 Tab:AddSlider({
 	Name = "JumpHack",
 	Min = 0,
-	Max = 9999,
-	Default = 5,
+	Max = 500,
+	Default = game.Players.LocalPlayer.Character.Humanoid.JumpPower,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Jump value",
