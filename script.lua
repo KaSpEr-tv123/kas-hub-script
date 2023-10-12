@@ -72,7 +72,7 @@ Tab:AddButton({
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
 ]]
-Tab:AddSlider({
+local Jump = Tab:AddSlider({
 	Name = "JumpHack",
 	Min = 0,
 	Max = 500,
@@ -88,13 +88,13 @@ Tab:AddSlider({
 Tab:AddButton({
 	Name = "+",
 	Callback = function()
-		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 1)
+		Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 1)
 	end
 })
 Tab:AddButton({
 	Name = "-",
 	Callback = function()
-		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 1)
+		Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 1)
 	end    
 })
 --[[
