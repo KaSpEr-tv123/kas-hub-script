@@ -36,8 +36,11 @@ local Window = Library.CreateLib("Ҝ卂丂 卄ㄩ乃", "RJTheme3")
 -- Секция
 local Tab = Window:NewTab("Main")
 
+-- Подсекция
+local Section = Tab:NewSection("Hucks")
+
 -- Заголовок
-Section:NewLabel("Hacks")
+Section:NewLabel("😰")
 
 Section:NewSlider("SpeedHack", "Change youre speed!", 500, 0, function(s) -- 500 (Макс. значение) | 0 (Мин. значение)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
