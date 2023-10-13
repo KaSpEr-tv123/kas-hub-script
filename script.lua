@@ -1,5 +1,5 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-
+local player = game.Players.LocalPlayer
 local Window = OrionLib:MakeWindow({Name = "Ҝ卂丂 卄ㄩ乃", HidePremium = false, SaveConfig = false, IntroEnabled = true, IntroText="Ҝ卂丂 卄ㄩ乃 script is loading...", IntroIcon="https://cdn.discordapp.com/icons/1001137956280615023/c8eaab1cf61154d18fac6bea60c683ec.png?size=1024", Icon="https://cdn.discordapp.com/icons/1001137956280615023/c8eaab1cf61154d18fac6bea60c683ec.png?size=1024"})
 
 --[[
@@ -168,6 +168,26 @@ Default = <number> - The default value of the slider.
 ValueName = <string> - The text after the value number.
 Callback = <function> - The function of the slider.
 ]]
+
+Tab:AddLable("Other")
+Tab:AddToggle({
+	Name = "Fly",
+	Default = false,
+	Callback = function(Value)
+	  if Value == true then
+      player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Flying)
+    else
+      player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+    end
+	end    
+})
+
+--[[
+Name = <string> - The name of the toggle.
+Default = <bool> - The default value of the toggle.
+Callback = <function> - The function of the toggle.
+]]
+
 
 OrionLib:MakeNotification({
 	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
