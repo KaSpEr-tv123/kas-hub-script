@@ -196,19 +196,19 @@ Default = <bool> - The default value of the toggle.
 Callback = <function> - The function of the toggle.
 ]]
 
-local mouse = player:GetMouse()
-local function teleportPlayer(hit)
-if mode_tp == true then
-    player.Character.HumanoidRootPart.CFrame = CFrame.new(hit.Position)
-  end
-end
+-- local mouse = player:GetMouse()
+-- local function teleportPlayer(hit)
+-- if mode_tp == true then
+--     player.Character.HumanoidRootPart.CFrame = CFrame.new(hit.Position)
+--   end
+-- end
 
-mouse.Button1Down:Connect(function()
-local ray = workspace:Raycast(mouse.UnitRay.Origin, mouse.UnitRay.Direction * 1000)
-if ray then
-    teleportPlayer(ray)
-end
-end)
+-- mouse.Button1Down:Connect(function()
+-- local ray = workspace:Raycast(mouse.UnitRay.Origin, mouse.UnitRay.Direction * 1000)
+-- if ray then
+--     teleportPlayer(ray)
+-- end
+-- end)
 
 OrionLib:MakeNotification({
 	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
