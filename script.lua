@@ -169,7 +169,7 @@ ValueName = <string> - The text after the value number.
 Callback = <function> - The function of the slider.
 ]]
 
-Tab:AddLable("Other")
+Tab:AddLabel("Other")
 Tab:AddToggle({
 	Name = "Fly",
 	Default = false,
