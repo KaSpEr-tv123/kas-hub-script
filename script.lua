@@ -102,19 +102,6 @@ Default = <string> - The default value of the dropdown.
 Options = <table> - The options in the dropdown.
 Callback = <function> - The function of the dropdown.
 ]]
-Tab:AddButton({
-	Name = "+",
-	Callback = function()
-		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.WalkSpeed + 1)
-	end
-})
-Tab:AddButton({
-	Name = "-",
-	Callback = function()
-		Speed:Set(game.Players.LocalPlayer.Character.Humanoid.WalkSpeed - 1)
-	end    
-})
-
 --[[
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
@@ -137,37 +124,37 @@ Tab:AddDropdown({
 	Options = {"+1", "+5", "+10", "+20", "+40","+80", "+160", "+320", "-1", "-5", "-10", "-20", "-40","-80", "-160", "-320"},
 	Callback = function(Value)
 		if Value == "+1" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 1)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 1)
     elseif Value == "+5" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 5)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 5)
     elseif Value == "+10" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 10)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 10)
     elseif Value == "+20" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 20)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 20)
     elseif Value == "+40" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 40)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 40)
     elseif Value == "+80" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 80)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 80)
     elseif Value == "+160" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 160)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 160)
     elseif Value == "+320" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 320)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower + 320)
 		elseif Value == "-1" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 1)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 1)
     elseif Value == "-5" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 5)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 5)
     elseif Value == "-10" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 10)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 10)
     elseif Value == "-20" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 20)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 20)
     elseif Value == "-40" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 40)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 40)
     elseif Value == "-80" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 80)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 80)
     elseif Value == "-160" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 160)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 160)
     elseif Value == "-320" then
-      Speed:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 320)
+      Jump:Set(game.Players.LocalPlayer.Character.Humanoid.JumpPower - 320)
     end
 	end    
 })
