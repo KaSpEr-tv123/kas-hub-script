@@ -182,14 +182,14 @@ Tab:AddToggle({
 	end    
 })
 
-local mode_tp = false
-Tab:AddToggle({
-	Name = "Click TP",
-	Default = false,
-	Callback = function(Value)
-	  mode_tp = Value
-  end
-)}
+-- local mode_tp = false
+-- Tab:AddToggle({
+-- 	Name = "Click TP",
+-- 	Default = false,
+-- 	Callback = function(Value)
+-- 	  mode_tp = Value
+--   end
+-- )}
 --[[
 Name = <string> - The name of the toggle.
 Default = <bool> - The default value of the toggle.
