@@ -188,7 +188,7 @@ other:AddToggle({
     end
 })
 
-local function ToggleNoclip(enabled)
+function Noclip(enabled)
     Clipon = enabled
     if enabled then
         for a, b in pairs(Workspace:GetChildren()) do
@@ -246,7 +246,7 @@ other:AddToggle({
     Name = "Noclip",
     Default = false,
     Callback = function(Value)
-        ToggleNoclip(Value)
+        Noclip(Value)
     end
 })
 OrionLib:MakeNotification({
