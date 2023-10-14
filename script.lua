@@ -188,6 +188,30 @@ Tab:AddToggle({
     end
 })
 
+local function ToggleNoclip(enabled)
+    Clipon = enabled
+    if enabled then
+        for a, b in pairs(Workspace:GetChildren()) do
+            if b.Name == Plr.Name then
+                for i, v in pairs(b:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false
+                    end
+                end
+            end
+        end
+    else
+        for a, b in pairs(Workspace:GetChildren()) do
+            if b.Name == Plr.Name then
+                for i, v in pairs(b:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = true
+                    end
+                end
+            end
+        end
+    end
+end
 
 local mode_tp = false
 local lastClickedPosition = nil
@@ -218,6 +242,12 @@ end)
 
 tool.Parent = game.Players.LocalPlayer.Backpack
 
+Tab:AddToggle({
+  Name = "Noclip",
+  Default = "false",
+  Callback = function(value)
+    ToggleNoclip(value)
+  end})
 OrionLib:MakeNotification({
 	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
 	Content = "Thanks for using this script😀",
