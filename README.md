@@ -9,4 +9,4 @@ SppedHack, JumpHack
 
    Other
 
-Fly
+Fly, Click TP
