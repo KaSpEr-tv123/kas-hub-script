@@ -193,7 +193,7 @@ local lastClickedPosition = nil
 
 local tool = Instance.new("Tool")
 tool.RequiresHandle = false
-tool.Name = "Equip to Click TP"
+tool.Name = "Click TP function"
 
 other:AddToggle({
     Name = "Click TP",
@@ -202,7 +202,17 @@ other:AddToggle({
         mode_tp = Value
     end
 })
+Tab:AddButton({
+	Name = "Get item for Click TP",
+	Callback = function()
+		tool.Parent = game.Players.LocalPlayer.Backpack
+	end    
+})
 
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
 local mouse = game.Players.LocalPlayer:GetMouse()
 
 tool.Activated:Connect(function()
