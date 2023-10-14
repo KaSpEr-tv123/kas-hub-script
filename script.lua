@@ -188,30 +188,39 @@ other:AddToggle({
     end
 })
 
-function Noclip(enabled)
-    Clipon = enabled
-    if enabled then
-        for a, b in pairs(Workspace:GetChildren()) do
-            if b.Name == Plr.Name then
-                for i, v in pairs(b:GetDescendants()) do
-                    if v:IsA("BasePart") then
-                        v.CanCollide = false
-                    end
-                end
-            end
-        end
-    else
-        for a, b in pairs(Workspace:GetChildren()) do
-            if b.Name == Plr.Name then
-                for i, v in pairs(b:GetDescendants()) do
-                    if v:IsA("BasePart") then
-                        v.CanCollide = true
-                    end
-                end
-            end
-        end
+local Players = game:GetService("Players"):GetChildren()
+local RunService = game:GetService("RunService")
+local highlight = Instance.new("Highlight")
+local mode_esp = false
+highlight.Name = "Highlight"
+
+game.Players.PlayerAdded:Connect(function(player)
+    repeat wait() until player.Character
+    if not player.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") and mode_esp == true then
+        local highlightClone = highlight:Clone()
+        highlightClone.Adornee = player.Character
+        highlightClone.Parent = player.Character:FindFirstChild("HumanoidRootPart")
+        highlightClone.Name = "Highlight"
     end
+end)
+
+game.Players.PlayerRemoving:Connect(function(playerRemoved)
+    playerRemoved.Character:FindFirstChild("HumanoidRootPart").Highlight:Destroy()
+end)
+
+RunService.Heartbeat:Connect(function()
+    for i, v in pairs(Players) do
+        repeat wait() until v.Character
+        if not v.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") and mode_esp == true then
+            local highlightClone = highlight:Clone()
+            highlightClone.Adornee = v.Character
+            highlightClone.Parent = v.Character:FindFirstChild("HumanoidRootPart")
+            highlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            highlightClone.Name = "Highlight"
+            task.wait()
+        end
 end
+end)
 
 local mode_tp = false
 local lastClickedPosition = nil
@@ -243,10 +252,27 @@ end)
 tool.Parent = game.Players.LocalPlayer.Backpack
 
 other:AddToggle({
-    Name = "Noclip",
+    Name = "ESP Players",
     Default = false,
     Callback = function(Value)
-        Noclip(Value)
+        mode_esp = Value
+        if Value == false then
+          for i, v in pairs(Players) do
+            repeat wait() until v.Character
+            v.Character:FindFirstChild("HumanoidRootPart").Highlight:Destroy()
+          end
+        else
+          for i, v in pairs(Players) do
+            repeat wait() until v.Character
+            if not v.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") and mode_esp == true then
+              local highlightClone = highlight:Clone()
+              highlightClone.Adornee = v.Character
+              highlightClone.Parent = v.Character:FindFirstChild("HumanoidRootPart")
+              highlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+              highlightClone.Name = "Highlight"
+            end
+          end
+        end
     end
 })
 OrionLib:MakeNotification({
