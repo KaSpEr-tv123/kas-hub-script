@@ -9,4 +9,4 @@ SppedHack, JumpHack
 
    Other
 
-Inf Jump, Click TP, Noclip
+Inf Jump, Click TP, ESP
