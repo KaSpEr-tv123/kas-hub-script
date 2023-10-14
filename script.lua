@@ -192,29 +192,30 @@ Tab:AddToggle({
 local mode_tp = false
 local lastClickedPosition = nil
 
-tool = Instance.new("Tool")
+local tool = Instance.new("Tool")
 tool.RequiresHandle = false
 tool.Name = "Equip to Click TP"
+
 Tab:AddToggle({
     Name = "Click TP",
     Default = false,
     Callback = function(Value)
         mode_tp = Value
-        
     end
 })
 
-mouse = game.Players.LocalPlayer:GetMouse()
-tool = Instance.new("Tool")
-tool.RequiresHandle = false
-tool.Name = "Equip to Click TP"
-tool.Activated:connect(function()
-local pos = mouse.Hit+Vector3.new(0,2.5,0)
-pos = CFrame.new(pos.X,pos.Y,pos.Z)
-if mode_tp == true then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-end
+local mouse = game.Players.LocalPlayer:GetMouse()
+
+tool.Activated:Connect(function()
+    local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
+    local character = game.Players.LocalPlayer.Character
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+    
+    if mode_tp and humanoidRootPart then
+        humanoidRootPart.CFrame = CFrame.new(pos)
+    end
 end)
+
 tool.Parent = game.Players.LocalPlayer.Backpack
 
 OrionLib:MakeNotification({
