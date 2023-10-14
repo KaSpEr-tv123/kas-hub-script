@@ -171,15 +171,53 @@ Callback = <function> - The function of the slider.
 
 Tab:AddLabel("Other")
 Tab:AddToggle({
-	Name = "Fly",
-	Default = false,
-	Callback = function(Value)
-	  if Value == true then
-      player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Flying)
-    else
-      player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-    end
-	end    
+    Name = "Fly",
+    Default = false,
+    Callback = function(Value)
+        if Value == true then
+            local character = game.Players.LocalPlayer.Character
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            
+            if humanoid then
+                humanoid.PlatformStand = true
+                local flyScript = Instance.new("LocalScript", character)
+                
+                flyScript.Name = "FlyScript"
+                flyScript.Parent = character
+                
+                flyScript:WaitForChild("FlyScript")
+                
+                local flyFunction = function()
+                    local flyDirection = Vector3.new(0,0,0)
+                    
+                    local mouse = game.Players.LocalPlayer:GetMouse()
+                    local flySpeed = 50
+                    
+                    if mouse.Target then
+                        flyDirection = (mouse.Hit.p - character.HumanoidRootPart.Position).unit
+                    end
+                    
+                    character.HumanoidRootPart.Velocity = flyDirection * flySpeed
+                end
+                
+                flyScript.FlyScript.Changed:Connect(flyFunction)
+                flyFunction()
+            end
+        else
+            local character = game.Players.LocalPlayer.Character
+            local flyScript = character:FindFirstChild("FlyScript")
+            
+            if flyScript then
+                flyScript:Destroy()
+            end
+            
+            local humanoid = character:FindFirstChildOfClass("Humanoid")
+            
+            if humanoid then
+                humanoid.PlatformStand = false
+            end
+        end
+    end    
 })
 
 local mode_tp = false
