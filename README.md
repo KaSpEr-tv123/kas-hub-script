@@ -9,4 +9,4 @@ SppedHack, JumpHack
 
    Other
 
-Fly, Click TP
+Inf Jump, Click TP
