@@ -200,14 +200,18 @@ Tab:AddToggle({
     Default = false,
     Callback = function(Value)
         mode_tp = Value
+        
     end
 })
 
 mouse = game.Players.LocalPlayer:GetMouse()
-local pos = mouse.Hit+Vector3.new(0,2.5,0)
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Equip to Click TP"
 tool.Activated:connect(function()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
 pos = CFrame.new(pos.X,pos.Y,pos.Z)
-if mode_tp == true then
+if mode_tp then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
 end
 end)
