@@ -174,17 +174,11 @@ local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local mode_fly = false
 
-local function onStateChanged(oldState, newState)
-    if newState == Enum.HumanoidStateType.Freefall then
-        if mode_fly then
-            humanoid.Jump = true
-        else
-            humanoid.Jump = false
-        end
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    if mode_fly then
+        game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
     end
-end
-
-humanoid.StateChanged:Connect(onStateChanged)
+end)
 
 Tab:AddToggle({
     Name = "Inf Jump",
