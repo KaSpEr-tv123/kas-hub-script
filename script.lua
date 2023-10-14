@@ -14,8 +14,8 @@ Icon = <string> - URL to the image you want displayed on the window.
 CloseCallback = <function> - Function to execute when the window is closed.
 ]]
 
-local Tab = Window:MakeTab({
-	Name = "Main",
+local hacks = Window:MakeTab({
+	Name = "Hacks",
 	Icon = "rbxassetid://15046690373",
 	PremiumOnly = false
 })
@@ -33,17 +33,13 @@ Image = <string> - The icon of the notification.
 Time = <number> - The duration of the notfication.
 ]]
 
-local Section = Tab:AddSection({
-	Name = "Hacks"
-})
-
 --[[
 Name = <string> - The name of the section.
 ]]
 
 
 
-local Speed = Tab:AddSlider({
+local Speed = hacks:AddSlider({
 	Name = "SpeedHack",
 	Min = 0,
 	Max = 500,
@@ -55,7 +51,7 @@ local Speed = Tab:AddSlider({
 		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
   end
 })
-Tab:AddDropdown({
+hacks:AddDropdown({
 	Name = "Change speed",
 	Default = "+1",
 	Options = {"+1", "+5", "+10", "+20", "+40","+80", "+160", "+320", "-1", "-5", "-10", "-20", "-40","-80", "-160", "-320"},
@@ -106,7 +102,7 @@ Callback = <function> - The function of the dropdown.
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
 ]]
-local Jump = Tab:AddSlider({
+local Jump = hacks:AddSlider({
 	Name = "JumpHack",
 	Min = 0,
 	Max = 500,
@@ -118,7 +114,7 @@ local Jump = Tab:AddSlider({
 		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
   end
 })
-Tab:AddDropdown({
+hacks:AddDropdown({
 	Name = "Change jump power",
 	Default = "+1",
 	Options = {"+1", "+5", "+10", "+20", "+40","+80", "+160", "+320", "-1", "-5", "-10", "-20", "-40","-80", "-160", "-320"},
@@ -169,7 +165,11 @@ ValueName = <string> - The text after the value number.
 Callback = <function> - The function of the slider.
 ]]
 
-Tab:AddSection({Name = "Other"})
+local other = Window:MakeTab({
+	Name = "Other",
+	Icon = "rbxassetid://15046690373",
+	PremiumOnly = false
+})
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local mode_fly = false
@@ -180,7 +180,7 @@ game:GetService("UserInputService").JumpRequest:Connect(function()
     end
 end)
 
-Tab:AddToggle({
+other:AddToggle({
     Name = "Inf Jump",
     Default = false,
     Callback = function(Value)
@@ -220,7 +220,7 @@ local tool = Instance.new("Tool")
 tool.RequiresHandle = false
 tool.Name = "Equip to Click TP"
 
-Tab:AddToggle({
+other:AddToggle({
     Name = "Click TP",
     Default = false,
     Callback = function(Value)
@@ -242,7 +242,7 @@ end)
 
 tool.Parent = game.Players.LocalPlayer.Backpack
 
-Tab:AddToggle({
+other:AddToggle({
     Name = "Noclip",
     Default = false,
     Callback = function(Value)
