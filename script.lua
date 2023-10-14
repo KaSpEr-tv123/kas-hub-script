@@ -185,6 +185,9 @@ Tab:AddToggle({
 local mode_tp = false
 local lastClickedPosition = nil
 
+tool = Instance.new("Tool")
+tool.RequiresHandle = false
+tool.Name = "Equip to Click TP"
 Tab:AddToggle({
     Name = "Click TP",
     Default = false,
@@ -193,20 +196,15 @@ Tab:AddToggle({
     end
 })
 
-local mouse = player:GetMouse()
-local function teleportPlayer(hit)
-    if mode_tp == true then
-        lastClickedPosition = hit.Position
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(lastClickedPosition)
-    end
+mouse = game.Players.LocalPlayer:GetMouse()
+local pos = mouse.Hit+Vector3.new(0,2.5,0)
+tool.Activated:connect(function()
+pos = CFrame.new(pos.X,pos.Y,pos.Z)
+if mode_tp == true then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
 end
-
-mouse.Button1Down:Connect(function()
-    local ray = workspace:Raycast(mouse.UnitRay.Origin, mouse.UnitRay.Direction * 1000)
-    if ray then
-        teleportPlayer(ray)
-    end
 end)
+tool.Parent = game.Players.LocalPlayer.Backpack
 
 OrionLib:MakeNotification({
 	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
