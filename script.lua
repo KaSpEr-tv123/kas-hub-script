@@ -202,7 +202,7 @@ other:AddToggle({
         mode_tp = Value
     end
 })
-Tab:AddButton({
+other:AddButton({
 	Name = "Get item for Click TP",
 	Callback = function()
 		tool.Parent = game.Players.LocalPlayer.Backpack
