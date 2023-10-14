@@ -169,26 +169,30 @@ ValueName = <string> - The text after the value number.
 Callback = <function> - The function of the slider.
 ]]
 
-Tab:AddLabel("Other")
+Tab:AddSection({Name = "Other"})
+local player = game.Players.LocalPlayer
+local humanoid = player.Character:WaitForChild("Humanoid")
 local mode_fly = false
+
+local function onStateChanged(oldState, newState)
+    if newState == Enum.HumanoidStateType.Freefall then
+        if mode_fly then
+            humanoid.Jump = true
+        else
+            humanoid.Jump = false
+        end
+    end
+end
+
+humanoid.StateChanged:Connect(onStateChanged)
+
 Tab:AddToggle({
     Name = "Inf Jump",
     Default = false,
     Callback = function(Value)
-    mode_fly = Value
-end})
-
-local humanoid = player.Character:WaitForChild("Humanoid")
-
-local function onStateChanged(oldState, newState)
-    if newState == Enum.HumanoidStateType.Freefall then
-      if mode_fly == true then
-        humanoid.Jump = true
-      else
-        humanoid.Jump = false
-      end
+        mode_fly = Value
     end
-end
+})
 
 
 local mode_tp = false
@@ -222,5 +226,4 @@ OrionLib:MakeNotification({
 	Time = 5
 })
 
-humanoid.StateChanged:Connect(onStateChanged)
 OrionLib:Init()
