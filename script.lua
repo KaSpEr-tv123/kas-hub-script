@@ -170,55 +170,26 @@ Callback = <function> - The function of the slider.
 ]]
 
 Tab:AddLabel("Other")
+local mode_fly = false
 Tab:AddToggle({
-    Name = "Fly",
+    Name = "Inf Jump",
     Default = false,
     Callback = function(Value)
-        if Value == true then
-            local character = game.Players.LocalPlayer.Character
-            local humanoid = character:FindFirstChildOfClass("Humanoid")
-            
-            if humanoid then
-                humanoid.PlatformStand = true
-                local flyScript = Instance.new("LocalScript", character)
-                
-                flyScript.Name = "FlyScript"
-                flyScript.Parent = character
-                
-                flyScript:WaitForChild("FlyScript")
-                
-                local flyFunction = function()
-                    local flyDirection = Vector3.new(0,0,0)
-                    
-                    local mouse = game.Players.LocalPlayer:GetMouse()
-                    local flySpeed = 50
-                    
-                    if mouse.Target then
-                        flyDirection = (mouse.Hit.p - character.HumanoidRootPart.Position).unit
-                    end
-                    
-                    character.HumanoidRootPart.Velocity = flyDirection * flySpeed
-                end
-                
-                flyScript.FlyScript.Changed:Connect(flyFunction)
-                flyFunction()
-            end
-        else
-            local character = game.Players.LocalPlayer.Character
-            local flyScript = character:FindFirstChild("FlyScript")
-            
-            if flyScript then
-                flyScript:Destroy()
-            end
-            
-            local humanoid = character:FindFirstChildOfClass("Humanoid")
-            
-            if humanoid then
-                humanoid.PlatformStand = false
-            end
-        end
-    end    
-})
+    mode_fly = Value
+end})
+
+local humanoid = player.Character:WaitForChild("Humanoid")
+
+local function onStateChanged(oldState, newState)
+    if newState == Enum.HumanoidStateType.Freefall then
+      if mode_fly == true then
+        humanoid.Jump = true
+      else
+        humanoid.Jump = false
+      end
+    end
+end
+
 
 local mode_tp = false
 local lastClickedPosition = nil
@@ -251,4 +222,5 @@ OrionLib:MakeNotification({
 	Time = 5
 })
 
+humanoid.StateChanged:Connect(onStateChanged)
 OrionLib:Init()
