@@ -188,40 +188,6 @@ other:AddToggle({
     end
 })
 
-local Players = game:GetService("Players"):GetChildren()
-local RunService = game:GetService("RunService")
-local highlight = Instance.new("Highlight")
-local mode_esp = false
-highlight.Name = "Highlight"
-
-game.Players.PlayerAdded:Connect(function(player)
-    repeat wait() until player.Character
-    if not player.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") and mode_esp == true then
-        local highlightClone = highlight:Clone()
-        highlightClone.Adornee = player.Character
-        highlightClone.Parent = player.Character:FindFirstChild("HumanoidRootPart")
-        highlightClone.Name = "Highlight"
-    end
-end)
-
-game.Players.PlayerRemoving:Connect(function(playerRemoved)
-    playerRemoved.Character:FindFirstChild("HumanoidRootPart").Highlight:Destroy()
-end)
-
-RunService.Heartbeat:Connect(function()
-    for i, v in pairs(Players) do
-        repeat wait() until v.Character
-        if not v.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") and mode_esp == true then
-            local highlightClone = highlight:Clone()
-            highlightClone.Adornee = v.Character
-            highlightClone.Parent = v.Character:FindFirstChild("HumanoidRootPart")
-            highlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-            highlightClone.Name = "Highlight"
-            task.wait()
-        end
-end
-end)
-
 local mode_tp = false
 local lastClickedPosition = nil
 
@@ -257,19 +223,30 @@ other:AddToggle({
     Callback = function(Value)
         mode_esp = Value
         if Value == false then
-          for i, v in pairs(Players) do
-            repeat wait() until v.Character
-            v.Character:FindFirstChild("HumanoidRootPart").Highlight:Destroy()
+          for i, child in ipairs(workspace:GetDescendants()) do
+            if child:FindFirstChild("Humanoid") then
+              if child:FindFirstChild("EspBox") then
+                if child ~= game.Players.LocalPlayer.Character then
+                  child:FindFirstChild("EspBox"):Destroy()
+                end
+              end
+            end
           end
         else
-          for i, v in pairs(Players) do
-            repeat wait() until v.Character
-            if not v.Character:FindFirstChild("HumanoidRootPart"):FindFirstChild("Highlight") and mode_esp == true then
-              local highlightClone = highlight:Clone()
-              highlightClone.Adornee = v.Character
-              highlightClone.Parent = v.Character:FindFirstChild("HumanoidRootPart")
-              highlightClone.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-              highlightClone.Name = "Highlight"
+          for i, child in ipairs(workspace:GetDescendants()) do
+            if child:FindFirstChild("Humanoid") then
+              if not child:FindFirstChild("EspBox") then
+                if child ~= game.Players.LocalPlayer.Character then
+                   local esp = Instance.new("BoxHandleAdornment", child)
+                   esp.Adornee = child
+                   esp.ZIndex = 0
+                   esp.Size = Vector3.new(4, 5, 1)
+                   esp.Transparency = 0.65
+                   esp.Color3 = Color3.fromRGB(255, 48, 48)
+                   esp.AlwaysOnTop = true
+                   esp.Name = "EspBox"
+                end
+              end
             end
           end
         end
