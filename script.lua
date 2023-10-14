@@ -183,31 +183,29 @@ Tab:AddToggle({
 })
 
 local mode_tp = false
+local lastClickedPosition = nil
+
 Tab:AddToggle({
-	Name = "Click TP",
-	Default = false,
-	Callback = function(Value)
-	  mode_tp = Value
-  end
+    Name = "Click TP",
+    Default = false,
+    Callback = function(Value)
+        mode_tp = Value
+    end
 })
---[[
-Name = <string> - The name of the toggle.
-Default = <bool> - The default value of the toggle.
-Callback = <function> - The function of the toggle.
-]]
 
 local mouse = player:GetMouse()
 local function teleportPlayer(hit)
-if mode_tp == true then
-   player.Character.HumanoidRootPart.CFrame = CFrame.new(hit.Position)
-end
+    if mode_tp == true then
+        lastClickedPosition = hit.Position
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(lastClickedPosition)
+    end
 end
 
 mouse.Button1Down:Connect(function()
-local ray = workspace:Raycast(mouse.UnitRay.Origin, mouse.UnitRay.Direction * 1000)
-  if ray then
-    teleportPlayer(ray)
-end
+    local ray = workspace:Raycast(mouse.UnitRay.Origin, mouse.UnitRay.Direction * 1000)
+    if ray then
+        teleportPlayer(ray)
+    end
 end)
 
 OrionLib:MakeNotification({
