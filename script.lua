@@ -244,7 +244,7 @@ tool.Parent = game.Players.LocalPlayer.Backpack
 
 Tab:AddToggle({
   Name = "Noclip",
-  Default = "false",
+  Default = false,
   Callback = function(value)
     ToggleNoclip(value)
   end})
