@@ -243,11 +243,12 @@ end)
 tool.Parent = game.Players.LocalPlayer.Backpack
 
 Tab:AddToggle({
-  Name = "Noclip",
-  Default = false,
-  Callback = function(value)
-    ToggleNoclip(value)
-  end})
+    Name = "Click TP",
+    Default = false,
+    Callback = function(Value)
+        ToggleNoclip(Value)
+    end
+})
 OrionLib:MakeNotification({
 	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
 	Content = "Thanks for using this script😀",
