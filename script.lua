@@ -105,5 +105,4 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
           end
         end
-      end
-    end)
+      end)
