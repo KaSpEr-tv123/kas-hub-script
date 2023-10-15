@@ -228,6 +228,24 @@ end)
 tool.Parent = game.Players.LocalPlayer.Backpack
 
 other:AddToggle({
+  Name = "Noclip",
+  Default = false,
+  Callback = function(Value)
+  if Vaue then
+    game.RunService.Stepped:Connect(function() 
+      game.Players.LocalPlayer.Character.Head.CanCollide = false
+      game.Players.LocalPlayer.Character.Torso.CanCollide = false 
+    end)
+  else
+    game.RunService.Stepped:Connect(function() 
+      game.Players.LocalPlayer.Character.Head.CanCollide = true
+      game.Players.LocalPlayer.Character.Torso.CanCollide = true
+    end)
+  end
+end
+})
+
+other:AddToggle({
     Name = "ESP Players",
     Default = false,
     Callback = function(Value)
@@ -246,22 +264,33 @@ other:AddToggle({
           for i, child in ipairs(workspace:GetDescendants()) do
             if child:FindFirstChild("Humanoid") then
               if not child:FindFirstChild("EspBox") then
-                if child ~= game.Players.LocalPlayer.Character then
-                   local esp = Instance.new("BoxHandleAdornment", child)
-                   esp.Adornee = child
-                   esp.ZIndex = 0
-                   esp.Size = Vector3.new(4, 5, 1)
-                   esp.Transparency = 0.65
-                   esp.Color3 = Color3.fromRGB(255, 48, 48)
-                   esp.AlwaysOnTop = true
-                   esp.Name = "EspBox"
+                for i, child in ipairs(workspace:GetDescendants()) do
+                  if child:IsA("Model") and child:FindFirstChild("Humanoid") then
+                    if not child:FindFirstChild("EspBox") then
+                      if child ~= game.Players.LocalPlayer.Character then
+                      local humanoid = child:FindFirstChildOfClass("Humanoid")
+                      local bodySize = humanoid and humanoid:GetBodySize()
+                      if bodySize then
+                        local esp = Instance.new("BoxHandleAdornment", child)
+                        esp.Adornee = child
+                        esp.ZIndex = 0
+                        esp.Size = bodySize * Vector3.new(1.2, 1.5, 0.2) -- Пример масштабирования размера
+                        esp.Transparency = 0.65
+                        esp.Color3 = Color3.fromRGB(255, 48, 48)
+                        esp.AlwaysOnTop = true
+                        esp.Name = "EspBox"
+                      end
+                    end
+                  end
                 end
               end
             end
           end
         end
+      end
     end
 })
+
 OrionLib:MakeNotification({
 	Name = "Ҝ卂丂 卄ㄩ乃 has loaded",
 	Content = "Thanks for using this script😀",
