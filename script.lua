@@ -66,12 +66,12 @@ game:GetService("RunService").Stepped:Connect(function()
 end)
 
 other.newToggle("Noclip", "", false, function(toggleState)
-      mode_noclip = not Value
+      mode_noclip = not toggleState
 end)
 
-tab.newToggle("Toggle", "Toggle! (prints the state)", true, function(toggleState)
-    mode_esp = Value
-    if Value == false then
+other.newToggle("ESP Players", "", false, function(toggleState)
+    mode_esp = toggleState
+    if toggleState == false then
           for i, child in ipairs(workspace:GetDescendants()) do
             if child:FindFirstChild("Humanoid") then
               if child:FindFirstChild("EspBox") then
