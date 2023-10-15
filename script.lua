@@ -226,22 +226,20 @@ tool.Activated:Connect(function()
 end)
 
 tool.Parent = game.Players.LocalPlayer.Backpack
+local mode_noclip = false
+game:GetService("RunService").Stepped:Connect(function()
+    for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.CanCollide = mode_noclip
+        end
+    end
+end)
 
 other:AddToggle({
   Name = "Noclip",
   Default = false,
   Callback = function(Value)
-  if Vaue then
-    game.RunService.Stepped:Connect(function() 
-      game.Players.LocalPlayer.Character.Head.CanCollide = false
-      game.Players.LocalPlayer.Character.Torso.CanCollide = false 
-    end)
-  else
-    game.RunService.Stepped:Connect(function() 
-      game.Players.LocalPlayer.Character.Head.CanCollide = true
-      game.Players.LocalPlayer.Character.Torso.CanCollide = true
-    end)
-  end
+      mode_noclip = not Value
 end
 })
 
