@@ -106,7 +106,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
           end
         end
       end)
-if game.GameID == 1268927906 then
+if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
 
 ml.newButton("TP in lobby", "", function()
