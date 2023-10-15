@@ -2,7 +2,7 @@ local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithu
 local player = game.Players.LocalPlayer
 local window = gui:Load("Ҝ卂丂 卄ㄩ乃", "15074833174")
 
-local hacks = gui:newTab("Hacks", "15046690373")
+local hacks = gui.newTab("Hacks", "15046690373")
 
 
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
@@ -13,7 +13,7 @@ hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num
 		game.Players.LocalPlayer.Character.Humanoid.JumpPower = num
 end)
 
-local other = gui:newTab("Other", "15046690373")
+local other = gui.newTab("Other", "15046690373")
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local mode_fly = false
