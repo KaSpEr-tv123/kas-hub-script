@@ -56,7 +56,7 @@ tool.Activated:Connect(function()
 end)
 
 tool.Parent = game.Players.LocalPlayer.Backpack
-local mode_noclip = false
+local mode_noclip = true
 game:GetService("RunService").Stepped:Connect(function()
     for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
         if v:IsA("BasePart") then
