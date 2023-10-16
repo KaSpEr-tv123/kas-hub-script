@@ -35,14 +35,6 @@ local tool = Instance.new("Tool")
 tool.RequiresHandle = false
 tool.Name = "Click TP function"
 
-other.newToggle("Click TP", "", false, function(toggleState)
-    mode_tp = toggleState
-end)
-
-other.newButton("Get Click TP item", "", function()
-    tool.Parent = game.Players.LocalPlayer.Backpack
-	end)
-
 local mouse = game.Players.LocalPlayer:GetMouse()
 
 tool.Activated:Connect(function()
@@ -108,6 +100,13 @@ other.newToggle("ESP Players", "", false, function(toggleState)
 end)
 local tp = gui.newTab("TP Utility")
 local position = nil
+tp.newToggle("Click TP", "", false, function(toggleState)
+    mode_tp = toggleState
+end)
+
+tp.newButton("Get Click TP item", "", function()
+    tool.Parent = game.Players.LocalPlayer.Backpack
+	end)
 tp.newButton("Save your position", "", function()
   position = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
