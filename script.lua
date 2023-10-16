@@ -112,7 +112,7 @@ tp.newButton("Save your position", "", function()
   positon = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
 tp.newButton("TP in saved position", "", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position)
 end)
 
 if game.GameId == 1268927906 then
