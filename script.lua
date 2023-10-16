@@ -118,6 +118,36 @@ end)
 if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
 
+ml.newToggle("auto farm", function(state)
+game:GetService("RunService").Stepped:connect(
+    function()
+        pcall(
+            function()
+                if state then
+                    game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+                end
+            end
+        )
+    end
+)
+spawn(function()
+while state do
+    wait()
+    pcall(
+        function()
+            game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
+            c()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9e9,9e9,9e9)
+            if not state then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 0)
+            end
+        end
+    )
+end
+end)
+end)
+
+
 ml.newButton("TP in lobby", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(141.109604, 3.71060801, 282.039124)
 end)
