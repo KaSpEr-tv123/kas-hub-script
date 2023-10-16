@@ -4,7 +4,6 @@ local window = gui:Load("Ҝ卂丂 卄ㄩ乃", "15074833174")
 
 local hacks = gui.newTab("Hacks", "15046690373")
 
-
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = num
 end)
