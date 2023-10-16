@@ -118,7 +118,7 @@ end)
 if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
 
-ml.newToggle("auto farm", function(state)
+ml.newToggle("auto farm", "", function(state)
 game:GetService("RunService").Stepped:connect(
     function()
         pcall(
