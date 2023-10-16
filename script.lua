@@ -107,6 +107,14 @@ other.newToggle("ESP Players", "", false, function(toggleState)
       end)
 if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
+local tp = gui.newTab("TP Utility")
+local position = nil
+tp.newButton("Save your position", "", function()
+  positon = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+end)
+tp.newButton("TP in saved position", "", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
+end)
 
 ml.newButton("TP in lobby", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(141.109604, 3.71060801, 282.039124)
