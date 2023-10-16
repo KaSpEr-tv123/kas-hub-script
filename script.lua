@@ -115,7 +115,7 @@ tp.newButton("TP in saved position", "", function()
 end)
 tp.newInput("TP to any player", "", function(text)
   pcall(function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:GetService(text).Character.HumanoidRootPart.CFrame
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Player:FindFirstChild(text).Character.HumanoidRootPart.CFrame
     end)
 end)
 if game.GameId == 1268927906 then
