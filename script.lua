@@ -4,6 +4,7 @@ local window = gui:Load("Ҝ卂丂 卄ㄩ乃", "15074833174")
 
 local hacks = gui.newTab("Hacks", "15046690373")
 
+
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = num
 end)
@@ -104,9 +105,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
           end
         end
-      end)
-if game.GameId == 1268927906 then
-local ml = gui.newTab("Muscle Legends")
+end)
 local tp = gui.newTab("TP Utility")
 local position = nil
 tp.newButton("Save your position", "", function()
@@ -115,6 +114,9 @@ end)
 tp.newButton("TP in saved position", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
 end)
+
+if game.GameId == 1268927906 then
+local ml = gui.newTab("Muscle Legends")
 
 ml.newButton("TP in lobby", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(141.109604, 3.71060801, 282.039124)
