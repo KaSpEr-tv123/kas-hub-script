@@ -129,9 +129,6 @@ ml.newToggle("Auto Farm", "", false, function(Value)
                 elias999 = 2
             end
             
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(205.99353, 41.2325211, -1281.58118, -0.488450289, 4.65126924e-08, -0.872591734, 5.3757816e-08, 1, 2.32120811e-08, 0.872591734, -3.55706788e-08, -0.488450289)
-			wait()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17.3768158, 7.38249779, 339.084686, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 local args = {
     [1] = "rep"
 }
