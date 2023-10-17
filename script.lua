@@ -128,7 +128,7 @@ ml.newToggle("Auto Farm", "", false, function(Value)
             if Value == false then
                 elias999 = 2
             end
-            
+            wait()
 local args = {
     [1] = "rep"
 }
