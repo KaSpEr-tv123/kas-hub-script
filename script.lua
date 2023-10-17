@@ -156,7 +156,7 @@ game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(a
    end
 end)
 
-ml.newToggle("Auto Farm Durability", "", function(state)
+ml.newToggle("Auto Farm Durability", "", false, function(state)
 		
 		m = game.Players.LocalPlayer:GetMouse()
 		elias782k = 1
