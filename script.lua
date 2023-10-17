@@ -121,7 +121,7 @@ if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
 local auto_farm = false
 
-ml.newToggle("auto farm", "", false, function(Value)
+ml.newToggle("Auto Farm", "", false, function(Value)
 		elias999 = 1
 		
         while elias999 == 1 do
