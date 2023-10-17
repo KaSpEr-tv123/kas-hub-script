@@ -29,7 +29,6 @@ other.newToggle("Inf. Jump", "", false, function(toggleState)
 end)
 
 local mode_tp = false
-local lastClickedPosition = nil
 
 local tool = Instance.new("Tool")
 tool.RequiresHandle = false
@@ -122,35 +121,26 @@ if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
 local auto_farm = false
 
-ml.newToggle("auto farm", "", false, function(State)
-  Settings.WorkOut = State
-game:GetService("RunService").Stepped:connect(
-    function()
-        pcall(
-            function()
-                if Settings.WorkOut then
-                    game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
-                end
+ml.newToggle("auto farm", "", false, function(Value)
+		elias999 = 1
+		
+        while elias999 == 1 do
+            if Value == false then
+                elias999 = 2
             end
-        )
-    end
-)
-spawn(function()
-while Settings.WorkOut do
-    wait()
-    pcall(
-        function()
-            game:GetService("Players").LocalPlayer.muscleEvent:FireServer("rep")
-            c()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(9e9,9e9,9e9)
-            if not Settings.WorkOut then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0, 0)
-            end
+            
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(205.99353, 41.2325211, -1281.58118, -0.488450289, 4.65126924e-08, -0.872591734, 5.3757816e-08, 1, 2.32120811e-08, 0.872591734, -3.55706788e-08, -0.488450289)
+			wait()
+			print("SUBSCRIBE To Free Exploiter")
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(17.3768158, 7.38249779, 339.084686, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+local args = {
+    [1] = "rep"
+}
+
+game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+
         end
-    )
-end
-end)
-end)
+	end)
 
 
 ml.newButton("TP in lobby", "", function()
