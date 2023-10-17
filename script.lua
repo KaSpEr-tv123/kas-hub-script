@@ -153,34 +153,28 @@ local args = {
     [1] = "rebirthRequest"
 }
 game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(args))
-        end
-	end    
-function(Value2)
-		elias782k = 1
-        while elias782k == 1 do
-if Value2 == false then
-    elias782k = 2
-end
-wait(1)
-local args = {
-    [1] = "rebirthRequest"
-}
-game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(args))
-        end
-function(Value2)
-		elias782k = 1
-        while elias782k == 1 do
-if Value2 == false then
-    elias782k = 2
-end
-wait(1)
-local args = {
-    [1] = "rebirthRequest"
-}
-game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(args))
-        end
-	end)
+   end
+end)
 
+ml.newToggle("Auto Farm Durability", "", function(state)
+		
+		m = game.Players.LocalPlayer:GetMouse()
+		elias782k = 1
+        while elias782k == 1 do
+if Value2 == false then
+    elias782k = 2
+       end
+      game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(284.321411, 7.33135414, -578.631897, 0.305069387, 3.63381929e-08, -0.952330112, 1.39650966e-08, 1, 4.26307203e-08, 0.952330112, -2.63047095e-08, 0.305069387)
+mouse1click()
+
+		
+wait()
+
+
+	
+	end
+
+	end)
 
 ml.newButton("TP in lobby", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(141.109604, 3.71060801, 282.039124)
