@@ -140,6 +140,45 @@ local args = {
 game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
 
         end
+end)
+
+ml.newToggle("Auto Rebirth", "", false, function(Value2)
+		elias782k = 1
+        while elias782k == 1 do
+if Value2 == false then
+    elias782k = 2
+end
+wait(1)
+local args = {
+    [1] = "rebirthRequest"
+}
+game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(args))
+        end
+	end    
+function(Value2)
+		elias782k = 1
+        while elias782k == 1 do
+if Value2 == false then
+    elias782k = 2
+end
+wait(1)
+local args = {
+    [1] = "rebirthRequest"
+}
+game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(args))
+        end
+function(Value2)
+		elias782k = 1
+        while elias782k == 1 do
+if Value2 == false then
+    elias782k = 2
+end
+wait(1)
+local args = {
+    [1] = "rebirthRequest"
+}
+game:GetService("ReplicatedStorage").rEvents.rebirthRemote:InvokeServer(unpack(args))
+        end
 	end)
 
 
