@@ -215,4 +215,6 @@ hds.newButton("kill all", "kill all players for you win(if you seeker)", functio
   for i, v in pairs(game.Players:GetChildren()) do
     if v ~= game.Players.LocalPlayer then
       v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    end)
+    end
+  end
+end)
