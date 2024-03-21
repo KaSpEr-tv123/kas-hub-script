@@ -233,3 +233,17 @@ function()
     end
   end
 end)
+
+hds.newButton("visible", "visible", 
+function()
+  local player = game.Players.LocalPlayer
+  local character = player.Character or player.CharacterAdded:Wait()
+
+  for _, part in ipairs(character:GetDescendants()) do
+    if part:IsA("BasePart") then
+      part.Transparency = 0
+      part.LocalTransparencyModifier = 0
+    end
+  end
+end)
+
