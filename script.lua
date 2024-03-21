@@ -210,7 +210,8 @@ end)
 end
 
 local hds = gui.newTab("Hide And Seek")
-hds.newButton("kill all", "kill all players for you win(if you seeker)", function()
+hds.newButton("kill all", "kill all players for you win(if you seeker)", 
+function()
   -- kill, not tp
   for i, v in pairs(game.Players:GetChildren()) do
     if v ~= game.Players.LocalPlayer then
