@@ -211,17 +211,12 @@ end
 
 local hds = gui.newTab("Hide And Seek")
 hds.newButton("kill all", "kill all players for you win(if you seeker)", function()
+  -- kill, not tp
   for i, v in pairs(game.Players:GetChildren()) do
-    if v.Name ~= game.Players.LocalPlayer.Name then
-      v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    end
-  end
-end)
+    if v ~= game.Players.LocalPlayer then
+      game.Players.LocalPlayer.Character.HumanoidRootPart.health = 0
+    end)
 
-hds.newButton("invisble", "", function()
-  for i, v in pairs(game.Players:GetChildren()) do
-    if v.Name ~= game.Players.LocalPlayer.Name then
-      v.Character.HumanoidRootPart.Transparency = 1
-    end
-  end
+hds.newButton("invisble", "invisible for you hide", function()
+  game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 1
 end)
