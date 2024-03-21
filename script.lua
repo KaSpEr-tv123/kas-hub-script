@@ -204,3 +204,25 @@ ml.newInput("Fake Rebirths", "Change youre rebirths", function(text)
   game.Players.LocalPlayer.leaderstats.Rebirths.Value = tonumber(text)
 end)
 end
+
+local hds = gui.newTab("Hide And Seek")
+hds.newButton("kill all", "kill all players for you win(if you seeker)", function()
+  for i, v in pairs(game.Players:GetChildren()) do
+    if v.Name ~= game.Players.LocalPlayer.Name then
+      v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    end
+  end
+end)
+
+hds.newButton("invisble", "", function()
+  for i, v in pairs(game.Players:GetChildren()) do
+    if v.Name ~= game.Players.LocalPlayer.Name then
+      v.Character.HumanoidRootPart.Transparency = 1
+    end
+  end
+end)
+
+local other = gui.newTab("Other")
+other.newButton("Server HOP", "", function()
+  game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+end)
