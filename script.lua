@@ -216,7 +216,3 @@ hds.newButton("kill all", "kill all players for you win(if you seeker)", functio
     if v ~= game.Players.LocalPlayer then
       v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
     end)
-
-hds.newButton("invisble", "invisible for you hide", function()
-  game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 1
-end)
