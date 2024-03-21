@@ -97,6 +97,10 @@ other.newToggle("ESP Players", "", false, function(toggleState)
           end
         end
 end)
+other.newButton("Server HOP", "", function()
+  game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+end)
+
 local tp = gui.newTab("TP Utility")
 local position = nil
 tp.newToggle("Click TP", "", false, function(toggleState)
@@ -220,9 +224,4 @@ hds.newButton("invisble", "", function()
       v.Character.HumanoidRootPart.Transparency = 1
     end
   end
-end)
-
-local other = gui.newTab("Other")
-other.newButton("Server HOP", "", function()
-  game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
 end)
