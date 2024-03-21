@@ -223,13 +223,13 @@ end)
 nds.newButton("invisible", "invisible", 
 function()
   local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
+  local character = player.Character or player.CharacterAdded:Wait()
 
 -- Перебираем все части тела персонажа и делаем их прозрачными
-for _, part in ipairs(character:GetDescendants()) do
+  for _, part in ipairs(character:GetDescendants()) do
     if part:IsA("BasePart") then
         part.Transparency = 1
         part.LocalTransparencyModifier = 1
     end
-end
+  end
 end)
