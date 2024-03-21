@@ -219,9 +219,3 @@ function()
     end
   end
 end)
-
-hds.newButton("invisible", "invisible", 
-function()
-  -- invisible
-  game.Players.LocalPlayer.Character.HumanoidRootPart.Transparency = 1
-end)
