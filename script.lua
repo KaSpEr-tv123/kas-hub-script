@@ -139,24 +139,24 @@ tp.newInput("TP to any player", "Enter player name", function(playerName)
 end)
 
 if game.GameId == 1268927906 then
-local ml = gui.newTab("Muscle Legends")
-local auto_farm = false
+  local ml = gui.newTab("Muscle Legends")
+  local auto_farm = false
 
-ml.newToggle("Auto Farm", "", false, function(Value)
-		elias999 = 1
-		
-        while elias999 == 1 do
-            if Value == false then
-                elias999 = 2
-            end
-            wait()
-local args = {
-    [1] = "rep"
-}
+  ml.newToggle("Auto Farm", "", false, function(Value)
+      elias999 = 1
+      
+          while elias999 == 1 do
+              if Value == false then
+                  elias999 = 2
+              end
+              wait()
+  local args = {
+      [1] = "rep"
+  }
 
-game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
+  game:GetService("Players").LocalPlayer.muscleEvent:FireServer(unpack(args))
 
-        end
+  end
 end)
 
 ml.newToggle("Auto Rebirth", "", false, function(Value2)
@@ -226,45 +226,45 @@ ml.newInput("Fake Rebirths", "Change youre rebirths", function(text)
 end)
 end
 
-if game.GameId == 5708035517 then
-local hds = gui.newTab("Hide And Seek")
-hds.newButton("kill all", "kill all players for you win(if you seeker)", 
-function()
-  -- kill, not tp
-  for i, v in pairs(game.Players:GetChildren()) do
-    if v ~= game.Players.LocalPlayer then
-      v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+--f game.GameId == 5708035517 then
+  local hds = gui.newTab("Hide And Seek")
+  hds.newButton("kill all", "kill all players for you win(if you seeker)", 
+  function()
+    -- kill, not tp
+    for i, v in pairs(game.Players:GetChildren()) do
+      if v ~= game.Players.LocalPlayer then
+        v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+      end
     end
-  end
-end)
-afc = false
-hds.newToggle("Auto farm coins", "", false, function()
-  afc = not afc
-  while afc == true do
-    wait(0.5)
-    local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
-    if coinsFolder then
-        local minDistance = math.huge
-        local nearestCoin = nil
-        
-        for _, coin in ipairs(coinsFolder:GetChildren()) do
-            if coin:IsA("BasePart") then -- Проверяем, что это базовая часть (монета)
-                local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-                if distance < minDistance then
-                    minDistance = distance
-                    nearestCoin = coin
-                end
-            end
-        end
-        
-        if nearestCoin then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
-        else
-            warn("Монеты не найдены.")
-        end
-    else
-        warn("Папка с монетами не найдена.")
+  end)
+  afc = false
+  hds.newToggle("Auto farm coins", "", false, function()
+    afc = not afc
+    while afc == true do
+      wait(0.5)
+      local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
+      if coinsFolder then
+          local minDistance = math.huge
+          local nearestCoin = nil
+          
+          for _, coin in ipairs(coinsFolder:GetChildren()) do
+              if coin:IsA("BasePart") then -- Проверяем, что это базовая часть (монета)
+                  local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                  if distance < minDistance then
+                      minDistance = distance
+                      nearestCoin = coin
+                  end
+              end
+          end
+          
+          if nearestCoin then
+              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
+          else
+              warn("Монеты не найдены.")
+          end
+      else
+          warn("Папка с монетами не найдена.")
+      end
     end
-  end
-end)
-end
+  end)
+--end
