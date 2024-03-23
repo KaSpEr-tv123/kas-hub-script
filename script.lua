@@ -280,7 +280,7 @@ local function autoFarmCoins()
     until not afc
 end
 
-hds.newToggle("Auto farm coins", "", false, function()
+hds.newButton("Auto farm coins", "", function()
     afc = not afc
     if afc then
         spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
