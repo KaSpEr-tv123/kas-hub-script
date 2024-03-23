@@ -237,34 +237,52 @@ end
       end
     end
   end)
-  afc = false
-  hds.newToggle("Auto farm coins", "", false, function()
+  local afc = false
+
+local function autoFarmCoins()
+    repeat
+        wait(0.5)
+        local coinsFolder = game.Workspace:FindFirstChild("MapHolder")
+        if coinsFolder then
+            local minDistance = math.huge
+            local nearestCoin = nil
+            
+            for _, coin in ipairs(coinsFolder:GetChildren()) do
+                if coin:IsA("BasePart") then
+                    local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                    if distance < minDistance then
+                        minDistance = distance
+                        nearestCoin = coin
+                    end
+                end
+            end
+            
+            if nearestCoin then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
+            else
+                local warningGui = Instance.new("ScreenGui")
+                warningGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+                local warningLabel = Instance.new("TextLabel")
+                warningLabel.Text = "Монеты не найдены."
+                warningLabel.Size = UDim2.new(0, 200, 0, 50)
+                warningLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
+                warningLabel.BackgroundColor3 = Color3.new(1, 0, 0)
+                warningLabel.TextColor3 = Color3.new(1, 1, 1)
+                warningLabel.Parent = warningGui
+                wait(3)
+                warningGui:Destroy()
+            end
+        else
+            warn("Папка с монетами не найдена.")
+        end
+    until not afc
+end
+
+hds.newToggle("Auto farm coins", "", false, function()
     afc = not afc
-    while afc == true do
-      wait(0.5)
-      local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
-      if coinsFolder then
-          local minDistance = math.huge
-          local nearestCoin = nil
-          
-          for _, coin in ipairs(coinsFolder:GetChildren()) do
-              if coin:IsA("BasePart") then -- Проверяем, что это базовая часть (монета)
-                  local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-                  if distance < minDistance then
-                      minDistance = distance
-                      nearestCoin = coin
-                  end
-              end
-          end
-          
-          if nearestCoin then
-              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
-          else
-              warn("Монеты не найдены.")
-          end
-      else
-          warn("Папка с монетами не найдена.")
-      end
+    if afc then
+        spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
     end
-  end)
+end)
 --end
