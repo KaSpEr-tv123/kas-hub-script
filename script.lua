@@ -270,6 +270,7 @@ local function autoFarmCoins()
                 warningLabel.BackgroundColor3 = Color3.new(1, 0, 0)
                 warningLabel.TextColor3 = Color3.new(1, 1, 1)
                 warningLabel.Parent = warningGui
+                afc = false
                 wait(3)
                 warningGui:Destroy()
             end
