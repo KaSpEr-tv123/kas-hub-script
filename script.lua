@@ -237,7 +237,7 @@ function()
   end
 end)
 hds.newButton("TP to nearest Coin", "", function()
-  local coinsFolder = game.Workspace:FindFirstChild("CoinsFolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
+  local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
   if coinsFolder then
       local minDistance = math.huge
       local nearestCoin = nil
