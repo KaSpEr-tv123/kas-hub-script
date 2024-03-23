@@ -285,4 +285,5 @@ hds.newToggle("Auto farm coins", "", false, function()
         spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
     end
 end)
+
 --end
