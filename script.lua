@@ -236,28 +236,32 @@ function()
     end
   end
 end)
-hds.newButton("TP to nearest Coin", "", function()
-  local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
-  if coinsFolder then
-      local minDistance = math.huge
-      local nearestCoin = nil
-      
-      for _, coin in ipairs(coinsFolder:GetChildren()) do
-          if coin:IsA("BasePart") then -- Проверяем, что это базовая часть (монета)
-              local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-              if distance < minDistance then
-                  minDistance = distance
-                  nearestCoin = coin
-              end
-          end
-      end
-      
-      if nearestCoin then
-          game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
-      else
-          warn("Монеты не найдены.")
-      end
-  else
-      warn("Папка с монетами не найдена.")
+afc = false
+hds.newToggle("Auto farm coins", "", false, function()
+  afc = not afc
+  while afc == true do
+    local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
+    if coinsFolder then
+        local minDistance = math.huge
+        local nearestCoin = nil
+        
+        for _, coin in ipairs(coinsFolder:GetChildren()) do
+            if coin:IsA("BasePart") then -- Проверяем, что это базовая часть (монета)
+                local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                if distance < minDistance then
+                    minDistance = distance
+                    nearestCoin = coin
+                end
+            end
+        end
+        
+        if nearestCoin then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
+        else
+            warn("Монеты не найдены.")
+        end
+    else
+        warn("Папка с монетами не найдена.")
+    end
   end
 end)
