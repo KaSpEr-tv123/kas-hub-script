@@ -10,7 +10,7 @@ hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
 end)
 
 hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = num
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = num
 end)
 
 local other = gui.newTab("Other", "15046690373")
@@ -109,10 +109,9 @@ local position = nil
 tp.newToggle("Click TP", "", false, function(toggleState)
     mode_tp = toggleState
 end)
-
 tp.newButton("Get Click TP item", "", function()
     tool.Parent = game.Players.LocalPlayer.Backpack
-	end)
+    end)
 tp.newButton("Save your position", "", function()
   position = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
@@ -183,7 +182,6 @@ if Value2 == false then
        end
       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(284.321411, 7.33135414, -578.631897, 0.305069387, 3.63381929e-08, -0.952330112, 1.39650966e-08, 1, 4.26307203e-08, 0.952330112, -2.63047095e-08, 0.305069387)
 mouse1click()
-
 		
 wait()
 
@@ -212,23 +210,23 @@ ml.newButton("TP in Muscle King location", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-8662.07129, 13.5606356, -5782.43555)
 end)
 
-ml.newInput("Fake Strenght", "Change youre strenght", function(text)
+ml.newInput("Fake Strength", "Change your strength", function(text)
   game.Players.LocalPlayer.leaderstats.Strength.Value = tonumber(text)
 end)
-ml.newInput("Fake Kills", "Change youre kills", function(text)
+ml.newInput("Fake Kills", "Change your kills", function(text)
   game.Players.LocalPlayer.leaderstats.Kills.Value = tonumber(text)
 end)
 ml.newInput("Fake Brawls", "Change your brawls", function(text)
   game.Players.LocalPlayer.leaderstats.Brawls.Value = tonumber(text)
 end)
-ml.newInput("Fake Rebirths", "Change youre rebirths", function(text)
+ml.newInput("Fake Rebirths", "Change your rebirths", function(text)
   game.Players.LocalPlayer.leaderstats.Rebirths.Value = tonumber(text)
 end)
 end
 
---f game.GameId == 5708035517 then
+if game.GameId == 5708035517 then
   local hds = gui.newTab("Hide And Seek")
-  hds.newButton("kill all", "kill all players for you win(if you seeker)", 
+  hds.newButton("Kill all", "Kill all players for you win (if you are the seeker)", 
   function()
     -- kill, not tp
     for i, v in pairs(game.Players:GetChildren()) do
@@ -267,8 +265,8 @@ local function autoFarmCoins()
                 warningLabel.Text = "Монеты не найдены."
                 warningLabel.Size = UDim2.new(0, 200, 0, 50)
                 warningLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
-                warningLabel.BackgroundColor3 = Color3.new(1, 0, 0)
-                warningLabel.TextColor3 = Color3.new(1, 1, 1)
+                warningLabel.BackgroundColor3 = Color3.new(0.3686274509803922, 0.023529411764705882, 0.42745098039215684)
+                warningLabel.TextColor3 = Color3.new(0.19607843137254902, 0.023529411764705882, 0.2235294117647059)
                 warningLabel.Parent = warningGui
                 afc = false
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(35.8843689, 4.00753164, 65.9930344)
@@ -287,4 +285,4 @@ hds.newToggle("Auto farm coins", "", false, function()
         spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
     end
 end)
---end
+end
