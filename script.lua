@@ -240,6 +240,7 @@ afc = false
 hds.newToggle("Auto farm coins", "", false, function()
   afc = not afc
   while afc == true do
+    wait(0.5)
     local coinsFolder = game.Workspace:FindFirstChild("MapHolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
     if coinsFolder then
         local minDistance = math.huge
