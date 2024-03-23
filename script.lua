@@ -271,6 +271,8 @@ local function autoFarmCoins()
                 warningLabel.TextColor3 = Color3.new(1, 1, 1)
                 warningLabel.Parent = warningGui
                 afc = false
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = 35.8843689, 4.00753164, 65.9930344, 0.999827862, -5.53730288e-08, 0.0185525827, 5.70555549e-08, 1, -9.01602704e-08, -0.0185525827
+                9.1203276e-08, 0.999827862
                 wait(3)
                 warningGui:Destroy()
             end
