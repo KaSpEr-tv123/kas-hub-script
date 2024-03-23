@@ -116,11 +116,25 @@ end)
 tp.newButton("TP in saved position", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
 end)
-tp.newInput("TP to any player", "", function(text)
-  pcall(function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Player:FindFirstChild(text).Character.HumanoidRootPart.CFrame
-    end)
+tp.newInput("TP to any player", "Enter player name", function(playerName)
+  local playerToTeleport = game.Players:FindFirstChild(playerName)
+  if playerToTeleport then
+      local playerCharacter = playerToTeleport.Character
+      if playerCharacter then
+          local humanoidRootPart = playerCharacter:FindFirstChild("HumanoidRootPart")
+          if humanoidRootPart then
+              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame
+          else
+              warn("HumanoidRootPart not found for player:", playerName)
+          end
+      else
+          warn("Character not found for player:", playerName)
+      end
+  else
+      warn("Player not found:", playerName)
+  end
 end)
+
 if game.GameId == 1268927906 then
 local ml = gui.newTab("Muscle Legends")
 local auto_farm = false
