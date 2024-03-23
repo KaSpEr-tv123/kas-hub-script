@@ -247,7 +247,7 @@ local function autoFarmCoins()
             local nearestCoin = nil
             
             for _, coin in ipairs(coinsFolder:GetChildren()) do
-                if coin:IsA("BasePart") then
+                if coin.Name == "Coin" then
                     local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
                     if distance < minDistance then
                         minDistance = distance
