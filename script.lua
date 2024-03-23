@@ -97,8 +97,11 @@ other.newToggle("ESP Players", "", false, function(toggleState)
           end
         end
 end)
-other.newButton("Server HOP", "", function()
+other.newButton("Rejoin", "", function()
   game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+end)
+other.newButton("DEX", "explorer files game", function()
+  loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
 end)
 
 local tp = gui.newTab("TP Utility")
@@ -233,31 +236,28 @@ function()
     end
   end
 end)
-
-nds.newButton("invisible", "invisible", 
-function()
-  local player = game.Players.LocalPlayer
-  local character = player.Character or player.CharacterAdded:Wait()
-
--- Перебираем все части тела персонажа и делаем их прозрачными
-  for _, part in ipairs(character:GetDescendants()) do
-    if part:IsA("BasePart") then
-        part.Transparency = 1
-        part.LocalTransparencyModifier = 1
-    end
+hds.newButton("TP to nearest Coin", "", function()
+  local coinsFolder = game.Workspace:FindFirstChild("CoinsFolder") -- Предполагается, что монеты хранятся в папке с именем "CoinsFolder"
+  if coinsFolder then
+      local minDistance = math.huge
+      local nearestCoin = nil
+      
+      for _, coin in ipairs(coinsFolder:GetChildren()) do
+          if coin:IsA("BasePart") then -- Проверяем, что это базовая часть (монета)
+              local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+              if distance < minDistance then
+                  minDistance = distance
+                  nearestCoin = coin
+              end
+          end
+      end
+      
+      if nearestCoin then
+          game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
+      else
+          warn("Монеты не найдены.")
+      end
+  else
+      warn("Папка с монетами не найдена.")
   end
 end)
-
-hds.newButton("visible", "visible", 
-function()
-  local player = game.Players.LocalPlayer
-  local character = player.Character or player.CharacterAdded:Wait()
-
-  for _, part in ipairs(character:GetDescendants()) do
-    if part:IsA("BasePart") then
-      part.Transparency = 0
-      part.LocalTransparencyModifier = 0
-    end
-  end
-end)
-
