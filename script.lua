@@ -60,6 +60,19 @@ end)
 other.newToggle("Noclip", "", false, function(toggleState)
       mode_noclip = not toggleState
 end)
+local mode_esp = false
+
+minetest.register_on_joinplayer(function(player)
+    if mode_esp then
+        local esp = Instance.new("BoxHandleAdornment", player.Character)
+        esp.Adornee = player.Character
+        esp.ZIndex = 0
+        esp.Size = Vector3.new(4, 5, 3) -- Пример масштабирования размера
+        esp.AlwaysOnTop = true
+        esp.Transparency = 0.5
+        esp.Color3 = Color3.fromRGB(255, 48, 48)
+    end
+end)
 
 other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
@@ -269,7 +282,7 @@ local function autoFarmCoins()
                 warningLabel.BackgroundColor3 = Color3.new(0.3686274509803922, 0.023529411764705882, 0.42745098039215684)
                 warningLabel.TextColor3 = Color3.new(0.19607843137254902, 0.023529411764705882, 0.2235294117647059)
                 warningLabel.Parent = warningGui
-                afc = false
+               -- afc = false
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(35.8843689, 4.00753164, 65.9930344)
                 wait(3)
                 warningGui:Destroy()
