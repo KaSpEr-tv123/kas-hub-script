@@ -62,17 +62,6 @@ other.newToggle("Noclip", "", false, function(toggleState)
 end)
 local mode_esp = false
 
-minetest.register_on_joinplayer(function(player)
-    if mode_esp then
-        local esp = Instance.new("BoxHandleAdornment", player.Character)
-        esp.Adornee = player.Character
-        esp.ZIndex = 0
-        esp.Size = Vector3.new(4, 5, 3) -- Пример масштабирования размера
-        esp.AlwaysOnTop = true
-        esp.Transparency = 0.5
-        esp.Color3 = Color3.fromRGB(255, 48, 48)
-    end
-end)
 
 other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
