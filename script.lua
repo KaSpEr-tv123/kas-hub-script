@@ -227,7 +227,7 @@ ml.newInput("Fake Rebirths", "Change your rebirths", function(text)
 end)
 end
 
-if game.GameId == 5708035517 then
+if game.GameId == 2020908522 then
   local hds = gui.newTab("Hide And Seek")
   hds.newButton("Kill all", "Kill all players for you win (if you are the seeker)", 
   function()
@@ -288,5 +288,4 @@ hds.newButton("Auto farm coins", "", function()
         spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
     end
 end)
-
 end
