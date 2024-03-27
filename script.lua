@@ -296,7 +296,7 @@ end)
 end
 
 if game.GameId == 111958650 then
-  local ars = gui.newTab("Arsena")
+  local ars = gui.newTab("Arsenal")
   local localPlayer = game:GetService("Players").LocalPlayer
   local function player()
       local target = nil
@@ -311,6 +311,7 @@ if game.GameId == 111958650 then
                       target = v
                       dist = magnitude
                   end
+              end
           end
       end
       
