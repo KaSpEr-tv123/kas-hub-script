@@ -75,7 +75,8 @@ other.newToggle("ESP Players", "", false, function(toggleState)
               end
             end
           end
-        else
+    else
+        while mode_esp do
           for i, child in ipairs(workspace:GetDescendants()) do
             if child:FindFirstChild("Humanoid") then
               if not child:FindFirstChild("EspBox") then
@@ -86,7 +87,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
                         local esp = Instance.new("BoxHandleAdornment", child)
                         esp.Adornee = child
                         esp.ZIndex = 0
-                        esp.Size = Vector3.new(4, 5, 3) -- Пример масштабирования размера
+                        esp.Size = Vector3.new(4, 5, 3)
                         esp.Transparency = 0.65
                         esp.Color3 = Color3.fromRGB(255, 48, 48)
                         esp.AlwaysOnTop = true
@@ -99,6 +100,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
           end
         end
+    end
 end)
 other.newButton("Rejoin", "", function()
   game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
