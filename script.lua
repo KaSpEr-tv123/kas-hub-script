@@ -325,7 +325,7 @@ if game.GameId == 111958650 then
 
   game:GetService("RunService").RenderStepped:Connect(function()
       if aim then
-          camera.CFrame = CFrame.new(player().Character.Head.Position)
+          camera.CFrame = CFrame.new(camera.CFrame.Position.player().Character.Head.Position)
       end
   end)
 
