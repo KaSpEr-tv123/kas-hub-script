@@ -234,7 +234,7 @@ if game.GameId == 2020908522 then
     -- kill, not tp
     for i, v in pairs(game.Players:GetChildren()) do
       if v ~= game.Players.LocalPlayer then
-        if not v.Head:FindFirstChild("SeekerTitle") then
+        if not v.FindFirstChild("Head"):FindFirstChild("SeekerTitle") then
           v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
         end
       end
