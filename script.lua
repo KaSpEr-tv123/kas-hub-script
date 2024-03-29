@@ -383,7 +383,7 @@ end
 blobs.newButton("Auto farm blobs", "", function()
     afb = not afb
     if afb then
-        spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
+        spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
 end)
 end
