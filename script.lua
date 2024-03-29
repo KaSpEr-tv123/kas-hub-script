@@ -353,6 +353,7 @@ if game.GameId == 3149100453 then
         else
             warn("Папка с монетами не найдена.")
         end
+        wait(0.0005)
     until not afb
 end
 
