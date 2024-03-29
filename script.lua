@@ -337,6 +337,7 @@ end
 
 if game.GameId == 3149100453 then
   local blobs = gui.newTab("Blobs")
+  local afb = false
   local function autoFarmBlobs()
     repeat
         wait(0.05)
@@ -376,11 +377,11 @@ if game.GameId == 3149100453 then
         else
             warn("Папка с монетами не найдена.")
         end
-    until not afc
+    until not afb
 end
 
 blobs.newButton("Auto farm blobs", "", function()
-    afc = not afc
+    afb = not afb
     if afc then
         spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
     end
