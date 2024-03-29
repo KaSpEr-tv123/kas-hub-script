@@ -334,3 +334,55 @@ if game.GameId == 111958650 then
   end)
 
 end
+
+if game.GameId == 3149100453 then
+  local blobs = gui.newTab("Blobs")
+  local function autoFarmBlobs()
+    repeat
+        wait(0.05)
+        local coinsFolder = game.Workspace:FindFirstChild("Orbs")
+        if coinsFolder then
+            local minDistance = math.huge
+            local nearestCoin = nil
+            
+            for _, coin in ipairs(coinsFolder:GetChildren()) do
+                if coin.Name == "Orb" then
+                    local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                    if distance < minDistance then
+                        minDistance = distance
+                        nearestCoin = coin
+                    end
+                end
+            end
+            
+            if nearestCoin then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
+            else
+                local warningGui = Instance.new("ScreenGui")
+                warningGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+                local warningLabel = Instance.new("TextLabel")
+                warningLabel.Text = "Орбы не найдены."
+                warningLabel.Size = UDim2.new(0, 200, 0, 50)
+                warningLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
+                warningLabel.BackgroundColor3 = Color3.new(0.3686274509803922, 0.023529411764705882, 0.42745098039215684)
+                warningLabel.TextColor3 = Color3.new(0.19607843137254902, 0.023529411764705882, 0.2235294117647059)
+                warningLabel.Parent = warningGui
+               -- afc = false
+                -- game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(35.8843689, 4.00753164, 65.9930344)
+                wait(3)
+                warningGui:Destroy()
+            end
+        else
+            warn("Папка с монетами не найдена.")
+        end
+    until not afc
+end
+
+blobs.newButton("Auto farm blobs", "", function()
+    afc = not afc
+    if afc then
+        spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
+    end
+end)
+end
