@@ -340,7 +340,6 @@ if game.GameId == 3149100453 then
   local afb = false
   local function autoFarmBlobs()
     repeat
-        wait(0.05)
         local coinsFolder = game.Workspace:FindFirstChild("Orbs")
         if coinsFolder then
             local minDistance = math.huge
