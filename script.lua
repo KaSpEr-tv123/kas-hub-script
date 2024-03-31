@@ -375,7 +375,7 @@ end
 if game.GameId == 4777817887 then
   local bb = gui.newTab("Blade Ball")
 
-  bb.newButton("Load Script For Blade boll", "", function()
+  bb.newButton("Load Script For Blade Ball", "", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
   end)
 end
