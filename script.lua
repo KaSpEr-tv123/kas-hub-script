@@ -84,14 +84,25 @@ other.newToggle("ESP Players", "", false, function(toggleState)
                   if child:IsA("Model") and child:FindFirstChild("Humanoid") then
                     if not child:FindFirstChild("EspBox") then
                       if child ~= game.Players.LocalPlayer.Character then
-                        local esp = Instance.new("BoxHandleAdornment", child)
-                        esp.Adornee = child
-                        esp.ZIndex = 0
-                        esp.Size = Vector3.new(4, 5, 3)
-                        esp.Transparency = 0.65
-                        esp.Color3 = Color3.fromRGB(255, 48, 48)
-                        esp.AlwaysOnTop = true
-                        esp.Name = "EspBox"
+                        if not v.Character.Head:FindFirstChild("SeekerTitle") then
+                          local esp = Instance.new("BoxHandleAdornment", child)
+                          esp.Adornee = child
+                          esp.ZIndex = 0
+                          esp.Size = Vector3.new(4, 5, 3)
+                          esp.Transparency = 0.65
+                          esp.Color3 = Color3.fromRGB(255, 0, 0)
+                          esp.AlwaysOnTop = true
+                          esp.Name = "EspBox"
+                        else
+                          local esp = Instance.new("BoxHandleAdornment", child)
+                          esp.Adornee = child
+                          esp.ZIndex = 0
+                          esp.Size = Vector3.new(4, 5, 3)
+                          esp.Transparency = 0.65
+                          esp.Color3 = Color3.fromRGB(208, 57, 238)
+                          esp.AlwaysOnTop = true
+                          esp.Name = "EspBox"
+                        end
                       end
                     end
                   end
