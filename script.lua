@@ -110,7 +110,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
               end
             end
           end
-        wait(5)
+        wait(3)
         end
     end
 end)
