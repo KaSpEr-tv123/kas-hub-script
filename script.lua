@@ -84,7 +84,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
                   if child:IsA("Model") and child:FindFirstChild("Humanoid") then
                     if not child:FindFirstChild("EspBox") then
                       if child ~= game.Players.LocalPlayer.Character then
-                        if not v.Character.Head:FindFirstChild("SeekerTitle") then
+                        if not child.Character.Head:FindFirstChild("SeekerTitle") then
                           local esp = Instance.new("BoxHandleAdornment", child)
                           esp.Adornee = child
                           esp.ZIndex = 0
