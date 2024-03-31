@@ -99,7 +99,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
                           esp.ZIndex = 0
                           esp.Size = Vector3.new(4, 5, 3)
                           esp.Transparency = 0.65
-                          esp.Color3 = Color3.fromRGB(208, 57, 238)
+                          esp.Color3 = Color3.fromRGB(0, 140, 255)
                           esp.AlwaysOnTop = true
                           esp.Name = "EspBox"
                         end
