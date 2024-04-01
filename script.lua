@@ -79,7 +79,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
       while mode_esp do
         for i, child in pairs(game.Players:GetChildren()) do
           if not child:FindFirstChild("EspBox") and child.Character and child.Character:FindFirstChild("Head") then
-            if child:IsA("Model") and child:FindFirstChild("Humanoid") then
+            if child:IsA("Model") then
               if child ~= game.Players.LocalPlayer.Character then
                 if not child.Character.Head:FindFirstChild("SeekerTitle") then
                   local esp = Instance.new("BoxHandleAdornment", child)
