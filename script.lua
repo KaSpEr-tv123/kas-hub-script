@@ -74,6 +74,7 @@ function highlightPlayer(player, color)
         highlight.Size = character.HumanoidRootPart.Size * 1.5
         highlight.CFrame = character.HumanoidRootPart.CFrame
         highlight.Anchored = true
+        highlight.AlwaysOnTop = true
         highlight.Parent = character
         highlight.Name = "Highlight"
     end
