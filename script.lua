@@ -60,46 +60,54 @@ end)
 other.newToggle("Noclip", "", false, function(toggleState)
       mode_noclip = not toggleState
 end)
+
 local mode_esp = false
-
-local highlightColor = BrickColor.new("Bright red")
-
-function highlightPlayer(player, color)
-    local character = player.Character
-
-    if character and not character:FindFirstChild("Highlight") then
-        local highlight = Instance.new("Part")
-        highlight.Color = color
-        highlight.Transparency = 0.7
-        highlight.Size = character.HumanoidRootPart.Size * 1.5
-        highlight.CFrame = character.HumanoidRootPart.CFrame
-        highlight.Anchored = true
-        highlight.AlwaysOnTop = true
-        highlight.Parent = character
-        highlight.Name = "Highlight"
-    end
-end
-
 
 other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
     if toggleState == false then
-          for i, child in pairs(game.Players:GetChildren()) do
-            if child.Character:FindFirstChild("Highlight") then
-              if child ~= game.Players.LocalPlayer.Character then
-                  child.Character:FindFirstChild("Highlight"):Destroy()
+          for i, child in ipairs(workspace:GetDescendants()) do
+            if child:FindFirstChild("Humanoid") then
+              if child:FindFirstChild("EspBox") then
+                if child ~= game.Players.LocalPlayer.Character then
+                  child:FindFirstChild("EspBox"):Destroy()
+                end
               end
             end
           end
     else
         while mode_esp do
           for i, child in pairs(game.Players:GetChildren()) do
-            if not child.Character.Head:FindFirstChild("SeekerTitle") then
-              highlightPlayer(child, Color3.new(1, 0, 0))
-            else
-              highlightPlayer(child, Color3.new(0.4588235294117647, 0.6784313725490196, 0.9803921568627451))
+              if not child:FindFirstChild("EspBox") then
+                for i, child in pairs(game.Players:GetChildren()) do
+                  if child:IsA("Model") and child:FindFirstChild("Humanoid") then
+                    if not child:FindFirstChild("EspBox") then
+                      if child ~= game.Players.LocalPlayer.Character then
+                        if child.Character.Head:FindFirstChild("SeekerTitle") then
+                          local esp = Instance.new("BoxHandleAdornment", child)
+                          esp.Adornee = child
+                          esp.ZIndex = 0
+                          esp.Size = Vector3.new(4, 5, 3)
+                          esp.Transparency = 0.65
+                          esp.Color3 = Color3.fromRGB(255, 0, 0)
+                          esp.AlwaysOnTop = true
+                          esp.Name = "EspBox"
+                        else
+                          local esp = Instance.new("BoxHandleAdornment", child)
+                          esp.Adornee = child
+                          esp.ZIndex = 0
+                          esp.Size = Vector3.new(4, 5, 3)
+                          esp.Transparency = 0.65
+                          esp.Color3 = Color3.fromRGB(0, 140, 255)
+                          esp.AlwaysOnTop = true
+                          esp.Name = "EspBox"
+                        end
+                      end
+                    end
+                  end
+                end
+              end
             end
-          end
           wait(3)
         end
     end
