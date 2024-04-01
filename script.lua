@@ -302,6 +302,16 @@ hds.newButton("Auto farm coins", "", function()
         spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
     end
 end)
+  hds.newButton("Unfreeze", "unfreeze all players (if you are the hider)", 
+  function()
+    for i, v in pairs(game.Players:GetChildren()) do
+      if v ~= game.Players.LocalPlayer then
+        if not v.Character.Head:FindFirstChild("SeekerTitle") then
+          game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+        end
+      end
+    end
+  end)
 end
 
 if game.GameId == 111958650 then
