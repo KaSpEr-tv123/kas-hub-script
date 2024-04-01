@@ -77,10 +77,9 @@ other.newToggle("ESP Players", "", false, function(toggleState)
           end
     else
         while mode_esp do
-          for i, child in ipairs(workspace:GetDescendants()) do
-            if child:FindFirstChild("Humanoid") then
+          for i, child in ipairs(game.Players:GetDescendants()) do
               if not child:FindFirstChild("EspBox") then
-                for i, child in ipairs(workspace:GetDescendants()) do
+                for i, child in ipairs(game.Players:GetDescendants()) do
                   if child:IsA("Model") and child:FindFirstChild("Humanoid") then
                     if not child:FindFirstChild("EspBox") then
                       if child ~= game.Players.LocalPlayer.Character then
@@ -109,8 +108,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
                 end
               end
             end
-          end
-        wait(3)
+          wait(3)
         end
     end
 end)
