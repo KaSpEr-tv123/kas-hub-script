@@ -63,49 +63,45 @@ end)
 local mode_esp = false
 
 
+-- Создаем 3D-фрагмент для характеристик хайлайтов
+local highlightPart = Instance.new("Part")
+highlightPart.Name = "Highlight"
+highlightPart.Transparency = 0.5
+highlightPart.Color = Color3.new(0, 1, 0)
+highlightPart.Anchored = true
+highlightPart.CanCollide = false
+highlightPart.FormFactor = "Custom"
+highlightPart.Size = Vector3.new(2, 2, 2)
+highlightPart.Material = Enum.Material.Neon
+
 other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
     if toggleState == false then
-          for i, child in ipairs(workspace:GetDescendants()) do
+        -- Удаляем все хайлайты
+        for i, child in ipairs(workspace:GetDescendants()) do
             if child:FindFirstChild("Humanoid") then
-              if child:FindFirstChild("EspBox") then
-                if child ~= game.Players.LocalPlayer.Character then
-                  child:FindFirstChild("EspBox"):Destroy()
+                if child:FindFirstChild("Highlight") then
+                    if child ~= game.Players.LocalPlayer.Character then
+                        child:FindFirstChild("Highlight"):Destroy()
+                    end
                 end
-              end
             end
-          end
-    else
-      while mode_esp do
-        for i, child in pairs(game.Players:GetChildren()) do
-          if not child:FindFirstChild("EspBox") and child.Character and child.Character:FindFirstChild("Head") then
-            if child:IsA("Model") then
-              if child ~= game.Players.LocalPlayer.Character then
-                if not child.Character.Head:FindFirstChild("SeekerTitle") then
-                  local esp = Instance.new("BoxHandleAdornment", child)
-                  esp.Adornee = child
-                  esp.ZIndex = 0
-                  esp.Size = Vector3.new(4, 5, 3)
-                  esp.Transparency = 0.65
-                  esp.Color3 = Color3.fromRGB(255, 0, 0)
-                  esp.AlwaysOnTop = true
-                  esp.Name = "EspBox"
-                else
-                  local esp = Instance.new("BoxHandleAdornment", child)
-                  esp.Adornee = child
-                  esp.ZIndex = 0
-                  esp.Size = Vector3.new(4, 5, 3)
-                  esp.Transparency = 0.65
-                  esp.Color3 = Color3.fromRGB(0, 140, 255)
-                  esp.AlwaysOnTop = true
-                  esp.Name = "EspBox"
-                end
-              end
-            end
-          end
         end
-        wait(3)
-      end
+    else
+        -- Создаем хайлайты для игроков, которых мы видим
+        while mode_esp do
+            for i, child in pairs(game.Players:GetChildren()) do
+                if not child:FindFirstChild("Highlight") and child.Character and child.Character:FindFirstChild("Head") then
+                    if child.Character.Head.Transparency == 0 then
+                        local highlight = highlightPart:Clone()
+                        highlight.Parent = child
+                        highlight.CFrame = child.Character.Head.CFrame
+                        highlight.Name = "Highlight"
+                    end
+                end
+            end
+            wait(3)
+        end
     end
 end)
 other.newButton("Rejoin", "", function()
