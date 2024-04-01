@@ -91,16 +91,18 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
           end
     else
-      while mode_esp do
-        for i, child in pairs(game.Players:GetChildren()) do
-          if not child.Character.Head:FindFirstChild("SeekerTitle") then
-            highlightPlayer(child, Color3.new(1, 0, 0))
-          else
-            highlightPlayer(child, Color3.new(0.4588235294117647, 0.6784313725490196, 0.9803921568627451))
+      spam(function()
+        while mode_esp do
+          for i, child in pairs(game.Players:GetChildren()) do
+            if not child.Character.Head:FindFirstChild("SeekerTitle") then
+              highlightPlayer(child, Color3.new(1, 0, 0))
+            else
+              highlightPlayer(child, Color3.new(0.4588235294117647, 0.6784313725490196, 0.9803921568627451))
+            end
           end
+          wait(0.0025)
         end
-        wait(0.0025)
-      end
+      end)
     end
 end)
 other.newButton("Rejoin", "", function()
