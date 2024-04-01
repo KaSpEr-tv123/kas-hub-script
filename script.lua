@@ -76,40 +76,36 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
           end
     else
-        while mode_esp do
-          for i, child in pairs(game.Players:GetChildren()) do
-              if not child:FindFirstChild("EspBox") then
-                for i, child in pairs(game.Players:GetChildren()) do
-                  if child:IsA("Model") and child:FindFirstChild("Humanoid") then
-                    if not child:FindFirstChild("EspBox") then
-                      if child ~= game.Players.LocalPlayer.Character then
-                        if not child.Character.Head:FindFirstChild("SeekerTitle") then
-                          local esp = Instance.new("BoxHandleAdornment", child)
-                          esp.Adornee = child
-                          esp.ZIndex = 0
-                          esp.Size = Vector3.new(4, 5, 3)
-                          esp.Transparency = 0.65
-                          esp.Color3 = Color3.fromRGB(255, 0, 0)
-                          esp.AlwaysOnTop = true
-                          esp.Name = "EspBox"
-                        else
-                          local esp = Instance.new("BoxHandleAdornment", child)
-                          esp.Adornee = child
-                          esp.ZIndex = 0
-                          esp.Size = Vector3.new(4, 5, 3)
-                          esp.Transparency = 0.65
-                          esp.Color3 = Color3.fromRGB(0, 140, 255)
-                          esp.AlwaysOnTop = true
-                          esp.Name = "EspBox"
-                        end
-                      end
-                    end
-                  end
+      while mode_esp do
+        for i, child in pairs(game.Players:GetChildren()) do
+          if not child:FindFirstChild("EspBox") and child.Character and child.Character:FindFirstChild("Head") then
+            if child:IsA("Model") and child:FindFirstChild("Humanoid") then
+              if child ~= game.Players.LocalPlayer.Character then
+                if not child.Character.Head:FindFirstChild("SeekerTitle") then
+                  local esp = Instance.new("BoxHandleAdornment", child)
+                  esp.Adornee = child
+                  esp.ZIndex = 0
+                  esp.Size = Vector3.new(4, 5, 3)
+                  esp.Transparency = 0.65
+                  esp.Color3 = Color3.fromRGB(255, 0, 0)
+                  esp.AlwaysOnTop = true
+                  esp.Name = "EspBox"
+                else
+                  local esp = Instance.new("BoxHandleAdornment", child)
+                  esp.Adornee = child
+                  esp.ZIndex = 0
+                  esp.Size = Vector3.new(4, 5, 3)
+                  esp.Transparency = 0.65
+                  esp.Color3 = Color3.fromRGB(0, 140, 255)
+                  esp.AlwaysOnTop = true
+                  esp.Name = "EspBox"
                 end
               end
             end
-          wait(3)
+          end
         end
+        wait(3)
+      end
     end
 end)
 other.newButton("Rejoin", "", function()
