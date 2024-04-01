@@ -62,46 +62,45 @@ other.newToggle("Noclip", "", false, function(toggleState)
 end)
 local mode_esp = false
 
+local highlightColor = BrickColor.new("Bright red")
 
--- Создаем 3D-фрагмент для характеристик хайлайтов
-local highlightPart = Instance.new("Part")
-highlightPart.Name = "Highlight"
-highlightPart.Transparency = 0.5
-highlightPart.Color = Color3.new(0, 1, 0)
-highlightPart.Anchored = true
-highlightPart.CanCollide = false
-highlightPart.FormFactor = "Custom"
-highlightPart.Size = Vector3.new(2, 2, 2)
-highlightPart.Material = Enum.Material.Neon
+function highlightPlayer(player, color)
+    local character = player.Character
+
+    if character and not character:FindFirstChild("Highlight") then
+        local highlight = Instance.new("Part")
+        highlight.Color = color
+        highlight.Transparency = 0.7
+        highlight.Size = character.HumanoidRootPart.Size * 1.5
+        highlight.CFrame = character.HumanoidRootPart.CFrame
+        highlight.Anchored = true
+        highlight.Parent = character
+        highlight.Name = "Highlight"
+    end
+end
+
 
 other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
     if toggleState == false then
-        -- Удаляем все хайлайты
-        for i, child in ipairs(workspace:GetDescendants()) do
-            if child:FindFirstChild("Humanoid") then
-                if child:FindFirstChild("Highlight") then
-                    if child ~= game.Players.LocalPlayer.Character then
-                        child:FindFirstChild("Highlight"):Destroy()
-                    end
-                end
+          for i, child in pairs(game.Players:GetChildren()) do
+            if child.Character:FindFirstChild("Highlight") then
+              if child ~= game.Players.LocalPlayer.Character then
+                  child.Character:FindFirstChild("Highlight"):Destroy()
+              end
             end
-        end
+          end
     else
-        -- Создаем хайлайты для игроков, которых мы видим
-        while mode_esp do
-            for i, child in pairs(game.Players:GetChildren()) do
-                if not child:FindFirstChild("Highlight") and child.Character and child.Character:FindFirstChild("Head") then
-                    if child.Character.Head.Transparency == 0 then
-                        local highlight = highlightPart:Clone()
-                        highlight.Parent = child
-                        highlight.CFrame = child.Character.Head.CFrame
-                        highlight.Name = "Highlight"
-                    end
-                end
-            end
-            wait(3)
+      while mode_esp do
+        for i, child in pairs(game.Players:GetChildren()) do
+          if not child.Character.Head:FindFirstChild("SeekerTitle") then
+            highlightPlayer(child, Color3.new(1, 0, 0))
+          else
+            highlightPlayer(child, Color3.new(0.4588235294117647, 0.6784313725490196, 0.9803921568627451))
+          end
         end
+        wait(0.0025)
+      end
     end
 end)
 other.newButton("Rejoin", "", function()
