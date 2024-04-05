@@ -404,7 +404,8 @@ blobs.newButton("Auto farm blobs", "", function()
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
 end)
-local Radius = 50 -- Радиус для активации ауры убийства
+local Radius = 400 -- Радиус для активации ауры убийства
+local DamageAmount = 15 -- Количество урона, которое вы наносите
 
 local Exploiter = game.Players.LocalPlayer
 local Enabled = false
@@ -412,6 +413,7 @@ local Enabled = false
 function KillAura()
     while Enabled do
         for _, Player in pairs(game.Players:GetPlayers()) do
+          if Player ~= Exploiter then
             local Character = Player.Character
             if Character and Character:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("Humanoid") then
                 local Entity = Character.HumanoidRootPart
@@ -421,13 +423,14 @@ function KillAura()
 
                     if ExploiterPosition then
                         if (PlayerPosition - ExploiterPosition).magnitude < Radius then
-                            -- Сюда можно добавить свою логику убийства, например:
-                            -- Character.Humanoid:TakeDamage(15)
-                            warn("Attacking:", Player.Name)
+                            -- Нанесение урона игроку
+                            Character.Humanoid:TakeDamage(DamageAmount)
+                            print("Нанесен урон игроку:", Player.Name)
                         end
                     end
                 end
             end
+          end
         end
         wait(0.1) -- Добавляем небольшую задержку между проверками
     end
@@ -439,6 +442,7 @@ blobs.newButton("Kill Aura", "", function()
         spawn(KillAura) -- Запускаем функцию в новом потоке
     end
 end)
+
 
 end
            
