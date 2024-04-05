@@ -404,7 +404,40 @@ blobs.newButton("Auto farm blobs", "", function()
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
 end)
+local Radius = 50 -- When your kill aura activates
+
+local Exploiter = game.Players.LocalPlayer
+local Enabled = false
+
+function KillAura()
+  while Enabled do
+    for _, Player in pairs(game.Players:GetChildren()) do
+      local Entity = Player:getEntity()
+        
+                    if (Entity) and (Entity:isAlive()) then
+                        local PlayerPosition = Entity:getPosition()
+                        local ExploiterPosition = Exploiter:getEntity():getPosition()
+        
+                        if (not ExploiterPosition) then
+                            return
+                        end
+        
+                        if (PlayerPosition - ExploiterPosition).magnitude < Radius then
+                                CombatService.damage(Entity, 15)
+                        end
+                    end
+                end
+      end
+  end 
+
+blobs.newButton("Kill Aura", "", function()
+    Enabled = not Enabled
+    if Enabled then
+        spawn(KillAura) -- Запускаем функцию в новом потоке
+    end
+end)
 end
+           
 
 if game.GameId == 994732206 then
   local bf = gui.newTab("Blox Fruits")
