@@ -366,7 +366,7 @@ if game.GameId == 3149100453 then
           local nearestCoin = nil
             
           for _, coin in ipairs(coinsFolder:GetChildren()) do
-            if coin.Name == "Coin" then
+            if coin.Name == "Orb" then
               local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
               if distance < minDistance then
                 minDistance = distance
@@ -388,7 +388,6 @@ if game.GameId == 3149100453 then
               warningLabel.TextColor3 = Color3.new(0.19607843137254902, 0.023529411764705882, 0.2235294117647059)
               warningLabel.Parent = warningGui
              -- afc = false
-              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(35.8843689, 4.00753164, 65.9930344)
               wait(3)
               warningGui:Destroy()
           end
