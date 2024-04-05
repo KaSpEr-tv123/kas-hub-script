@@ -314,42 +314,42 @@ end
 if game.GameId == 111958650 then
   local ars = gui.newTab("Arsenal")
   local localPlayer = game:GetService("Players").LocalPlayer
-  local function player()
+  
+  local function getPlayerToAim()
       local target = nil
-      local dist = math.huge
+      local minDistance = math.huge
       
-      for i, v in pairs(game:GetService("Players"):GetPlayers()) do
-          if v.Name ~= localPlayer.Name then
-              if v.Character and v.Character:FindFirstChild("Head") and v.Character.Humanoid.Health > 0 and v.Character:FindFirstChild("Head") and v.TeamColor ~= localPlayer.TeamColor then
-                  local magnitude = (v.Character.HumanoidRootPart.Position - localPlayer.Character.HumanoidRootPart.Position).magnitude
-
-                  if magnitude < dist then
-                      target = v
-                      dist = magnitude
-                  end
+      for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+          if player.Name ~= localPlayer.Name and player.Character and player.Character:FindFirstChild("Head") and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 and player.TeamColor ~= localPlayer.TeamColor then
+              local distance = (player.Character.Head.Position - localPlayer.Character.Head.Position).magnitude
+              
+              if distance < minDistance then
+                  target = player
+                  minDistance = distance
               end
           end
       end
       
       return target
   end
-
-
+  
   local camera = game.Workspace.CurrentCamera
-  local UIS = game:GetService("UserInputService")
   local aim = false
-
+  
   game:GetService("RunService").RenderStepped:Connect(function()
       if aim then
-          camera.CFrame = CFrame.new(camera.CFrame.Position.player().Character.Head.Position)
+          local targetPlayer = getPlayerToAim()
+          if targetPlayer then
+              camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.Head.Position)
+          end
       end
   end)
-
+  
   ars.newToggle("AimBot", "", false, function()
       aim = not aim
   end)
-
 end
+
 
 if game.GameId == 3149100453 then
   local blobs = gui.newTab("Blobs")
