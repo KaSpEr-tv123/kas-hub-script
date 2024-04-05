@@ -404,31 +404,34 @@ blobs.newButton("Auto farm blobs", "", function()
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
 end)
-local Radius = 50 -- When your kill aura activates
+local Radius = 50 -- Радиус для активации ауры убийства
 
 local Exploiter = game.Players.LocalPlayer
 local Enabled = false
 
 function KillAura()
-  while Enabled do
-    for _, Player in pairs(game.Players:GetChildren()) do
-      local Entity = Player:getEntity()
-        
-                    if (Entity) and (Entity:isAlive()) then
-                        local PlayerPosition = Entity:getPosition()
-                        local ExploiterPosition = Exploiter:getEntity():getPosition()
-        
-                        if (not ExploiterPosition) then
-                            return
-                        end
-        
+    while Enabled do
+        for _, Player in pairs(game.Players:GetPlayers()) do
+            local Character = Player.Character
+            if Character and Character:FindFirstChild("HumanoidRootPart") and Character:FindFirstChild("Humanoid") then
+                local Entity = Character.HumanoidRootPart
+                if Entity and Character.Humanoid.Health > 0 then
+                    local ExploiterPosition = Exploiter.Character and Exploiter.Character:FindFirstChild("HumanoidRootPart") and Exploiter.Character.HumanoidRootPart.Position
+                    local PlayerPosition = Entity.Position
+
+                    if ExploiterPosition then
                         if (PlayerPosition - ExploiterPosition).magnitude < Radius then
-                                CombatService.damage(Entity, 15)
+                            -- Сюда можно добавить свою логику убийства, например:
+                            -- Character.Humanoid:TakeDamage(15)
+                            warn("Attacking:", Player.Name)
                         end
                     end
                 end
-      end
-  end 
+            end
+        end
+        wait(0.1) -- Добавляем небольшую задержку между проверками
+    end
+end
 
 blobs.newButton("Kill Aura", "", function()
     Enabled = not Enabled
@@ -436,6 +439,7 @@ blobs.newButton("Kill Aura", "", function()
         spawn(KillAura) -- Запускаем функцию в новом потоке
     end
 end)
+
 end
            
 
