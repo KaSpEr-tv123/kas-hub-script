@@ -356,7 +356,7 @@ end
 
 
 if game.GameId == 3149100453 then
-  local function autoFarmBlobs()
+  function autoFarmBlobs()
     repeat
         local coinsFolder = game.Workspace:FindFirstChild("Orbs")
         if coinsFolder then
@@ -409,7 +409,7 @@ if game.GameId == 3149100453 then
         end
         wait(0.0005)
     until not afb
-end
+  end
 
 blobs.newButton("Auto farm blobs", "", function()
     afb = not afb
