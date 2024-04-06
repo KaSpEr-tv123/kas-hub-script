@@ -356,41 +356,54 @@ end
 
 
 if game.GameId == 3149100453 then
-  local blobs = gui.newTab("Blobs")
-  local afb = false
   local function autoFarmBlobs()
     repeat
         local coinsFolder = game.Workspace:FindFirstChild("Orbs")
         if coinsFolder then
-          local minDistance = math.huge
-          local nearestCoin = nil
-            
-          for _, coin in ipairs(coinsFolder:GetChildren()) do
-            if coin.Name == "Orb" then
-              local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-              if distance < minDistance then
-                minDistance = distance
-                nearestCoin = coin
-              end
-            end
-          end
-          if nearestCoin then
-              game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
-          else
-              local warningGui = Instance.new("ScreenGui")
-              warningGui.Parent = game.Players.LocalPlayer.PlayerGui
+            local minDistance = math.huge
+            local nearestCoin = nil
 
-              local warningLabel = Instance.new("TextLabel")
-              warningLabel.Text = "Монеты не найдены."
-              warningLabel.Size = UDim2.new(0, 200, 0, 50)
-              warningLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
-              warningLabel.BackgroundColor3 = Color3.new(0.3686274509803922, 0.023529411764705882, 0.42745098039215684)
-              warningLabel.TextColor3 = Color3.new(0.19607843137254902, 0.023529411764705882, 0.2235294117647059)
-              warningLabel.Parent = warningGui
-             -- afc = false
-              wait(3)
-              warningGui:Destroy()
-          end
+            for _, coin in ipairs(coinsFolder:GetChildren()) do
+                if coin.Name == "Orb" then
+                    local distance = (coin.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                    if distance < minDistance then
+                        minDistance = distance
+                        nearestCoin = coin
+                    end
+                end
+            end
+
+            if nearestCoin then
+                -- Проверка на наличие игроков вокруг монеты
+                local playersNearby = game.Players:GetPlayers()
+                local teleportAllowed = true
+                for _, player in ipairs(playersNearby) do
+                    local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
+                    if playerDistance < 100 then -- Пороговое значение расстояния, где телепортирование запрещено
+                        teleportAllowed = false
+                        break
+                    end
+                end
+
+                if teleportAllowed then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
+                end
+            else
+                -- Показываем предупреждение, если монеты не найдены
+                local warningGui = Instance.new("ScreenGui")
+                warningGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+                local warningLabel = Instance.new("TextLabel")
+                warningLabel.Text = "Монеты не найдены."
+                warningLabel.Size = UDim2.new(0, 200, 0, 50)
+                warningLabel.Position = UDim2.new(0.5, -100, 0.5, -25)
+                warningLabel.BackgroundColor3 = Color3.new(0.3686274509803922, 0.023529411764705882, 0.42745098039215684)
+                warningLabel.TextColor3 = Color3.new(0.19607843137254902, 0.023529411764705882, 0.2235294117647059)
+                warningLabel.Parent = warningGui
+
+                wait(3)
+                warningGui:Destroy()
+            end
         else
             warn("Папка с монетами не найдена.")
         end
@@ -404,108 +417,6 @@ blobs.newButton("Auto farm blobs", "", function()
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
 end)
-local connections = getgenv().configs and getgenv().configs.connection
-if connections then
-    local Disable = configs.Disable
-    for i,v in connections do
-        v:Disconnect() 
-    end
-    Disable:Fire()
-    Disable:Destroy()
-    table.clear(configs)
-end
-
-local Disable = Instance.new("BindableEvent")
-getgenv().configs = {
-    connections = {},
-    Disable = Disable,
-    Size = Vector3.new(10,10,10),
-    DeathCheck = true
-}
-
-local Players = cloneref(game:GetService("Players"))
-local RunService = cloneref(game:GetService("RunService"))
-local lp = Players.LocalPlayer
-local Run = true
-local Ignorelist = OverlapParams.new()
-Ignorelist.FilterType = Enum.RaycastFilterType.Include
-
-local function getchar(plr)
-    local plr = plr or lp
-    return plr.Character
-end
-
-local function gethumanoid(plr)
-    local char = plr:IsA("Model") and plr or getchar(plr)
-
-    if char then
-        return char:FindFirstChildWhichIsA("Humanoid")
-    end
-end
-
-local function IsAlive(Humanoid)
-    return Humanoid and Humanoid.Health > 0
-end
-
-local function GetTouchInterest(Tool)
-    return Tool and Tool:FindFirstChildWhichIsA("TouchTransmitter",true)
-end
-
-local function GetCharacters(LocalPlayerChar)
-    local Characters = {}
-    for i,v in Players:GetPlayers() do
-        table.insert(Characters,getchar(v))
-    end
-    table.remove(Characters,table.find(Characters,LocalPlayerChar))
-    return Characters
-end
-
-local function Attack(Tool,TouchPart,ToTouch)
-    if Tool:IsDescendantOf(workspace) then
-        Tool:Activate()
-        firetouchinterest(TouchPart,ToTouch,1)
-        firetouchinterest(TouchPart,ToTouch,0)
-    end
-end
-
-table.insert(getgenv().configs.connections,Disable.Event:Connect(function()
-    Run = false
-end))
-
-while Run do
-    local char = getchar()
-    if IsAlive(gethumanoid(char)) then
-        local Tool = char and char:FindFirstChildWhichIsA("Tool")
-        local TouchInterest = Tool and GetTouchInterest(Tool)
-
-        if TouchInterest then
-            local TouchPart = TouchInterest.Parent
-            local Characters = GetCharacters(char)
-            Ignorelist.FilterDescendantsInstances = Characters
-            local InstancesInBox = workspace:GetPartBoundsInBox(TouchPart.CFrame,TouchPart.Size + getgenv().configs.Size,Ignorelist)
-
-            for i,v in InstancesInBox do
-                local Character = v:FindFirstAncestorWhichIsA("Model")
-
-                if table.find(Characters,Character) then
-                    if getgenv().configs.DeathCheck then                    
-                        if IsAlive(gethumanoid(Character)) then
-                            Attack(Tool,TouchPart,v)
-                        end
-                    else
-                        Attack(Tool,TouchPart,v)
-                    end
-                end
-            end
-        end
-    end
-    RunService.Heartbeat:Wait()
-end
-
-blobs.newButton("Kill Aura", "", function()
-    Run = not Run
-end)
-
 
 end
            
