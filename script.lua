@@ -383,19 +383,14 @@ function autoFarmBlobs()
                 local playersNearby = game.Players:GetPlayers()
                 local teleportAllowed = true
                 for _, player in ipairs(playersNearby) do
-                    local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
-                    if playerDistance < 10 and player ~= game.Players.LocalPlayer then -- Пороговое значение расстояния, где телепортирование запрещено
-                        teleportAllowed = false
-                        break
-                    end
-                end
-                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                     local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
                     if playerDistance < 10 and player ~= game.Players.LocalPlayer then
                         print("Расстояние до игрока:", playerDistance)
                         teleportAllowed = false
                         break
                     end
+                end
                 end
                 
             else
