@@ -392,7 +392,7 @@ function autoFarmBlobs()
                         end
                     end
                 end
-                if teleportAllowed then
+                if teleportAllowed and  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame ~= nearestCoin.CFrame then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
                 end
             else
