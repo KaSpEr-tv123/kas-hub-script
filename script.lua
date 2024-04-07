@@ -379,24 +379,25 @@ function autoFarmBlobs()
             end
 
             if nearestCoin then
-                -- Проверка на наличие игроков вокруг монеты
                 local playersNearby = game.Players:GetPlayers()
                 local teleportAllowed = true
+                
                 for _, player in ipairs(playersNearby) do
                     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                        local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
-                        print("Расстояние до игрока:", playerDistance) -- Добавляем вывод расстояния до игрока в консоль
-                        if playerDistance < 100 and player ~= game.Players.LocalPlayer then
-                            print("Игрок рядом с блобом:", player.Name) -- Добавляем вывод имени игрока в консоль
+                        local playerDistance = (player.Character.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+                        if playerDistance < 300 and player ~= game.Players.LocalPlayer then
+                            local directionVector = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).unit
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(nearestCoin.Position + directionVector * 50) -- Телепортируем игрока на расстояние 50 от монеты в противоположную сторону от другого игрока
                             teleportAllowed = false
+                            break
                         end
                     end
                 end
-                if teleportAllowed and  game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame ~= nearestCoin.CFrame then
+
+                if teleportAllowed then
                     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = nearestCoin.CFrame
                 end
             else
-                -- Показываем предупреждение, если монеты не найдены
                 local warningGui = Instance.new("ScreenGui")
                 warningGui.Parent = game.Players.LocalPlayer.PlayerGui
 
@@ -414,7 +415,7 @@ function autoFarmBlobs()
         else
             warn("Папка с монетами не найдена.")
         end
-        wait(0.0005)
+        wait(0.005)
     until not afb
 end
 
@@ -423,26 +424,7 @@ blobs.newButton("Auto farm blobs", "", function()
     if afb then
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
-    
-function teleportPlayers()
-  while true do
-    local region = Region3.new(workspace.Part.Position - Vector3.new(300, 300, 300), workspace.Part.Position + Vector3.new(300, 300, 300))
-    local parts = workspace:FindPartsInRegion3(region, nil, math.huge)
-    for _, part in ipairs(parts) do
-        if part:IsA("Model") and part:FindFirstChildOfClass("Humanoid") then
-            local playerPosition = part.PrimaryPart.Position
-            local oppositePosition = playerPosition * Vector3.new(-1, 1, -1) -- Вычисляем противоположную точку
-            local direction = (oppositePosition - playerPosition).unit -- Нормализуем вектор направления
-
-            -- Телепортируем игрока в противоположную сторону
-            part:SetPrimaryPartCFrame(CFrame.new(oppositePosition))
-        end
-    end
-end
-wait(0.001)
-end
-
-spam(teleportPlayers)
+end)
 
 blobs.newButton("Kill all", "", function()
     for i, v in pairs(game.Players:GetChildren()) do
