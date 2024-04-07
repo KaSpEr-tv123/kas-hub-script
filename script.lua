@@ -384,7 +384,7 @@ function autoFarmBlobs()
                 local teleportAllowed = true
                 for _, player in ipairs(playersNearby) do
                     local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
-                    if playerDistance < 100 then -- Пороговое значение расстояния, где телепортирование запрещено
+                    if playerDistance < 100 and player ~= game.Players.LocalPlayer then -- Пороговое значение расстояния, где телепортирование запрещено
                         teleportAllowed = false
                         break
                     end
