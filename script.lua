@@ -389,11 +389,14 @@ function autoFarmBlobs()
                         break
                     end
                 end
-if playerDistance < 10 and player ~= game.Players.LocalPlayer then -- Пороговое значение расстояния, где телепортирование запрещено
-    print("Расстояние до игрока:", playerDistance) -- Добавляем вывод расстояния в консоль для отладки
-    teleportAllowed = false
-    break
-end
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
+                    if playerDistance < 10 and player ~= game.Players.LocalPlayer then
+                        print("Расстояние до игрока:", playerDistance)
+                        teleportAllowed = false
+                        break
+                    end
+                end
                 
             else
                 -- Показываем предупреждение, если монеты не найдены
