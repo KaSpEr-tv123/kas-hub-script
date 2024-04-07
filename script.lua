@@ -383,15 +383,16 @@ function autoFarmBlobs()
                 local playersNearby = game.Players:GetPlayers()
                 local teleportAllowed = true
                 for _, player in ipairs(playersNearby) do
-                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
-                    if playerDistance < 10 and player ~= game.Players.LocalPlayer then
-                        print("Расстояние до игрока:", playerDistance)
-                        teleportAllowed = false
-                        break
-                    end
-                end
-                end
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local playerDistance = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).magnitude
+        print("Расстояние до игрока:", playerDistance) -- Добавляем вывод расстояния до игрока в консоль
+        if playerDistance < 10 and player ~= game.Players.LocalPlayer then
+            print("Игрок рядом с блобом:", player.Name) -- Добавляем вывод имени игрока в консоль
+            teleportAllowed = false
+            break
+        end
+    end
+end
                 
             else
                 -- Показываем предупреждение, если монеты не найдены
