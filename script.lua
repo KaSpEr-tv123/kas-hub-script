@@ -428,7 +428,7 @@ end)
 blobs.newButton("Kill all", "", function()
     for i, v in pairs(game.Players:GetChildren()) do
       if v ~= game.Players.LocalPlayer then
-        if not v.Character.HumanoidRootPart.RealSize > game.Players.LocalPlayer.Character.HumanoidRootPart.RealSize then
+        if not v.Character.HumanoidRootPart.RealSize.Value > game.Players.LocalPlayer.Character.HumanoidRootPart.RealSize.Value then
           wait(0.1)
           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
         end
