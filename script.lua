@@ -386,8 +386,6 @@ function autoFarmBlobs()
                     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                         local playerDistance = (player.Character.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).magnitude
                         if playerDistance < 300 and player ~= game.Players.LocalPlayer then
-                            local directionVector = (player.Character.HumanoidRootPart.Position - nearestCoin.Position).unit
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(nearestCoin.Position + directionVector * 50) -- Телепортируем игрока на расстояние 50 от монеты в противоположную сторону от другого игрока
                             teleportAllowed = false
                             break
                         end
