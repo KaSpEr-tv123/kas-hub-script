@@ -424,7 +424,7 @@ blobs.newButton("Auto farm blobs", "", function()
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
     
-local function teleportPlayers()
+function teleportPlayers()
   while true do
     local region = Region3.new(workspace.Part.Position - Vector3.new(300, 300, 300), workspace.Part.Position + Vector3.new(300, 300, 300))
     local parts = workspace:FindPartsInRegion3(region, nil, math.huge)
