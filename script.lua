@@ -416,13 +416,6 @@ function autoFarmBlobs()
     until not afb
 end
 
-gui.newButton("Auto farm blobs", "", function()
-    afb = not afb
-    if afb then
-        spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
-    end
-end)
-
 blobs.newButton("Auto farm blobs", "", function()
     afb = not afb
     if afb then
