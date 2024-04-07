@@ -423,7 +423,26 @@ blobs.newButton("Auto farm blobs", "", function()
     if afb then
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
     end
-end)
+    
+local function teleportPlayers()
+  while true do
+    local region = Region3.new(workspace.Part.Position - Vector3.new(300, 300, 300), workspace.Part.Position + Vector3.new(300, 300, 300))
+    local parts = workspace:FindPartsInRegion3(region, nil, math.huge)
+    for _, part in ipairs(parts) do
+        if part:IsA("Model") and part:FindFirstChildOfClass("Humanoid") then
+            local playerPosition = part.PrimaryPart.Position
+            local oppositePosition = playerPosition * Vector3.new(-1, 1, -1) -- Вычисляем противоположную точку
+            local direction = (oppositePosition - playerPosition).unit -- Нормализуем вектор направления
+
+            -- Телепортируем игрока в противоположную сторону
+            part:SetPrimaryPartCFrame(CFrame.new(oppositePosition))
+        end
+    end
+end
+wait(0.001)
+end
+
+spam(teleportPlayers)
 
 blobs.newButton("Kill all", "", function()
     for i, v in pairs(game.Players:GetChildren()) do
