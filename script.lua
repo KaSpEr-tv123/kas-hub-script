@@ -428,63 +428,33 @@ blobs.newButton("Auto farm blobs", "", function()
 end)
 
 local freespin = false
-function autoSpinFree(mode)
-  if mode == nil then
-    mode = "slow"
-  end
+function autoSpinFree()
   while freespin == true do
-    if mode == "slow" then
       game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.FreeSpinButtonPressed:FireServer()
-      wait(125)
-    elseif mode == "fast" then
-      game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.FreeSpinButtonPressed:FireServer()
-      wait(0.5)
-    end
+      wait(5)
   end
 end
 
-blobs.newButton("Auto spin free", "slow", function()
+blobs.newButton("Auto spin free", "", function()
   freespin = not freespin
   if freespin then
-    spawn(autoSpinFree, "slow")
-  end
-end)
-
-blobs.newButton("Auto spin free", "fast", function()
-  freespin = not freespin
-  if freespin then
-    spawn(autoSpinFree, "fast")
+    spawn(autoSpinFree)
   end
 end)
 
 local spin = false
 
 function autoSpin(mode)
-  if mode == nil then
-    mode = "slow"
-  end
   while spin == true do
-    if mode == "slow" then
       game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.SkullSpinButtonPressed:FireServer()
       wait(5)
-    elseif mode == "fast" then
-      game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.SkullSpinButtonPressed:FireServer()
-      wait(0.5)
-    end
   end
 end
 
-blobs.newButton("Auto spin", "slow", function()
+blobs.newButton("Auto spin", "", function()
   spin = not spin
   if spin then
-    spawn(autoSpin, "slow")
-  end
-end)
-
-blobs.newButton("Auto spin", "fast", function()
-  spin = not spin
-  if spin then
-    spawn(autoSpin, "fast")
+    spawn(autoSpin)
   end
 end)
 
