@@ -427,6 +427,146 @@ blobs.newButton("Auto farm blobs", "", function()
     end
 end)
 
+local freespin = false
+function autoSpinFree(mode)
+  if mode == nil then
+    mode = "slow"
+  end
+  while freespin == true do
+    if mode == "slow" then
+      game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.FreeSpinButtonPressed:FireServer()
+      wait(125)
+    elseif mode == "fast" then
+      game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.FreeSpinButtonPressed:FireServer()
+      wait(0.5)
+    end
+  end
+end
+
+blobs.newButton("Auto spin free", "slow", function()
+  freespin = not freespin
+  if freespin then
+    spawn(autoSpinFree, "slow")
+  end
+end)
+
+blobs.newButton("Auto spin free", "fast", function()
+  freespin = not freespin
+  if freespin then
+    spawn(autoSpinFree, "fast")
+  end
+end)
+
+local spin = false
+
+function autoSpin(mode)
+  if mode == nil then
+    mode = "slow"
+  end
+  while spin == true do
+    if mode == "slow" then
+      game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.SkullSpinButtonPressed:FireServer()
+      wait(5)
+    elseif mode == "fast" then
+      game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.SpinService.RE.SkullSpinButtonPressed:FireServer()
+      wait(0.5)
+    end
+  end
+end
+
+blobs.newButton("Auto spin", "slow", function()
+  spin = not spin
+  if spin then
+    spawn(autoSpin, "slow")
+  end
+end)
+
+blobs.newButton("Auto spin", "fast", function()
+  spin = not spin
+  if spin then
+    spawn(autoSpin, "fast")
+  end
+end)
+
+function autoGetGifts()
+  wait(12)
+    local args = {
+      [1] = 12
+  }
+  
+  game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(136)
+  local args = {
+    [1] = 136
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(250)
+  local args = {
+    [1] = 250
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(441)
+  local args = {
+    [1] = 441
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(589)
+  local args = {
+    [1] = 589
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(723)
+  local args = {
+    [1] = 723
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(893)
+  local args = {
+    [1] = 893
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(1006)
+  local args = {
+    [1] = 1006
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(1147)
+  local args = {
+    [1] = 1147
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(1280)
+  local args = {
+    [1] = 1280
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(1427)
+  local args = {
+    [1] = 1427
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+  wait(2000)
+  local args = {
+    [1] = 2000
+}
+
+game:GetService("ReplicatedStorage").Packages._Index:FindFirstChild("sleitnick_knit@1.5.1").knit.Services.GiftService.RF.RequestGift:InvokeServer(unpack(args))
+end
+
+blobs.newButton("Auto get gifts", "", function()
+  spam(autoGetGifts)
+end)
+
 blobs.newButton("Kill all", "", function()
     for i, v in pairs(game.Players:GetChildren()) do
       if v ~= game.Players.LocalPlayer then
@@ -437,9 +577,7 @@ blobs.newButton("Kill all", "", function()
       end
     end
   end)
-
-end
-           
+end       
 
 if game.GameId == 994732206 then
   local bf = gui.newTab("Blox Fruits")
