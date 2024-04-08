@@ -363,6 +363,7 @@ local afb = false
 
 function autoFarmBlobs()
     repeat
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 1000
         local coinsFolder = game.Workspace:FindFirstChild("Orbs")
         if coinsFolder then
             local minDistance = math.huge
@@ -421,6 +422,8 @@ blobs.newButton("Auto farm blobs", "", function()
     afb = not afb
     if afb then
         spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
+    else
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
     end
 end)
 
