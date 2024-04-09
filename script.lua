@@ -352,6 +352,10 @@ if game.GameId == 111958650 then
   ars.newToggle("AimBot", "", false, function()
       aim = not aim
   end)
+
+  ars.newKeybind("Input Key", "Press the key to start; it will be printed out.", function(key)
+    print(key)
+  end)
 end
 
 
