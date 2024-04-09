@@ -96,6 +96,13 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
         end
         wait(3)
+        for i, child in ipairs(workspace:GetDescendants()) do
+          if child:FindFirstChild("EspBox") then
+              if child ~= game.Players.LocalPlayer.Character then
+                  child:FindFirstChild("EspBox"):Destroy()
+              end
+          end
+        end
       end
     end
 end)
