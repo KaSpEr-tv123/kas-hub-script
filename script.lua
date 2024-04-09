@@ -356,8 +356,17 @@ if game.GameId == 111958650 then
       aim = not aim
   end)
 
-  ars.newKeybind("Input Key", "Press the key to start; it will be printed out.", function(key)
-    print(key)
+  local key = Enum.KeyCode.LeftAlt
+  if not game.UserInputService.TouchEnabled then
+    ars.newKeybind("Keybind aim", "", function(input)
+      key = input.KeyCode
+    end)
+  end
+
+  game.UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == key then
+      aim = not aim
+    end
   end)
 end
 
