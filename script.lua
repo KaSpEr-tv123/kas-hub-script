@@ -63,32 +63,6 @@ end)
 
 local mode_esp = false
 
-function add_esp()
-  while mode_esp do
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        local character = player.Character
-        if character and character:FindFirstChild("HumanoidRootPart") then
-            local espBox = character:FindFirstChild("EspBox")
-            if not espBox then
-                local esp = Instance.new("BoxHandleAdornment", character)
-                esp.Adornee = character:FindFirstChild("HumanoidRootPart")
-                esp.ZIndex = 0
-                esp.Size = Vector3.new(4, 5, 3)
-                esp.Transparency = 0.65
-                if character.Head:FindFirstChild("SeekerTitle") then
-                    esp.Color3 = Color3.fromRGB(255, 0, 0)
-                else
-                    esp.Color3 = Color3.fromRGB(0, 140, 255)
-                end
-                esp.AlwaysOnTop = true
-                esp.Name = "EspBox"
-            end
-        end
-    end
-    wait(3)
-  end
-end
-
 other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
     if toggleState == false then
@@ -100,7 +74,29 @@ other.newToggle("ESP Players", "", false, function(toggleState)
             end
         end
     else
-      spam(add_esp)
+      while mode_esp do
+        for _, player in ipairs(game.Players:GetPlayers()) do
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                local espBox = character:FindFirstChild("EspBox")
+                if not espBox then
+                    local esp = Instance.new("BoxHandleAdornment", character)
+                    esp.Adornee = character:FindFirstChild("HumanoidRootPart")
+                    esp.ZIndex = 0
+                    esp.Size = Vector3.new(4, 5, 3)
+                    esp.Transparency = 0.65
+                    if character.Head:FindFirstChild("SeekerTitle") then
+                        esp.Color3 = Color3.fromRGB(255, 0, 0)
+                    else
+                        esp.Color3 = Color3.fromRGB(0, 140, 255)
+                    end
+                    esp.AlwaysOnTop = true
+                    esp.Name = "EspBox"
+                end
+            end
+        end
+        wait(3)
+      end
     end
 end)
 other.newButton("Rejoin", "", function()
