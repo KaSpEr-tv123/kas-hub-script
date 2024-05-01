@@ -30,7 +30,7 @@ function byfron()
   end
 end
 
-hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", function (value) 
+hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", false, function (value) 
   hui = value
   if hui then
     spam(byfron)
