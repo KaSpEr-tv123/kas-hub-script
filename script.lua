@@ -5,13 +5,30 @@ local window = gui:Load("Ҝ卂丂 卄ㄩ乃", "15074833174")
 local hacks = gui.newTab("Hacks", "15046690373")
 
 -- puk
+local hui = false
+local speed
+local jump
 
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
+    speed = num
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = num
 end)
 
+
 hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
+    jump = num
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = num
+end)
+
+hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", function (value) 
+  hui = value
+  while value do
+    if speed then
+      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+    elseif jump then
+      game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
+    end
+  end
 end)
 
 local other = gui.newTab("Other", "15046690373")
