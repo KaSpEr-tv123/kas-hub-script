@@ -20,14 +20,20 @@ hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = num
 end)
 
-hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", function (value) 
-  hui = value
-  while value do
+function byfron() 
+  while hui do
     if speed then
       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
     elseif jump then
       game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
     end
+  end
+end
+
+hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", function (value) 
+  hui = value
+  if hui then
+    spam(byfron)
   end
 end)
 
