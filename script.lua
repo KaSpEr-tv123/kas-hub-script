@@ -591,7 +591,7 @@ end
 if game.GameId == 994732206 then
   local bf = gui.newTab("Blox Fruits")
   bf.newButton("Load Script For Blox Fruits", "", function() 
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
   end)
 end
 
