@@ -589,16 +589,9 @@ blobs.newButton("Kill all", "", function()
 end       
 
 if game.GameId == 994732206 then
-  local bf = gui.newTab("Blox Fruits")
-  bf.newButton("Load Script For Blox Fruits", "", function() 
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
-  end)
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
 end
 
 if game.GameId == 4777817887 then
-  local bb = gui.newTab("Blade Ball")
-
-  bb.newButton("Load Script For Blade Ball", "", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
-  end)
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
