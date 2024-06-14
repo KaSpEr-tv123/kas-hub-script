@@ -1,6 +1,6 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
 local player = game.Players.LocalPlayer
-local window = gui:Load("Ҝ卂丂 卄ㄩ乃", "15074833174")
+local window = gui:Load("kasper studios 😈", "15074833174")
 
 local hacks = gui.newTab("Hacks", "15046690373")
 
