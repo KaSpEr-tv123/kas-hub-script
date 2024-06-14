@@ -589,9 +589,15 @@ blobs.newButton("Kill all", "", function()
 end       
 
 if game.GameId == 994732206 then
+  local bf = gui.newTab("BloxFruits")
+  bf.newButton("load script for BloxFruits", "", function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
+  end)
+  wait(5)
   loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999"))()
 end
 
 if game.GameId == 4777817887 then
+  wait(5)
   loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
