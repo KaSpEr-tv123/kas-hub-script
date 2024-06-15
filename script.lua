@@ -601,3 +601,21 @@ if game.GameId == 4777817887 then
   wait(5)
   loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+--game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
+-- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+-- 
