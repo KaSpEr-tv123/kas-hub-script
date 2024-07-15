@@ -100,7 +100,7 @@ other.newToggle("ESP Players", "", false, function(toggleState)
       while mode_esp do
         for _, player in ipairs(game.Players:GetPlayers()) do
             local character = player.Character
-            if character and character:FindFirstChild("HumanoidRootPart") then
+            if character and character:FindFirstChild("HumanoidRootPart") and character ~= game.Players.LocalPlayer.Character then
                 local espBox = character:FindFirstChild("EspBox")
                 if not espBox then
                     local esp = Instance.new("BoxHandleAdornment", character)
