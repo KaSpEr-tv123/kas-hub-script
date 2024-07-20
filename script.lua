@@ -6,18 +6,39 @@ local hacks = gui.newTab("Hacks", "15046690373")
 
 -- puk
 local hui = false
-local speed
-local jump
+local speed_added = false
+local jump_added = false
+local speed = 16
+local jump = 20
+
+function add_speed()
+  speed_added = true
+  while hui do
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+  end
+  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+end
+function add_jump() 
+  jump_added = true
+  while hui do
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+  end
+  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+end
 
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     speed = num
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = num
+    if not speed_added and hui then
+      add_speed()
+    end
 end)
 
 
 hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
     jump = num
-    game.Players.LocalPlayer.Character.Humanoid.JumpPower = num
+    if not jump_added and hui then
+      add_jump()
+    end
 end)
 
 function byfron() 
