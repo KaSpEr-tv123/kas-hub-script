@@ -29,7 +29,7 @@ end
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     speed = num
     if not speed_added and hui then
-      add_speed()
+      spam(add_speed)
     end
 end)
 
@@ -37,25 +37,14 @@ end)
 hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
     jump = num
     if not jump_added and hui then
-      add_jump()
+      spam(add_jump)
     end
 end)
 
-function byfron() 
-  while hui do
-    if speed then
-      game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-    elseif jump then
-      game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
-    end
-  end
-end
+
 
 hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", false, function (value) 
   hui = value
-  if hui then
-    spam(byfron)
-  end
 end)
 
 local other = gui.newTab("Other", "15046690373")
