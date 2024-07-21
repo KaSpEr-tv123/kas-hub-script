@@ -104,9 +104,6 @@ end)
 
 other.newToggle("ESP Players", "", false, function(toggleState)
     _G.esp = toggleState
-    if toggleState then
-      loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
-    end
 end)
 other.newButton("Rejoin", "", function()
   game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
@@ -601,3 +598,4 @@ end
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
 -- 
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
