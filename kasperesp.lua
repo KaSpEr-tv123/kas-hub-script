@@ -140,6 +140,8 @@ function esp(target, color)
         else
             target.Character.GetReal.FillColor = color
         end
+        LoadPlayer(target)
+        LoadCharacter(target)
     end
     if target.Character and not _G.esp then
       if target.Character:FindFirstChild("GetReal") then
