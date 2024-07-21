@@ -1,6 +1,10 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "kasper studios 😈";
+	Text = "by kasperenok"})
+Duration = 5;
 
 local hacks = gui.newTab("Hacks", "15046690373")
 
@@ -63,7 +67,9 @@ end)
 other.newToggle("Inf. Jump", "", false, function(toggleState)
         mode_fly = toggleState
 end)
-
+other.newButton("Activate Fly", "Get the kasperfly", function()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperfly.lua"))()
+end)
 local mode_tp = false
 
 local tool = Instance.new("Tool")
@@ -634,9 +640,3 @@ end
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
 -- 
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
-
-local test = gui.newTab("Test")
-test.newButton("fly", "", function()
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperfly.lua"))()
-end)
