@@ -10,41 +10,34 @@ local hacks = gui.newTab("Hacks", "15046690373")
 
 -- puk
 local hui = false
-local speed_added = false
-local jump_added = false
 local speed = 16
 local jump = 20
 
 local add_speed = function ()
-  speed_added = true
   while hui do
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+    wait()
   end
   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-  speed_added = false
-end
-local add_jump = function () 
-  jump_added = true
-  while hui do
-    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-  end
-  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-  jump_added = false
 end
 
-hacks.newSlider("SpeedHack", "Change youre speed", 5000, false, function(num)
+local add_jump = function () 
+  while hui do
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
+    wait()
+  end
+  game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
+end
+
+hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     speed = num
-    if not speed_added then
-      spam(add_speed)
-    end
+    add_speed()
 end)
 
 
-hacks.newSlider("JumpHack", "Change youre jump power", 5000, false, function(num)
+hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
     jump = num
-    if not jump_added then
-      spam(add_jump)
-    end
+    add_jump()
 end)
 
 
