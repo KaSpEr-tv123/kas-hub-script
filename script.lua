@@ -184,13 +184,13 @@ tp.newButton("TP to this player", "", function()
           if humanoidRootPart then
               game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame
           else
-              warn("HumanoidRootPart not found for player:", playerName)
+              warn("HumanoidRootPart not found for player:", playerN)
           end
       else
-          warn("Character not found for player:", playerName)
+          warn("Character not found for player:", playerN)
       end
   else
-      warn("Player not found:", playerName)
+      warn("Player not found:", playerN)
   end
 end)
 
