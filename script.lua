@@ -103,8 +103,8 @@ other.newToggle("Noclip", "", false, function(toggleState)
 end)
 
 _G.esp = false
-
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
+
 other.newToggle("ESP Players", "", false, function(toggleState)
     _G.esp = toggleState
 end)
