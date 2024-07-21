@@ -144,9 +144,9 @@ function esp(target, color)
     if target.Character and not _G.esp then
       if target.Character:FindFirstChild("GetReal") then
         target.Character:FindFirstChild("GetReal"):Destroy()
+      end
     end
 end
-
 while task.wait() do
     for i, v in pairs(players:GetPlayers()) do
         if v ~= plr then
