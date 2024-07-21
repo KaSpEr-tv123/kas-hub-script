@@ -1,4 +1,6 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
+_G.esp = false
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
 game:GetService("StarterGui"):SetCore("SendNotification", { 
@@ -101,9 +103,6 @@ end)
 other.newToggle("Noclip", "", false, function(toggleState)
       mode_noclip = not toggleState
 end)
-
-_G.esp = false
-loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
 
 other.newToggle("ESP Players", "", false, function(toggleState)
     _G.esp = toggleState
