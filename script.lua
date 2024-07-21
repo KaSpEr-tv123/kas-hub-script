@@ -11,7 +11,7 @@ local jump_added = false
 local speed = 16
 local jump = 20
 
-function add_speed()
+local add_speed = function ()
   speed_added = true
   while hui do
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
@@ -19,7 +19,7 @@ function add_speed()
   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
   speed_added = false
 end
-function add_jump() 
+local add_jump = function () 
   jump_added = true
   while hui do
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
