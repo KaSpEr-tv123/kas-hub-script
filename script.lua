@@ -14,36 +14,25 @@ local speed = 16
 local jump = 20
 
 local add_speed = function ()
-  while hui do
+  while wait() do
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-    wait()
   end
   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
 end
 
 local add_jump = function () 
-  while hui do
+  while wait() do
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
-    wait()
   end
   game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
 end
 
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     speed = num
-    add_speed()
 end)
-
 
 hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
     jump = num
-    add_jump()
-end)
-
-
-
-hacks.newToggle("Byfron bypass anticheat speed and jump hacks", "", false, function (value) 
-  hui = value
 end)
 
 local other = gui.newTab("Other", "15046690373")
@@ -600,4 +589,7 @@ end
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
 -- 
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+
+add_jump()
+add_speed()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
