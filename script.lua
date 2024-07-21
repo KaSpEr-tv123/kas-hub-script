@@ -102,21 +102,11 @@ other.newToggle("Noclip", "", false, function(toggleState)
       mode_noclip = not toggleState
 end)
 
-local mode_esp = false
+_G.esp = false
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
 other.newToggle("ESP Players", "", false, function(toggleState)
-    mode_esp = toggleState
-    if toggleState == false then
-        for i, child in ipairs(workspace:GetDescendants()) do
-            if child:FindFirstChild("GetReal") then
-                if child ~= game.Players.LocalPlayer.Character then
-                    child:FindFirstChild("GetReal"):Destroy()
-                end
-            end
-        end
-    else
-      loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
-    end
+    _G.esp = toggleState
 end)
 other.newButton("Rejoin", "", function()
   game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
