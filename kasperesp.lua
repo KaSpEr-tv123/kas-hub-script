@@ -144,6 +144,8 @@ function esp(target, color)
     if target.Character and not _G.esp then
       if target.Character:FindFirstChild("GetReal") then
         target.Character:FindFirstChild("GetReal"):Destroy()
+        UnloadPlayer(target)
+        UnloadCharacter(target)
       end
     end
 end
