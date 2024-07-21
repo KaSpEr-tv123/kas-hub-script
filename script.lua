@@ -636,3 +636,23 @@ end
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
 -- 
 
+local test = gui.newTab("Test")
+test.newButton("fly", "", function()
+  local speaker = game:GetService("Players").LocalPlayer
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
+  speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
+  speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+end)
