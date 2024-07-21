@@ -1,6 +1,7 @@
 _G.FriendColor = Color3.fromRGB(128, 0, 128)
 _G.EnemyColor = Color3.fromRGB(255, 255, 0)
 _G.UseTeamColor = true
+_G.esp = false
 
 local Holder = Instance.new("Folder", game.CoreGui)
 Holder.Name = "ESP"
@@ -34,7 +35,7 @@ Tag.Font = Enum.Font.SourceSansBold
 Tag.TextScaled = false
 
 local LoadCharacter = function(v)
-	repeat wait() until v.Character ~= nil
+	repeat wait() until v.Character ~= nil and _G.esp
 	v.Character:WaitForChild("Humanoid")
 	local vHolder = Holder:FindFirstChild(v.Name)
 	vHolder:ClearAllChildren()
@@ -78,7 +79,9 @@ local LoadPlayer = function(v)
 	local vHolder = Instance.new("Folder", Holder)
 	vHolder.Name = v.Name
 	v.CharacterAdded:Connect(function()
-		pcall(LoadCharacter, v)
+	  if _G.esp then
+		  pcall(LoadCharacter, v)
+		end
 	end)
 	v.CharacterRemoving:Connect(function()
 		pcall(UnloadCharacter, v)
@@ -125,7 +128,7 @@ local players = game:GetService("Players")
 local plr = players.LocalPlayer
 
 function esp(target, color)
-    if target.Character then
+    if target.Character and _G.esp then
         if not target.Character:FindFirstChild("GetReal") then
             local highlight = Instance.new("Highlight")
             highlight.RobloxLocked = true
@@ -137,6 +140,10 @@ function esp(target, color)
         else
             target.Character.GetReal.FillColor = color
         end
+    end
+    if target.Character and not _G.esp then
+      if target.Character:FindFirstChild("GetReal") then
+        target.Character:FindFirstChild("GetReal"):Destroy()
     end
 end
 
