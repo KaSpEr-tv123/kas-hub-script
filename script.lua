@@ -28,7 +28,7 @@ local add_jump = function ()
   jump_added = false
 end
 
-hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
+hacks.newSlider("SpeedHack", "Change youre speed", 5000, false, function(num)
     speed = num
     if not speed_added then
       spam(add_speed)
@@ -36,7 +36,7 @@ hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
 end)
 
 
-hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
+hacks.newSlider("JumpHack", "Change youre jump power", 5000, false, function(num)
     jump = num
     if not jump_added then
       spam(add_jump)
