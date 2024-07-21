@@ -108,43 +108,14 @@ other.newToggle("ESP Players", "", false, function(toggleState)
     mode_esp = toggleState
     if toggleState == false then
         for i, child in ipairs(workspace:GetDescendants()) do
-            if child:FindFirstChild("EspBox") then
+            if child:FindFirstChild("GetReal") then
                 if child ~= game.Players.LocalPlayer.Character then
-                    child:FindFirstChild("EspBox"):Destroy()
+                    child:FindFirstChild("GetReal"):Destroy()
                 end
             end
         end
     else
-      while mode_esp do
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local character = player.Character
-            if character and character:FindFirstChild("HumanoidRootPart") and character ~= game.Players.LocalPlayer.Character then
-                local espBox = character:FindFirstChild("EspBox")
-                if not espBox then
-                    local esp = Instance.new("BoxHandleAdornment", character)
-                    esp.Adornee = character:FindFirstChild("HumanoidRootPart")
-                    esp.ZIndex = 0
-                    esp.Size = Vector3.new(4, 5, 3)
-                    esp.Transparency = 0.65
-                    if character.Head:FindFirstChild("SeekerTitle") then
-                        esp.Color3 = Color3.fromRGB(255, 0, 0)
-                    else
-                        esp.Color3 = Color3.fromRGB(0, 140, 255)
-                    end
-                    esp.AlwaysOnTop = true
-                    esp.Name = "EspBox"
-                end
-            end
-        end
-        wait(3)
-        for i, child in ipairs(workspace:GetDescendants()) do
-          if child:FindFirstChild("EspBox") then
-              if child ~= game.Players.LocalPlayer.Character then
-                  child:FindFirstChild("EspBox"):Destroy()
-              end
-          end
-        end
-      end
+      loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
     end
 end)
 other.newButton("Rejoin", "", function()
