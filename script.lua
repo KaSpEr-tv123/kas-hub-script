@@ -17,6 +17,7 @@ function add_speed()
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
   end
   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+  speed_added = false
 end
 function add_jump() 
   jump_added = true
@@ -24,6 +25,7 @@ function add_jump()
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
   end
   game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+  jump_added = false
 end
 
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
