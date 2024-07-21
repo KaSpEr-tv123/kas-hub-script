@@ -171,8 +171,12 @@ end)
 tp.newButton("TP in saved position", "", function()
   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
 end)
-tp.newInput("TP to any player", "Enter player name", function(playerName)
-  local playerToTeleport = game.Players:FindFirstChild(playerName)
+local playerN
+tp.newInput("Player", "Enter player name", function(playerName)
+  playerN = playerName
+end)
+tp.newButton("TP to this player", "", function()
+  local playerToTeleport = game.Players:FindFirstChild(playerN)
   if playerToTeleport then
       local playerCharacter = playerToTeleport.Character
       if playerCharacter then
