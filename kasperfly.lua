@@ -91,7 +91,7 @@ mini.Parent = main.Frame
 mini.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
 mini.Font = "SourceSans"
 mini.Size = UDim2.new(0, 45, 0, 28)
-mini.Text = "➡️⬅️"
+mini.Text = "💩"
 mini.TextSize = 40
 mini.Position = UDim2.new(0, 44, -1, 27)
 
@@ -100,7 +100,7 @@ mini2.Parent = main.Frame
 mini2.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
 mini2.Font = "SourceSans"
 mini2.Size = UDim2.new(0, 45, 0, 28)
-mini2.Text = "⬅️➡️"
+mini2.Text = "💩"
 mini2.TextSize = 40
 mini2.Position = UDim2.new(0, 44, -1, 57)
 mini2.Visible = false
