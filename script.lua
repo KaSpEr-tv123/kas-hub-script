@@ -128,7 +128,16 @@ tp.newToggle("Click TP", "", false, function(toggleState)
 end)
 tp.newButton("Get Click TP item", "", function()
     tool.Parent = game.Players.LocalPlayer.Backpack
-    end)
+end)
+tp.newButton("TP all to you", "", function()
+    for i, v in pairs(game.Players:GetChildren()) do
+      if v ~= game.Players.LocalPlayer then
+        if true then
+          v.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        end
+      end
+    end
+end)
 tp.newButton("Save your position", "", function()
   position = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 end)
