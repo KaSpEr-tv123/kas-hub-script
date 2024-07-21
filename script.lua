@@ -28,17 +28,13 @@ end
 
 hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
     speed = num
-    if not speed_added and hui then
-      spam(add_speed)
-    end
+    spam(add_speed)
 end)
 
 
 hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
     jump = num
-    if not jump_added and hui then
-      spam(add_jump)
-    end
+    spam(add_jump)
 end)
 
 
