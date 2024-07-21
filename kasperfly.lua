@@ -22,7 +22,7 @@ Frame.Size = UDim2.new(0, 190, 0, 57)
 
 onof.Name = "onof"
 onof.Parent = Frame
-onof.BackgroundColor3 = Color3.fromRGB(255, 249, 74)
+onof.BackgroundColor3 = Color3.fromRGB(138, 43, 226)
 onof.Position = UDim2.new(0.702823281, 0, 0.491228074, 0)
 onof.Size = UDim2.new(0, 56, 0, 28)
 onof.Font = Enum.Font.SourceSans
@@ -31,7 +31,7 @@ onof.TextColor3 = Color3.fromRGB(0, 0, 0)
 onof.TextSize = 14.000
 
 TextLabel.Parent = Frame
-TextLabel.BackgroundColor3 = Color3.fromRGB(242, 60, 255)
+TextLabel.BackgroundColor3 = Color3.fromRGB(123, 104, 238)
 TextLabel.Position = UDim2.new(0.469327301, 0, 0, 0)
 TextLabel.Size = UDim2.new(0, 100, 0, 28)
 TextLabel.Font = Enum.Font.SourceSans
@@ -43,7 +43,7 @@ TextLabel.TextWrapped = true
 
 plus.Name = "plus"
 plus.Parent = Frame
-plus.BackgroundColor3 = Color3.fromRGB(133, 145, 255)
+plus.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 plus.Position = UDim2.new(0.231578946, 0, 0, 0)
 plus.Size = UDim2.new(0, 45, 0, 28)
 plus.Font = Enum.Font.SourceSans
@@ -55,7 +55,7 @@ plus.TextWrapped = true
 
 speed.Name = "speed"
 speed.Parent = Frame
-speed.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
+speed.BackgroundColor3 = Color3.fromRGB(119, 136, 153)
 speed.Position = UDim2.new(0.468421042, 0, 0.491228074, 0)
 speed.Size = UDim2.new(0, 44, 0, 28)
 speed.Font = Enum.Font.SourceSans
@@ -67,7 +67,7 @@ speed.TextWrapped = true
 
 mine.Name = "mine"
 mine.Parent = Frame
-mine.BackgroundColor3 = Color3.fromRGB(123, 255, 247)
+mine.BackgroundColor3 = Color3.fromRGB(128, 0, 0)
 mine.Position = UDim2.new(0.231578946, 0, 0.491228074, 0)
 mine.Size = UDim2.new(0, 45, 0, 29)
 mine.Font = Enum.Font.SourceSans
@@ -79,7 +79,7 @@ mine.TextWrapped = true
 
 closebutton.Name = "Close"
 closebutton.Parent = main.Frame
-closebutton.BackgroundColor3 = Color3.fromRGB(225, 25, 0)
+closebutton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 closebutton.Font = "SourceSans"
 closebutton.Size = UDim2.new(0, 45, 0, 28)
 closebutton.Text = "❌"
@@ -88,7 +88,7 @@ closebutton.Position =  UDim2.new(0, 0, -1, 27)
 
 mini.Name = "minimize"
 mini.Parent = main.Frame
-mini.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
+mini.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
 mini.Font = "SourceSans"
 mini.Size = UDim2.new(0, 45, 0, 28)
 mini.Text = "➡️⬅️"
@@ -97,7 +97,7 @@ mini.Position = UDim2.new(0, 44, -1, 27)
 
 mini2.Name = "minimize2"
 mini2.Parent = main.Frame
-mini2.BackgroundColor3 = Color3.fromRGB(192, 150, 230)
+mini2.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
 mini2.Font = "SourceSans"
 mini2.Size = UDim2.new(0, 45, 0, 28)
 mini2.Text = "⬅️➡️"
