@@ -319,8 +319,6 @@ onof.MouseButton1Down:connect(function()
 
 end)
 
-local tis
-
 
 plus.MouseButton1Down:connect(function()
 	speeds = speeds + 1
