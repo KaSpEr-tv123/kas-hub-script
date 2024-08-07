@@ -67,6 +67,7 @@ tool.Activated:Connect(function()
     
     if mode_tp and humanoidRootPart then
         humanoidRootPart.CFrame = CFrame.new(pos)
+        game:GetService("ReplicatedStorage").Remotes.Location:FireServer()
     end
 end)
 
