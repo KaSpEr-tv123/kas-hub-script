@@ -36,7 +36,7 @@ local function dodgeNearbyObjects()
     local partsInRegion = Workspace:FindPartsInRegion3(region, character, math.huge)
 
     for _, part in pairs(partsInRegion) do
-        if part ~= humanoidRootPart then
+        if part ~= humanoidRootPart and isBullet(part) then
             local dodgeDirection = (humanoidRootPart.Position - part.Position).unit * dodgeDistance
             humanoidRootPart.CFrame = humanoidRootPart.CFrame + dodgeDirection
             print("Игрок уклонился от объекта: " .. part.Name)
