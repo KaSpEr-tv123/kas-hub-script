@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 
-local detectionRadius = 10
+local detectionRadius = 5
 local dodgeDistance = 5
 
 local function createRegion3(center, radius)
