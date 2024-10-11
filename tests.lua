@@ -14,6 +14,7 @@ local function isBullet(part)
         if part.Name == ignoredName then
             return false
         end
+    end
 end
 
 local function createRegion3(center, radius)
