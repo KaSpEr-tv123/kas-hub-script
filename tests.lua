@@ -9,6 +9,13 @@ local ignoredObjects = {
     "Baseplate",
 }
 
+local function isBullet(part)
+    for _, ignoredName in ipairs(ignoredObjects) do
+        if part.Name == ignoredName then
+            return false
+        end
+end
+
 local function createRegion3(center, radius)
     local regionSize = Vector3.new(radius * 2, radius * 2, radius * 2)
     local regionCorner1 = center - regionSize / 2
