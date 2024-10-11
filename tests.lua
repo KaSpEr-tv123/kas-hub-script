@@ -13,6 +13,7 @@ local function isBullet(part)
     for _, ignoredName in ipairs(ignoredObjects) do
         if part.Name == ignoredName then
             return false
+        else return true 
         end
     end
 end
