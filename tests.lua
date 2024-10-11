@@ -4,6 +4,11 @@ local Workspace = game:GetService("Workspace")
 local detectionRadius = 5
 local dodgeDistance = 5
 
+local ignoredObjects = {
+    "Floor",
+    "Baseplate",
+}
+
 local function createRegion3(center, radius)
     local regionSize = Vector3.new(radius * 2, radius * 2, radius * 2)
     local regionCorner1 = center - regionSize / 2
