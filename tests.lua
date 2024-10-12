@@ -253,7 +253,7 @@ local function hoverAboveEnemy(enemy)
             local bodyPosition = Instance.new("BodyPosition")
             bodyPosition.Position = hoverPosition
             bodyPosition.MaxForce = Vector3.new(99999, 99999, 99999) -- Сила, удерживающая персонажа
-            bodyPosition.P = 100 -- Сила сжатия
+            bodyPosition.P = 99999 -- Сила сжатия
             bodyPosition.Parent = humanoidRootPart
 
             -- Запускаем асинхронный процесс для уничтожения BodyPosition, когда враг умирает
