@@ -235,16 +235,16 @@ local function hoverAboveEnemy(enemy)
 
     if character and character:FindFirstChild("HumanoidRootPart") then
         local humanoidRootPart = character.HumanoidRootPart
-        local enemyHumanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
+        local enemyHumanoidRootPart = enemy:WaitForChild("HumanoidRootPart")
 
         if enemyHumanoidRootPart then
             -- Определяем позицию зависания
-            local hoverPosition = enemyHumanoidRootPart.Position + Vector3.new(0, heightOffset, 0)
+            local hoverPosition = enemyHumanoidRootPart.CFrame + Vector3.new(0, heightOffset, 0)
 
             -- Создаем BodyPosition для удержания в воздухе
             local bodyPosition = Instance.new("BodyPosition")
             bodyPosition.Position = hoverPosition
-            bodyPosition.MaxForce = Vector3.new(4000, 4000, 4000) -- Сила, удерживающая персонажа
+            bodyPosition.MaxForce = Vector3.new(99999, 99999, 99999) -- Сила, удерживающая персонажа
             bodyPosition.P = 1000 -- Сила сжатия
             bodyPosition.Parent = humanoidRootPart
 
@@ -267,9 +267,7 @@ end
 local function autoAttack()
     local player = Players.LocalPlayer
 
-    while true do
-        wait(attackInterval) -- Ждем перед проверкой
-
+    while wait(attackInterval) do
         local character = player.Character
         if not character or not character:FindFirstChild("HumanoidRootPart") then
             showErrorMessage("Персонаж не найден. Попробуйте снова позже.")
