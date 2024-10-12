@@ -197,10 +197,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 local CoreGui = game:GetService("CoreGui")
 
-local detectionRadius = 50 -- Радиус обнаружения
+local detectionRadius = 30 -- Радиус обнаружения
 local attackInterval = 0.5 -- Время между атаками в секундах
-local heightOffset = 3 -- Высота, на которую нужно поднять игрока
-local hoverDuration = 1 -- Длительность зависания
+local heightOffset = 5 -- Высота, на которую нужно поднять игрока
 
 -- Функция для отображения сообщения об ошибке на экране
 local function showErrorMessage(message)
