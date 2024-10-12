@@ -239,7 +239,7 @@ local function hoverAboveEnemy(enemy)
 
         if enemyHumanoidRootPart then
             -- Определяем позицию зависания
-            local hoverPosition = enemyHumanoidRootPart.CFrame + Vector3.new(0, heightOffset, 0)
+            local hoverPosition = enemyHumanoidRootPart.Position + Vector3.new(0, heightOffset, 0)
 
             -- Создаем BodyPosition для удержания в воздухе
             local bodyPosition = Instance.new("BodyPosition")
