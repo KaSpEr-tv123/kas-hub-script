@@ -200,7 +200,7 @@ local CoreGui = game:GetService("CoreGui")
 local detectionRadius = 15 -- Радиус обнаружения
 local attackInterval = 0.5 -- Время между атаками в секундах
 local heightOffset = 5 -- Высота, на которую нужно поднять игрока
-local hoverDuration = 5 -- Длительность зависания
+local hoverDuration = 20 -- Длительность зависания
 
 -- Функция для отображения сообщения об ошибке на экране
 local function showErrorMessage(message)
@@ -249,7 +249,14 @@ local function hoverAboveEnemy(enemy)
             bodyPosition.Parent = humanoidRootPart
 
             -- Устанавливаем позицию персонажа на высоту над врагом
-            humanoidRootPart.CFrame = CFrame.new(hoverPosition)
+            tp_in = false
+            local function tp()
+                while tp_in do
+                    humanoidRootPart.CFrame = CFrame.new(hoverPosition)
+                end
+            end
+
+            spawn(tp)
 
             -- Даем возможность зависать в воздухе
             wait(hoverDuration)
@@ -289,7 +296,7 @@ local function autoAttack()
                 if enemyHumanoidRootPart then
                     foundEnemy = true -- Отмечаем, что враг найден
                     -- Зависаем над врагом
-                    hoverAboveEnemy(enemy)
+                    spawn(function () hoverAboveEnemy(enemy) end)
 
                     -- Пример атаки
                     local attackArgs = {
@@ -298,8 +305,6 @@ local function autoAttack()
                         [3] = enemyHumanoidRootPart.CFrame
                     }
                     ReplicatedStorage.Remotes.Weapon.TakeDamage:FireServer(unpack(attackArgs))
-                    
-                    break -- Прекращаем цикл после первой атаки
                 else
                     showErrorMessage("Не удалось найти HumanoidRootPart у врага: " .. enemy.Name)
                 end
