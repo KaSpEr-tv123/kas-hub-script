@@ -229,13 +229,21 @@ local function createRegion3(center, radius)
     return Region3.new(regionCorner1, regionCorner2)
 end
 
+local function check_and_destroy(bodyPosition, enemy)
+    while enemy.Humanoid.Health > 0 do
+        wait() -- Ждем, чтобы цикл не был бесконечным в одном кадре
+    end
+    -- Если здоровье врага меньше или равно 0, уничтожаем BodyPosition
+    bodyPosition:Destroy()
+end
+
 local function hoverAboveEnemy(enemy)
     local player = Players.LocalPlayer
     local character = player.Character
 
     if character and character:FindFirstChild("HumanoidRootPart") then
         local humanoidRootPart = character.HumanoidRootPart
-        local enemyHumanoidRootPart = enemy:WaitForChild("HumanoidRootPart")
+        local enemyHumanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
 
         if enemyHumanoidRootPart then
             -- Определяем позицию зависания
@@ -248,21 +256,8 @@ local function hoverAboveEnemy(enemy)
             bodyPosition.P = 1000 -- Сила сжатия
             bodyPosition.Parent = humanoidRootPart
 
-            -- Устанавливаем позицию персонажа на высоту над врагом
-            tp_in = false
-            local function tp()
-                while tp_in do
-                    humanoidRootPart.CFrame = CFrame.new(hoverPosition)
-                end
-            end
-
-            spawn(tp)
-
-            -- Даем возможность зависать в воздухе
-            wait(hoverDuration)
-
-            -- Удаляем BodyPosition после зависания
-            bodyPosition:Destroy()
+            -- Запускаем асинхронный процесс для уничтожения BodyPosition, когда враг умирает
+            spawn(function() check_and_destroy(bodyPosition, enemy) end)
         else
             showErrorMessage("Не удалось найти HumanoidRootPart у врага: " .. enemy.Name)
         end
