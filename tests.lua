@@ -197,7 +197,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 local CoreGui = game:GetService("CoreGui")
 
-local detectionRadius = 15 -- Радиус обнаружения
+local detectionRadius = 50 -- Радиус обнаружения
 local attackInterval = 0.5 -- Время между атаками в секундах
 local heightOffset = 3 -- Высота, на которую нужно поднять игрока
 local hoverDuration = 1 -- Длительность зависания
@@ -285,7 +285,8 @@ local function autoAttack()
 
         for _, part in pairs(partsInRegion) do
             local enemy = part.Parent
-            if enemy:IsA("Model") and enemy:FindFirstChild("Humanoid") then
+
+            if enemy:IsA("Model") and enemy:FindFirstChild("Humanoid") and enemy.Parent ~= Players then
                 local enemyHumanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
 
                 if enemyHumanoidRootPart then
