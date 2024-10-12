@@ -286,7 +286,7 @@ local function autoAttack()
         for _, part in pairs(partsInRegion) do
             local enemy = part.Parent
 
-            if enemy:IsA("Model") and enemy:FindFirstChild("Humanoid") and enemy.Parent.Name = "Enemy" then
+            if enemy:IsA("Model") and enemy:FindFirstChild("Humanoid") and enemy.Parent.Name == "Enemy" then
                 local enemyHumanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
 
                 if enemyHumanoidRootPart then
