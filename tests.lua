@@ -310,10 +310,6 @@ local function autoAttack()
                 end
             end
         end
-
-        if not foundEnemy then
-            showErrorMessage("Враги не найдены в радиусе обнаружения.")
-        end
     end
 end
 
