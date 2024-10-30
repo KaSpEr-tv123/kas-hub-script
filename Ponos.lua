@@ -5,10 +5,10 @@ local Api = "https://games.roblox.com/v1/games/"
 local _place = game.PlaceId
 local _servers = Api .. _place .. "/servers/Public?sortOrder=Asc&limit=10"
 
-local minPlayers = 5  -- Минимальное количество игроков
-local maxPlayers = 15 -- Максимальное количество игроков
+local minPlayers = 5
+local maxPlayers = 10
 
--- Функция для получения списка серверов
+local function hop()
 function ListServers(cursor)
     local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
     return HttpService:JSONDecode(Raw)
@@ -36,3 +36,5 @@ if #validServers > 0 then
 else
     print("Нет доступных серверов с подходящим количеством игроков")
 end
+end
+
