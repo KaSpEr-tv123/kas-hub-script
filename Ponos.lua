@@ -3,63 +3,84 @@ local TPS = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 local Api = "https://games.roblox.com/v1/games/"
 local _place = game.PlaceId
-local _servers = Api .. _place .. "/servers/Public?sortOrder=Asc&limit=10"
+local _servers = Api .. _place .. "/servers/Public?sortOrder=Desc&limit=100" -- Используем больше серверов
 
 local minPlayers = 5
-local maxPlayers = 10
+local maxPlayers = 11
 
 local function hop()
-game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("ПОНОС", "All")
--- Создаем ScreenGui и TextLabel
-local screenGui = Instance.new("ScreenGui")
-local textLabel = Instance.new("TextLabel")
+    -- Проверяем, доступно ли событие для отправки сообщения в чат
+    local chatEvent = game.ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        chatEvent.SayMessageRequest:FireServer("ПОНОС", "All")
+        print("Сообщение отправлено в чат")
+    else
+        warn("Событие SayMessageRequest недоступно или заблокировано")
+    end
 
--- Настраиваем TextLabel
-textLabel.Size = UDim2.new(1, 0, 1, 0) -- На весь экран
-textLabel.BackgroundTransparency = 0.5 -- Прозрачность фона (0 - непрозрачный, 1 - полностью прозрачный)
-textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Черный фон
-textLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Белый текст
-textLabel.Text = "Сообщение в чат отправлено, телепорт на следующий сервер..."
-textLabel.TextScaled = true -- Масштабирование текста под размер
-textLabel.Parent = screenGui
+    -- Создаем ScreenGui и TextLabel для отображения уведомления
+    local screenGui = Instance.new("ScreenGui")
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 0.5
+    textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    textLabel.Text = "Отправлено сообщение в чат, ищем сервер с подходящим количеством игроков..."
+    textLabel.TextScaled = true
+    textLabel.Parent = screenGui
+    screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Встраиваем ScreenGui в игрока
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    wait(5)
+    screenGui:Destroy()
 
--- Настраиваем длительность показа уведомления
-local notificationDuration = 5 -- Уведомление будет видно 5 секунды
+    -- Функция для получения списка серверов
+    local function ListServers(cursor)
+        local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
+        local Servers = HttpService:JSONDecode(Raw)
+        if Servers then
+            print("Список серверов получен")
+            return Servers
+        else
+            warn("Не удалось получить данные серверов")
+            return nil
+        end
+    end
 
--- Удаляем уведомление через указанное время
-wait(notificationDuration)
-screenGui:Destroy()
-function ListServers(cursor)
-    local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
-    return HttpService:JSONDecode(Raw)
-end
+    -- Отключаем перемещение персонажа для безопасности
+    if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
+        Player.Character.HumanoidRootPart.Anchored = true
+    end
 
--- Отключаем перемещение персонажа
-if Player.Character and Player.Character:FindFirstChild("HumanoidRootPart") then
-    Player.Character.HumanoidRootPart.Anchored = true
-end
+    -- Получаем список серверов и проверяем, что данные не пустые
+    local Servers = ListServers()
+    if not Servers or not Servers.data then
+        warn("Ошибка получения серверов или список пуст")
+        return
+    end
 
-local Servers = ListServers()
-local validServers = {}
+    -- Фильтруем сервера по количеству игроков от 9 до 11
+    local validServers = {}
+    for _, server in ipairs(Servers.data) do
+        if server.playing >= minPlayers and server.playing <= maxPlayers and server.id ~= game.JobId then
+            table.insert(validServers, server)
+        end
+    end
 
--- Фильтруем сервера по количеству игроков
-for _, server in ipairs(Servers.data) do
-    if server.playing >= minPlayers and server.playing <= maxPlayers and server.id ~= game.JobId then
-        table.insert(validServers, server)
+    -- Сортируем сервера по количеству игроков в порядке убывания
+    table.sort(validServers, function(a, b)
+        return a.playing > b.playing
+    end)
+
+    if #validServers > 0 then
+        local Server = validServers[1] -- Берем сервер с наибольшим количеством игроков
+        print("Телепортируемся на сервер:", Server.id)
+        TPS:TeleportToPlaceInstance(_place, Server.id)
+    else
+        warn("Нет доступных серверов для телепортации с заданным количеством игроков")
     end
 end
 
--- Проверяем, что есть подходящие сервера
-if #validServers > 0 then
-    local Server = validServers[math.random(1, #validServers)]
-    TPS:TeleportToPlaceInstance(_place, Server.id)
-else
-    print("Нет доступных серверов с подходящим количеством игроков")
-end
-end
+-- Запуск функции hop каждые 6 секунд
 while wait(6) do
-  hop()
+    hop()
 end
