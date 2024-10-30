@@ -36,10 +36,6 @@ if #validServers > 0 then
 else
     print("Нет доступных серверов с подходящим количеством игроков")
 end
+game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("ПОНОС", "All")
 
-local player = game.Players.LocalPlayer
-local message = "ПОНОС"
-
-game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
 end
-
