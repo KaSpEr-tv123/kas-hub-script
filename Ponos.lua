@@ -19,7 +19,7 @@ textLabel.Size = UDim2.new(1, 0, 1, 0) -- На весь экран
 textLabel.BackgroundTransparency = 0.5 -- Прозрачность фона (0 - непрозрачный, 1 - полностью прозрачный)
 textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Черный фон
 textLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Белый текст
-textLabel.Text = "Это уведомление на весь экран"
+textLabel.Text = "Сообщение в чат отправлено, телепорт на следующий сервер..."
 textLabel.TextScaled = true -- Масштабирование текста под размер
 textLabel.Parent = screenGui
 
