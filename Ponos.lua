@@ -5,8 +5,7 @@ local Api = "https://games.roblox.com/v1/games/"
 local _place = game.PlaceId
 local _servers = Api .. _place .. "/servers/Public?sortOrder=Desc&limit=100" -- Начинаем с первого запроса
 
-local minPlayers = 5
-local maxPlayers = 11
+local maxPlayers = 12
 
 local function hop()
     -- Проверяем, доступно ли событие для отправки сообщения в чат
@@ -46,7 +45,7 @@ local function hop()
             if Servers then
                 print("Список серверов получен, всего серверов:", #Servers.data)
                 for _, server in ipairs(Servers.data) do
-                    if server.playing >= minPlayers and server.playing <= maxPlayers and server.id ~= game.JobId then
+                    if server.playing < maxPlayers and server.id ~= game.JobId then
                         table.insert(validServers, server)
                         print("Подходящий сервер найден:", server.id, "Игроков:", server.playing)
                     end
