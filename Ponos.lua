@@ -59,5 +59,7 @@ if #validServers > 0 then
 else
     print("Нет доступных серверов с подходящим количеством игроков")
 end
-
+end
+while wait(6) do
+  hop()
 end
