@@ -37,7 +37,7 @@ local function hop()
     local function ListServers()
         local validServers = {}
         local cursor = nil
-        local totalAttempts = 5 -- Количество попыток получить больше серверов
+        local totalAttempts = 10 -- Количество попыток получить больше серверов
         local attempts = 0
 
         repeat
