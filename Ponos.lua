@@ -3,7 +3,7 @@ local TPS = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 local Api = "https://games.roblox.com/v1/games/"
 local _place = game.PlaceId
-local _servers = Api .. _place .. "/servers/Public?sortOrder=Desc&limit=100" -- Используем больше серверов
+local _servers = Api .. _place .. "/servers/Public?sortOrder=Desc&limit=100" -- Начинаем с первого запроса
 
 local minPlayers = 5
 local maxPlayers = 11
@@ -25,7 +25,7 @@ local function hop()
     textLabel.BackgroundTransparency = 0.5
     textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.Text = "Отправлено сообщение в чат, ищем сервер с подходящим количеством игроков..."
+    textLabel.Text = "Ищем сервер с подходящим количеством игроков..."
     textLabel.TextScaled = true
     textLabel.Parent = screenGui
     screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -34,16 +34,32 @@ local function hop()
     screenGui:Destroy()
 
     -- Функция для получения списка серверов
-    local function ListServers(cursor)
-        local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
-        local Servers = HttpService:JSONDecode(Raw)
-        if Servers then
-            print("Список серверов получен")
-            return Servers
-        else
-            warn("Не удалось получить данные серверов")
-            return nil
-        end
+    local function ListServers()
+        local validServers = {}
+        local cursor = nil
+        local totalAttempts = 5 -- Количество попыток получить больше серверов
+        local attempts = 0
+
+        repeat
+            local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
+            local Servers = HttpService:JSONDecode(Raw)
+            if Servers then
+                print("Список серверов получен, всего серверов:", #Servers.data)
+                for _, server in ipairs(Servers.data) do
+                    if server.playing >= minPlayers and server.playing <= maxPlayers and server.id ~= game.JobId then
+                        table.insert(validServers, server)
+                        print("Подходящий сервер найден:", server.id, "Игроков:", server.playing)
+                    end
+                end
+                cursor = Servers.nextPageCursor -- Получаем курсор для следующей страницы
+                attempts = attempts + 1
+            else
+                warn("Не удалось получить данные серверов")
+                return nil
+            end
+        until not cursor or attempts >= totalAttempts -- Прекращаем, если курсор отсутствует или достигли максимальных попыток
+
+        return validServers
     end
 
     -- Отключаем перемещение персонажа для безопасности
@@ -52,18 +68,10 @@ local function hop()
     end
 
     -- Получаем список серверов и проверяем, что данные не пустые
-    local Servers = ListServers()
-    if not Servers or not Servers.data then
+    local validServers = ListServers()
+    if not validServers or #validServers == 0 then
         warn("Ошибка получения серверов или список пуст")
         return
-    end
-
-    -- Фильтруем сервера по количеству игроков от 9 до 11
-    local validServers = {}
-    for _, server in ipairs(Servers.data) do
-        if server.playing >= minPlayers and server.playing <= maxPlayers and server.id ~= game.JobId then
-            table.insert(validServers, server)
-        end
     end
 
     -- Сортируем сервера по количеству игроков в порядке убывания
@@ -71,6 +79,7 @@ local function hop()
         return a.playing > b.playing
     end)
 
+    -- Телепортируемся на сервер
     if #validServers > 0 then
         local Server = validServers[1] -- Берем сервер с наибольшим количеством игроков
         print("Телепортируемся на сервер:", Server.id)
