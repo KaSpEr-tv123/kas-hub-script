@@ -9,6 +9,29 @@ local minPlayers = 5
 local maxPlayers = 10
 
 local function hop()
+game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("ПОНОС", "All")
+-- Создаем ScreenGui и TextLabel
+local screenGui = Instance.new("ScreenGui")
+local textLabel = Instance.new("TextLabel")
+
+-- Настраиваем TextLabel
+textLabel.Size = UDim2.new(1, 0, 1, 0) -- На весь экран
+textLabel.BackgroundTransparency = 0.5 -- Прозрачность фона (0 - непрозрачный, 1 - полностью прозрачный)
+textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Черный фон
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Белый текст
+textLabel.Text = "Это уведомление на весь экран"
+textLabel.TextScaled = true -- Масштабирование текста под размер
+textLabel.Parent = screenGui
+
+-- Встраиваем ScreenGui в игрока
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Настраиваем длительность показа уведомления
+local notificationDuration = 5 -- Уведомление будет видно 5 секунды
+
+-- Удаляем уведомление через указанное время
+wait(notificationDuration)
+screenGui:Destroy()
 function ListServers(cursor)
     local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
     return HttpService:JSONDecode(Raw)
@@ -36,6 +59,5 @@ if #validServers > 0 then
 else
     print("Нет доступных серверов с подходящим количеством игроков")
 end
-game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("ПОНОС", "All")
 
 end
