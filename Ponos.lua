@@ -12,7 +12,7 @@ local function hop()
     -- Проверяем, доступно ли событие для отправки сообщения в чат
     local chatEvent = game.ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
     if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
-        chatEvent.SayMessageRequest:FireServer("if you 30m bounty player add me in ds yupi_yoshka_nyah_ill", "All")
+        chatEvent.SayMessageRequest:FireServer("Le le le le le le le 30m bounty add me in diiiscooorddddd yupi_yoshka_nyah_ill", "All")
         print("Сообщение отправлено в чат")
     else
         warn("Событие SayMessageRequest недоступно или заблокировано")
