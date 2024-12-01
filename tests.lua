@@ -79,7 +79,7 @@ local function teleportPlayerToTarget()
                 if targetObject then
                     local distance = (humanoidRootPart.Position - targetObject.Position).Magnitude
                     if distance <= 100 then
-                        humanoidRootPart.Position = targetObject.Position + Vector3.new(0, humanoidRootPart.Size.Y / 2, 0)
+                        humanoidRootPart.CFrame = targetObject.CFrame + Vector3.new(0, humanoidRootPart.Size.Y / 2, 0)
                         print("Игрок телепортирован к объекту: " .. targetObject.Name) -- Отладочная информация
                     else
                         print("Объект слишком далеко для телепортации: " .. targetObject.Name) -- Отладочная информация
@@ -91,7 +91,7 @@ local function teleportPlayerToTarget()
 end
 
 local function start()
-    spawn(dodgeNearbyObjects)
+    -- spawn(dodgeNearbyObjects)
     spawn(teleportPlayerToTarget)
 end
 
@@ -180,7 +180,6 @@ local function autoAttack()
         if not character or not character:FindFirstChild("HumanoidRootPart") then
             showErrorMessage("Персонаж не найден. Попробуйте снова позже.")
             wait(1) -- Ждем перед повторной проверкой
-            continue -- Пропускаем итерацию цикла
         end
         
         local humanoidRootPart = character.HumanoidRootPart

@@ -591,6 +591,6 @@ end
 -- 
 -- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
 
-spam(add_jump)
-spam(add_speed)
+spawn(add_jump)
+spawn(add_speed)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
