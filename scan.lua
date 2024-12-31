@@ -9,6 +9,18 @@ local settings = {
 -- Переменные для GUI
 local logBox, progressBar, depthInput, typeInput
 
+local function logMessage(message)
+    if logBox then
+        logBox.Text = logBox.Text .. message .. "\n"
+        if #logBox.Text > 5000 then  -- ограничение длины лога
+            logBox.Text = string.sub(logBox.Text, -5000)
+        end
+    end
+    if settings.logToConsole then
+        print(message)
+    end
+end
+
 -- Создание GUI
 local function createGUI()
     local gui = Instance.new("ScreenGui")
@@ -124,17 +136,7 @@ local function createGUI()
     clearButton.TextSize = 16
     clearButton.Parent = frame
 
-    -- Обработчики кнопок
-local function logMessage(message)
-    if logBox then
-        logBox.Text = logBox.Text .. message .. "\n"
-        logBox.Text = string.sub(logBox.Text, -5000)
-    end
-    if settings.logToConsole then
-        print(message)
-    end
-end
-    scanButton.MouseButton1Click:Connect(function()
+   scanButton.MouseButton1Click:Connect(function()
         settings.scanDepth = tonumber(depthInput.Text) or settings.scanDepth
         settings.targetTypes = string.split(typeInput.Text, ", ")
         logMessage("Запуск сканирования...")
@@ -147,6 +149,8 @@ end
 
     return gui
 end
+-- Функция записи лога
+
 
 -- Обновление прогресс-бара
 local function updateProgressBar(progress)
@@ -157,7 +161,7 @@ end
 
 -- Функция для сканирования объектов
 local function scan(parent, depth)
-    if depth > settings.scanDepth then return {} end
+    if not parent or depth > settings.scanDepth then return {} end
     local results = {}
     local children = parent:GetChildren()
     for i, child in ipairs(children) do
@@ -166,6 +170,7 @@ local function scan(parent, depth)
             logMessage("Найдено: " .. child.Name .. " (" .. child.ClassName .. ")")
         end
         updateProgressBar(i / #children)
+        wait()  -- добавление задержки, чтобы UI не зависал
         local subResults = scan(child, depth + 1)
         for _, subResult in pairs(subResults) do
             table.insert(results, subResult)
