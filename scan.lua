@@ -125,6 +125,15 @@ local function createGUI()
     clearButton.Parent = frame
 
     -- Обработчики кнопок
+local function logMessage(message)
+    if logBox then
+        logBox.Text = logBox.Text .. message .. "\n"
+        logBox.Text = string.sub(logBox.Text, -5000)
+    end
+    if settings.logToConsole then
+        print(message)
+    end
+end
     scanButton.MouseButton1Click:Connect(function()
         settings.scanDepth = tonumber(depthInput.Text) or settings.scanDepth
         settings.targetTypes = string.split(typeInput.Text, ", ")
@@ -137,17 +146,6 @@ local function createGUI()
     end)
 
     return gui
-end
-
--- Функция для добавления сообщения в лог
-local function logMessage(message)
-    if logBox then
-        logBox.Text = logBox.Text .. message .. "\n"
-        logBox.Text = string.sub(logBox.Text, -5000)
-    end
-    if settings.logToConsole then
-        print(message)
-    end
 end
 
 -- Обновление прогресс-бара
