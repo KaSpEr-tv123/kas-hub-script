@@ -667,7 +667,7 @@ local function teleportToClosestCoin()
     end
 
     if closestCoin then
-        humanoidRootPart.CFrame = CFrame.new(closestCoin.PrimaryPart.Position + Vector3.new(0, 5, 0)) -- Поднимаем игрока над монетой
+        Teleport(closestCoin.PrimaryPart.Position)
     end
 end
 
@@ -678,11 +678,10 @@ if game.GameId == 3317771874 then
 
     other.newToggle("Auto farm coins", "", false, function(Value)
         autoTeleport = Value
-        notify("Settings", "Auto teleport is set to: " .. tostring(Value))
     end)
 
     spawn(function()
-        while wait(1) do
+        while wait() do
             if autoTeleport then
                 teleportToClosestCoin()
             end
