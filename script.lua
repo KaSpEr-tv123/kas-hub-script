@@ -696,7 +696,7 @@ end
 
 -- GUI интерфейс
 if game.GameId == 3808081382 then
-    local tsb = gui.newTab("The Strongest Battlegrounds(beta)")
+    local tsb = gui.newTab("TSB(beta)")
 
     tsb.newButton("Load script for Main Account", "Телепорт и спам кликов", function()
         getgenv().teleport = not getgenv().teleport
