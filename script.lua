@@ -646,7 +646,7 @@ end
 
 local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
 
-local function findAndClickClosestCoin()
+local function teleportToClosestCoin()
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
@@ -656,46 +656,29 @@ local function findAndClickClosestCoin()
 
     for _, object in pairs(brekablesFolder:GetChildren()) do
         if object:IsA("Model") and object.PrimaryPart then
-            local meshPart = object:FindFirstChild("1")
-            if meshPart and meshPart:IsA("MeshPart") then
-                local objectPosition = meshPart.Position
-                local distance = (objectPosition - humanoidRootPart.Position).magnitude
+            local objectPosition = object.PrimaryPart.Position
+            local distance = (objectPosition - humanoidRootPart.Position).magnitude
 
-                if distance < closestDistance and distance <= 220 then
-                    closestDistance = distance
-                    closestCoin = object
-                end
+            if distance < closestDistance then
+                closestDistance = distance
+                closestCoin = object
             end
         end
     end
 
     if closestCoin then
-        local meshPart = closestCoin:FindFirstChild("1")
-        if meshPart then
-            local rayOrigin = humanoidRootPart.Position
-            local rayDirection = (meshPart.Position - rayOrigin).unit
-
-            local ray = Ray.new(rayOrigin, rayDirection * 1000)
-            local targetPosition = meshPart.Position
-
-            local args = {
-                [1] = ray,
-                [2] = targetPosition
-            }
-
-            game:GetService("ReplicatedStorage").Network.Click:FireServer(unpack(args))
-        end
+        humanoidRootPart.CFrame = CFrame.new(closestCoin.PrimaryPart.Position + Vector3.new(0, 5, 0)) -- Поднимаем игрока над монетой
     end
 end
 
-local autoClick = false
+local autoTeleport = false
 
 if game.GameId == 3317771874 then
     local other = gui.newTab("PS99")
 
-    other.newToggle("Auto Click", "", false, function(Value)
-        autoClick = Value
-        notify("Settings", "Auto Click is set to: " .. tostring(autoClick))
+    other.newToggle("Auto farm coins", "", false, function(Value)
+        autoTeleport = Value
+        notify("Settings", "Auto teleport is set to: " .. tostring(autoClick))
     end)
 
     spawn(function()
