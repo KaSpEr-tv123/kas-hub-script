@@ -647,10 +647,6 @@ end
 getgenv().teleport = false
 getgenv().teleportOther = false
 
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
 local TweenService = game:GetService("TweenService")
 local targetPosition = Vector3.new(-12, 652, -422) -- Укажи нужные координаты
 
@@ -659,6 +655,10 @@ local function teleportSmoothly(targetPos, spamClicks)
     if not getgenv().teleport then
         return
     end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
     local currentCFrame = humanoidRootPart.CFrame
     local rotation = currentCFrame - currentCFrame.Position
@@ -711,17 +711,21 @@ end
 
 function tpp()
     while wait() do
-        if getgenv().teleportOther then
-            teleportSmoothly(targetPosition, false)
-        end
+        pcall(function()
+            if getgenv().teleportOther then
+                teleportSmoothly(targetPosition, false)
+            end
+        end)
     end
 end
 
 function tppp()
     while wait() do
-        if getgenv().teleport then
-            teleportSmoothly(targetPosition, true)
-        end
+        pcall(function()
+            if getgenv().teleport then
+                teleportSmoothly(targetPosition, true)
+            end
+        end)
     end
 end
 
