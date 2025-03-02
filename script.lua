@@ -647,7 +647,6 @@ end
 local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
 
 local function findAndClickClosestCoin()
-
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
@@ -657,27 +656,33 @@ local function findAndClickClosestCoin()
 
     for _, object in pairs(brekablesFolder:GetChildren()) do
         if object:IsA("Model") and object.PrimaryPart then
-            local objectPosition = object.PrimaryPart.Position
-            local distance = (objectPosition - humanoidRootPart.Position).magnitude
+            local meshPart = object:FindFirstChild("1")
+            if meshPart and meshPart:IsA("MeshPart") then
+                local objectPosition = meshPart.Position
+                local distance = (objectPosition - humanoidRootPart.Position).magnitude
 
-            if distance < closestDistance then
-                closestDistance = distance
-                closestCoin = object
+                if distance < closestDistance and distance <= 220 then
+                    closestDistance = distance
+                    closestCoin = object
+                end
             end
         end
     end
 
     if closestCoin then
-        local rayOrigin = humanoidRootPart.Position
-        local rayDirection = (closestCoin.PrimaryPart.Position - rayOrigin).unit
+        local meshPart = closestCoin:FindFirstChild("1")
+        if meshPart then
+            local rayOrigin = humanoidRootPart.Position
+            local rayDirection = (meshPart.Position - rayOrigin).unit
 
-        local ray = Ray.new(rayOrigin, rayDirection * 1000)
-        local args = {
-            [1] = ray,
-            [2] = closestCoin.PrimaryPart.Position
-        }
+            local ray = Ray.new(rayOrigin, rayDirection * 1000)
+            local args = {
+                [1] = ray,
+                [2] = meshPart.Position
+            }
 
-        game:GetService("ReplicatedStorage").Network.Click:FireServer(unpack(args))
+            game:GetService("ReplicatedStorage").Network.Click:FireServer(unpack(args))
+        end
     end
 end
 
