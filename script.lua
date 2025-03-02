@@ -687,23 +687,26 @@ if game.GameId == 3317771874 then
 
     other.newToggle("Auto Click", "", false, function(Value)
         autoClick = Value
+        notify("Auto Click is set to: " .. tostring(autoClick))
     end)
+
     spawn(function()
-        while wait() do
+        while wait(1) do
             if autoClick then
                 findAndClickClosestCoin()
             end
         end
     end)
+else
+    warn("Это не Pet Simulator 99. GameId: " .. game.GameId)
 end
 
 getgenv().teleport = false
 getgenv().teleportOther = false
 
 local TweenService = game:GetService("TweenService")
-local targetPosition = Vector3.new(-12, 652, -422) -- Укажи нужные координаты
+local targetPosition = Vector3.new(-12, 652, -422)
 
--- Функция плавного телепорта
 local function teleportSmoothly(targetPos)
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
@@ -712,7 +715,6 @@ local function teleportSmoothly(targetPos)
     local currentCFrame = humanoidRootPart.CFrame
     local rotation = currentCFrame - currentCFrame.Position
 
-    -- Добавляем небольшую случайность в конечную точку
     local randomOffset = Vector3.new(math.random(-2, 2), 0, math.random(-2, 2)) * 0.2
     local targetCFrame = CFrame.new(targetPos + randomOffset) * rotation
 
