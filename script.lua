@@ -678,13 +678,13 @@ if game.GameId == 3317771874 then
 
     other.newToggle("Auto farm coins", "", false, function(Value)
         autoTeleport = Value
-        notify("Settings", "Auto teleport is set to: " .. tostring(autoClick))
+        notify("Settings", "Auto teleport is set to: " .. tostring(Value))
     end)
 
     spawn(function()
         while wait(1) do
-            if autoClick then
-                findAndClickClosestCoin()
+            if autoTeleport then
+                teleportToClosestCoin()
             end
         end
     end)
