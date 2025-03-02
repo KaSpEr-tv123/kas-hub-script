@@ -651,8 +651,8 @@ local TweenService = game:GetService("TweenService")
 local targetPosition = Vector3.new(-12, 652, -422) -- Укажи нужные координаты
 
 -- Функция плавного телепорта
-local function teleportSmoothly(targetPos, spamClicks)
-    if not getgenv().teleport then
+local function teleportSmoothly(targetPos)
+    if not getgenv().teleport and not getgenv().teleportOther then
         return
     end
 
@@ -676,21 +676,18 @@ local function teleportSmoothly(targetPos, spamClicks)
 
     tween:Play()
     tween.Completed:Wait()
+    while getgenv().teleport do
 
-    if spamClicks then
-        while getgenv().teleport do
-
-            local args = {
-                [1] = {
-                    ["Mobile"] = UserInputService.TouchEnabled,
-                    ["Goal"] = "LeftClick"
-                }
+        local args = {
+            [1] = {
+                ["Mobile"] = UserInputService.TouchEnabled,
+                ["Goal"] = "LeftClick"
             }
+        }
 
-            game:GetService("Players").LocalPlayer.Character.Communicate:FireServer(unpack(args))
+        game:GetService("Players").LocalPlayer.Character.Communicate:FireServer(unpack(args))
 
-            wait(0.1)
-        end
+        wait(0.1)
     end
 end
 
@@ -700,12 +697,12 @@ if game.GameId == 3808081382 then
 
     tsb.newButton("Load script for Main Account", "Телепорт и спам кликов", function()
         getgenv().teleport = not getgenv().teleport
-        teleportSmoothly(targetPosition, true)
+        teleportSmoothly(targetPosition)
     end)
 
     tsb.newButton("Load script for Other Accounts", "Телепорт без атак", function()
         getgenv().teleportOther = not getgenv().teleportOther
-        teleportSmoothly(targetPosition, false)
+        teleportSmoothly(targetPosition)
     end)
 end
 
