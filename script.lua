@@ -644,8 +644,9 @@ if game.GameId == 4777817887 then
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
 
+local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
+
 local function findAndClickClosestCoin()
-    local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
 
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
