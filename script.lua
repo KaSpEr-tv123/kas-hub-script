@@ -656,11 +656,13 @@ local function findAndClickClosestCoin()
 
     for _, object in pairs(brekablesFolder:GetChildren()) do
         if object:IsA("Model") and object.PrimaryPart then
+            -- Проверим, есть ли у объекта "MeshPart" с названием "1"
             local meshPart = object:FindFirstChild("1")
             if meshPart and meshPart:IsA("MeshPart") then
                 local objectPosition = meshPart.Position
                 local distance = (objectPosition - humanoidRootPart.Position).magnitude
 
+                -- Учитываем максимальную дистанцию активации (220)
                 if distance < closestDistance and distance <= 220 then
                     closestDistance = distance
                     closestCoin = object
@@ -675,12 +677,16 @@ local function findAndClickClosestCoin()
             local rayOrigin = humanoidRootPart.Position
             local rayDirection = (meshPart.Position - rayOrigin).unit
 
+            -- Нормализуем направление и увеличиваем дальность
             local ray = Ray.new(rayOrigin, rayDirection * 1000)
+            local targetPosition = meshPart.Position
+
             local args = {
                 [1] = ray,
-                [2] = meshPart.Position
+                [2] = targetPosition
             }
 
+            -- Кликаем по ближайшей монете
             game:GetService("ReplicatedStorage").Network.Click:FireServer(unpack(args))
         end
     end
@@ -693,7 +699,7 @@ if game.GameId == 3317771874 then
 
     other.newToggle("Auto Click", "", false, function(Value)
         autoClick = Value
-        notify("Auto Click is set to: " .. tostring(autoClick))
+        notify("Settings", "Auto Click is set to: " .. tostring(autoClick))
     end)
 
     spawn(function()
@@ -704,7 +710,7 @@ if game.GameId == 3317771874 then
         end
     end)
 else
-    warn("Это не Pet Simulator 99. GameId: " .. game.GameId)
+    notify("Error", "Это не Pet Simulator 99. GameId: " .. game.GameId)
 end
 
 getgenv().teleport = false
