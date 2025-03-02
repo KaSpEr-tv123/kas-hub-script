@@ -6,6 +6,13 @@ game:GetService("StarterGui"):SetCore("SendNotification", {
     Text = "by kasperenok"
 })
 Duration = 5;
+local function notify(title, text)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = Duration
+    })
+end
 
 local hacks = gui.newTab("Hacks", "15046690373")
 
@@ -53,24 +60,59 @@ end)
 other.newButton("Activate Fly", "Get the kasperfly", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperfly.lua"))()
 end)
-local mode_tp = false
+local mode_tp = false -- Переменная для включения/выключения телепортации
 
+-- Создаем инструмент (Tool)
 local tool = Instance.new("Tool")
 tool.RequiresHandle = false
 tool.Name = "Click TP function"
 
 local mouse = game.Players.LocalPlayer:GetMouse()
 
-tool.Activated:Connect(function()
-    local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
-    local character = game.Players.LocalPlayer.Character
+-- Получаем сервисы
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+
+-- Функция для включения/выключения режима телепортации
+local function toggleTeleportMode()
+    mode_tp = not mode_tp
+    if mode_tp then
+        print("Телепорт включен")
+    else
+        print("Телепорт выключен")
+    end
+end
+
+-- Функция для плавного телепорта
+local function clickTeleport(targetPosition)
+    local character = player.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
-    if mode_tp and humanoidRootPart then
-        humanoidRootPart.CFrame = CFrame.new(pos)
+    if humanoidRootPart then
+        local currentCFrame = humanoidRootPart.CFrame
+        local targetCFrame = CFrame.new(targetPosition)
+
+        local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tweenGoal = {
+            CFrame = targetCFrame
+        }
+        local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+
+        tween:Play()
+        tween.Completed:Wait()
+    end
+end
+
+tool.Activated:Connect(function()
+    if mode_tp then
+        local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0) -- Устанавливаем позицию с небольшим смещением по Y
+        clickTeleport(pos)
         game:GetService("ReplicatedStorage").Remotes.Location:FireServer()
     end
 end)
+
+-- Пример добавления инструмента в инвентарь
+tool.Parent = game.Players.LocalPlayer.Backpack
 
 tool.Parent = game.Players.LocalPlayer.Backpack
 local mode_noclip = true
@@ -95,7 +137,7 @@ end)
 other.newButton("DEX", "explorer files game", function()
     loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
 end)
-other.newButton("Scan Game UI", "script", function()
+other.newButton("Scan Game UI (beta)", "script", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/scan.lua"))()
 end)
 other.newButton("Infinite Yield", "script", function()
@@ -598,24 +640,88 @@ if game.GameId == 4777817887 then
     wait(5)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
--- 
--- game:GetService("ReplicatedStorage").Remotes.Gifts.RequestSpinReward:InvokeServer()
+getgenv().teleport = false
+getgenv().teleportOther = false
 
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local TweenService = game:GetService("TweenService")
+local targetPosition = Vector3.new(-12, 652, -422) -- Укажи нужные координаты
+
+-- Функция плавного телепорта
+local function teleportSmoothly(targetPos, spamClicks)
+    if not getgenv().teleport then
+        return
+    end
+
+    local currentCFrame = humanoidRootPart.CFrame
+    local rotation = currentCFrame - currentCFrame.Position
+
+    -- Добавляем небольшую случайность в конечную точку
+    local randomOffset = Vector3.new(math.random(-2, 2), 0, math.random(-2, 2)) * 0.2
+    local targetCFrame = CFrame.new(targetPos + randomOffset) * rotation
+
+    local duration = math.random(8, 20) / 10
+
+    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    local tween = TweenService:Create(humanoidRootPart, tweenInfo, {
+        CFrame = targetCFrame
+    })
+
+    tween:Play()
+    tween.Completed:Wait()
+
+    if spamClicks then
+        while getgenv().teleport do
+
+            local args = {
+                [1] = {
+                    ["Mobile"] = UserInputService.TouchEnabled,
+                    ["Goal"] = "LeftClick"
+                }
+            }
+            game:GetService("Players").LocalPlayer.Character.Communicate:FireServer(unpack(args))
+            wait(0.1)
+        end
+    end
+end
+
+-- GUI интерфейс
+if game.GameId == 3808081382 then
+    local tsb = gui.newTab("The Strongest Battlegrounds(beta)")
+
+    tsb.newButton("Load script for Main Account", "Телепорт и спам кликов", function()
+        getgenv().teleport = true
+        teleportSmoothly(targetPosition, true)
+    end)
+
+    tsb.newButton("Load script for Other Accounts", "Телепорт без атак", function()
+        getgenv().teleportOther = true
+        teleportSmoothly(targetPosition, false)
+    end)
+end
+
+function tpp()
+    while wait() do
+        if getgenv().teleportOther then
+            teleportSmoothly(targetPosition, false)
+        end
+    end
+end
+
+function tppp()
+    while wait() do
+        if getgenv().teleport then
+            teleportSmoothly(targetPosition, true)
+        end
+    end
+end
+
+spawn(tppp)
+spawn(tpp)
 spawn(add_jump)
 spawn(add_speed)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
