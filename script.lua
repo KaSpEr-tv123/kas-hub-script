@@ -645,7 +645,7 @@ if game.GameId == 4777817887 then
 end
 
 local function findAndClickClosestCoin()
-    local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breaskables")
+    local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
 
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
