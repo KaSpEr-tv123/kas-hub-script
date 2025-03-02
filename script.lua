@@ -652,10 +652,6 @@ local targetPosition = Vector3.new(-12, 652, -422) -- Укажи нужные к
 
 -- Функция плавного телепорта
 local function teleportSmoothly(targetPos)
-    if not getgenv().teleport and not getgenv().teleportOther then
-        return
-    end
-
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
