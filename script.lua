@@ -722,6 +722,59 @@ function tppp()
     end
 end
 
+local brekablesFolder = game.Workspace:WaitForChild("_THINGS"):WaitForChild("Brekables")
+
+local function findAndClickClosestCoin()
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+    local closestCoin = nil
+    local closestDistance = math.huge
+
+    for _, object in pairs(brekablesFolder:GetChildren()) do
+        if object:IsA("Model") and object.PrimaryPart then
+            local objectPosition = object.PrimaryPart.Position
+            local distance = (objectPosition - humanoidRootPart.Position).magnitude
+
+            if distance < closestDistance then
+                closestDistance = distance
+                closestCoin = object
+            end
+        end
+    end
+
+    if closestCoin then
+        local rayOrigin = humanoidRootPart.Position
+        local rayDirection = (closestCoin.PrimaryPart.Position - rayOrigin).unit
+
+        local ray = Ray.new(rayOrigin, rayDirection * 1000)
+        local args = {
+            [1] = ray,
+            [2] = closestCoin.PrimaryPart.Position
+        }
+
+        game:GetService("ReplicatedStorage").Network.Click:FireServer(unpack(args))
+    end
+end
+
+local autoClick = false
+
+if game.GameId == 3317771874 then
+    local other = gui.newTab("PS99")
+
+    other.newToggle("Auto Click", "", false, function(Value)
+        autoClick = Value
+    end)
+end
+
+spawn(function()
+    while wait() do
+        if autoClick then
+            findAndClickClosestCoin()
+        end
+    end
+end)
 spawn(tppp)
 spawn(tpp)
 spawn(add_jump)
