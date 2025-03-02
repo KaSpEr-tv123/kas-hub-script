@@ -687,7 +687,6 @@ local function teleportSmoothly(targetPos)
     end
 end
 
--- GUI интерфейс
 if game.GameId == 3808081382 then
     local tsb = gui.newTab("TSB(beta)")
 
@@ -766,15 +765,15 @@ if game.GameId == 3317771874 then
     other.newToggle("Auto Click", "", false, function(Value)
         autoClick = Value
     end)
+    spawn(function()
+        while wait() do
+            if autoClick then
+                findAndClickClosestCoin()
+            end
+        end
+    end)
 end
 
-spawn(function()
-    while wait() do
-        if autoClick then
-            findAndClickClosestCoin()
-        end
-    end
-end)
 spawn(tppp)
 spawn(tpp)
 spawn(add_jump)
