@@ -71,6 +71,8 @@ local mouse = game.Players.LocalPlayer:GetMouse()
 
 -- Получаем сервисы
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
 local player = game.Players.LocalPlayer
 
 -- Функция для включения/выключения режима телепортации
@@ -84,7 +86,7 @@ local function toggleTeleportMode()
 end
 
 -- Функция для плавного телепорта
-local function clickTeleport(targetPosition)
+local function Teleport(targetPosition)
     local character = player.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 
@@ -106,7 +108,7 @@ end
 tool.Activated:Connect(function()
     if mode_tp then
         local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0) -- Устанавливаем позицию с небольшим смещением по Y
-        clickTeleport(pos)
+        Teleport(pos)
         game:GetService("ReplicatedStorage").Remotes.Location:FireServer()
     end
 end)
@@ -169,10 +171,11 @@ tp.newButton("TP all to you", "", function()
     end
 end)
 tp.newButton("Save your position", "", function()
-    position = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    notify("TP Utility", "Position saved")
 end)
 tp.newButton("TP in saved position", "", function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = position
+    Teleport(position)
 end)
 local playerN
 tp.newInput("Player", "Enter player name", function(playerName)
@@ -185,15 +188,15 @@ tp.newButton("TP to this player", "", function()
         if playerCharacter then
             local humanoidRootPart = playerCharacter:FindFirstChild("HumanoidRootPart")
             if humanoidRootPart then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = humanoidRootPart.CFrame
+                Teleport(humanoidRootPart.Position)
             else
-                warn("HumanoidRootPart not found for player:", playerN)
+                notify("TP Utility", "Character not found for player: " .. playerN)
             end
         else
-            warn("Character not found for player:", playerN)
+            notify("TP Utility", "Character not found for player: " .. playerN)
         end
     else
-        warn("Player not found:", playerN)
+        notify("TP Utility", "Player not found: " .. playerN)
     end
 end)
 
@@ -683,7 +686,9 @@ local function teleportSmoothly(targetPos, spamClicks)
                     ["Goal"] = "LeftClick"
                 }
             }
+
             game:GetService("Players").LocalPlayer.Character.Communicate:FireServer(unpack(args))
+
             wait(0.1)
         end
     end
@@ -694,12 +699,12 @@ if game.GameId == 3808081382 then
     local tsb = gui.newTab("The Strongest Battlegrounds(beta)")
 
     tsb.newButton("Load script for Main Account", "Телепорт и спам кликов", function()
-        getgenv().teleport = true
+        getgenv().teleport = not getgenv().teleport
         teleportSmoothly(targetPosition, true)
     end)
 
     tsb.newButton("Load script for Other Accounts", "Телепорт без атак", function()
-        getgenv().teleportOther = true
+        getgenv().teleportOther = not getgenv().teleportOther
         teleportSmoothly(targetPosition, false)
     end)
 end
