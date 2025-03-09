@@ -1,5 +1,5 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
+
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
 game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -772,3 +772,4 @@ spawn(tpp)
 spawn(add_jump)
 spawn(add_speed)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
