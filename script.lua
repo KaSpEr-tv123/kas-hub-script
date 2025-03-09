@@ -644,7 +644,7 @@ if game.GameId == 4777817887 then
     wait(5)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
 local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
 
 local function teleportToClosestCoin()
@@ -772,4 +772,3 @@ spawn(tpp)
 spawn(add_jump)
 spawn(add_speed)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
