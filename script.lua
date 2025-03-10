@@ -1,5 +1,5 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
-
+local gay = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
 game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -644,10 +644,9 @@ if game.GameId == 4777817887 then
     wait(5)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/BladeBall/main/redz9999"))()
 end
-loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
-local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
 
 local function teleportToClosestCoin()
+    local brekablesFolder = game.Workspace:WaitForChild("__THINGS"):WaitForChild("Breakables")
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
@@ -688,8 +687,6 @@ if game.GameId == 3317771874 then
             end
         end
     end)
-else
-    notify("Error", "Это не Pet Simulator 99. GameId: " .. game.GameId)
 end
 
 getgenv().teleport = false
