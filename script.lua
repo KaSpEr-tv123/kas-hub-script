@@ -1,5 +1,4 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
-local gay = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/main/ponosik228.lua"))()
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
 game:GetService("StarterGui"):SetCore("SendNotification", {
