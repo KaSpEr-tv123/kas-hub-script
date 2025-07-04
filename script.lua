@@ -372,36 +372,14 @@ local camera = workspace.CurrentCamera
 
 local aim = false
 local key = Enum.KeyCode.LeftAlt
-local aimMode = 1 -- 1 = по команде, 2 = ближайший
+local aimMode = 1
 
--- Функция для получения позиции головы
 local function getHeadPosition(player)
     local char = player.Character
     if char and char:FindFirstChild("Head") then
         return char.Head.CFrame.p
     end
     return nil
-end
-
--- Первый враг (алфавитный)
-local function getFirstEnemy()
-    local enemies = {}
-
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor then
-            local headPos = getHeadPosition(player)
-            local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-            if headPos and humanoid and humanoid.Health > 0 then
-                table.insert(enemies, player)
-            end
-        end
-    end
-
-    table.sort(enemies, function(a, b)
-        return a.Name < b.Name
-    end)
-
-    return enemies[1]
 end
 
 local function isInFOV(targetPos, fovDegrees)
@@ -411,16 +389,12 @@ local function isInFOV(targetPos, fovDegrees)
     local directionToTarget = (targetPos - camPos).Unit
     local dot = camLook:Dot(directionToTarget)
     
-    -- Угол между векторами: acos(dot) в радианах
-    local angle = math.acos(dot) * (180 / math.pi) -- в градусах
+    local angle = math.acos(dot) * (180 / math.pi)
 
     return angle <= fovDegrees
 end
 
-
-local FOV = 30 -- например, 30 градусов
-
-local function findNearestEnemy()
+local function getTargetPlayer()
     local shortestDistance = math.huge
     local nearest = nil
 
@@ -429,16 +403,18 @@ local function findNearestEnemy()
     local myHeadPos = localChar.Head.Position
 
     for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor then
+        if player ~= localPlayer then
             local char = player.Character
             if char and char:FindFirstChild("Head") then
                 local humanoid = char:FindFirstChild("Humanoid")
                 if humanoid and humanoid.Health > 0 then
-                    local headPos = char.Head.Position
-                    local dist = (headPos - myHeadPos).Magnitude
-                    if dist < shortestDistance and isInFOV(headPos, FOV) then
-                        shortestDistance = dist
-                        nearest = player
+                    if aimMode == 2 or player.TeamColor ~= localPlayer.TeamColor then
+                        local headPos = char.Head.Position
+                        local dist = (headPos - myHeadPos).Magnitude
+                        if dist < shortestDistance then
+                            shortestDistance = dist
+                            nearest = player
+                        end
                     end
                 end
             end
@@ -448,17 +424,9 @@ local function findNearestEnemy()
     return nearest
 end
 
-
-
--- Главный цикл наведения
 RunService.RenderStepped:Connect(function()
     if aim then
-        local target
-        if aimMode == 1 then
-            target = getFirstEnemy()
-        elseif aimMode == 2 then
-            target = findNearestEnemy()
-        end
+        local target = getTargetPlayer()
 
         if target then
             local targetHeadPos = getHeadPosition(target)
@@ -468,6 +436,7 @@ RunService.RenderStepped:Connect(function()
         end
     end
 end)
+
 
 -- Вкл/выкл аима
 ars.newToggle("AimBot", "Включить/выключить прицел", false, function(state)
