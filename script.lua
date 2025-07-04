@@ -442,7 +442,7 @@ game.UserInputService.InputBegan:Connect(function(input, gpe)
 end)
 
 -- Выбор режима
-ars.newDropdown("Режим прицеливания", {"По команде", "Ближайший"}, function(selected)
+ars.newDropdown("Режим прицеливания", "",{"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
         print("[AIM] Режим: По команде (любой враг)")
