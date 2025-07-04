@@ -373,16 +373,26 @@ local key = Enum.KeyCode.LeftAlt
 -- 1 = по команде (любой враг), 2 = ближайший
 local aimMode = 1
 
--- Получить первого доступного врага
+-- Получить первого врага (алфавитно)
 local function getFirstEnemy()
+    local enemies = {}
+
     for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor 
-        and player.Character and player.Character:FindFirstChild("Head")
-        and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
-            return player
+        if player ~= localPlayer
+        and player.TeamColor ~= localPlayer.TeamColor
+        and player.Character
+        and player.Character:FindFirstChild("Head")
+        and player.Character:FindFirstChild("Humanoid")
+        and player.Character.Humanoid.Health > 0 then
+            table.insert(enemies, player)
         end
     end
-    return nil
+
+    table.sort(enemies, function(a, b)
+        return a.Name < b.Name
+    end)
+
+    return enemies[1] -- первый по имени
 end
 
 -- Получить ближайшего врага
@@ -391,14 +401,17 @@ local function getNearestEnemy()
     local minDistance = math.huge
 
     for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor 
-        and player.Character and player.Character:FindFirstChild("Head")
-        and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
-            
+        if player ~= localPlayer
+        and player.TeamColor ~= localPlayer.TeamColor
+        and player.Character
+        and player.Character:FindFirstChild("Head")
+        and player.Character:FindFirstChild("Humanoid")
+        and player.Character.Humanoid.Health > 0 then
+
             local distance = (player.Character.Head.Position - localPlayer.Character.Head.Position).Magnitude
             if distance < minDistance then
-                target = player
                 minDistance = distance
+                target = player
             end
         end
     end
@@ -406,10 +419,10 @@ local function getNearestEnemy()
     return target
 end
 
--- Главная логика наведения
+-- Главная логика
 game:GetService("RunService").RenderStepped:Connect(function()
     if aim then
-        local targetPlayer = nil
+        local targetPlayer
 
         if aimMode == 1 then
             targetPlayer = getFirstEnemy()
@@ -430,7 +443,7 @@ end)
 
 -- Привязка клавиши
 if not game.UserInputService.TouchEnabled then
-    ars.newKeybind("Keybind Aim", "Клавиша для переключения прицела", function(input)
+    ars.newKeybind("Keybind Aim", "Клавиша для активации/деактивации", function(input)
         key = input.KeyCode
     end)
 end
@@ -441,16 +454,17 @@ game.UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
--- Выбор режима
-ars.newDropdown("Режим прицеливания", "",{"По команде", "Ближайший"}, function(selected)
+-- Режим прицеливания (фикс: добавлен description)
+ars.newDropdown("Режим прицеливания", "Выберите режим", {"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
-        print("[AIM] Режим: По команде (любой враг)")
+        print("[AIM] Режим: По команде (первый враг по алфавиту)")
     elseif selected == "Ближайший" then
         aimMode = 2
-        print("[AIM] Режим: По ближайшему врагу")
+        print("[AIM] Режим: По ближайшему")
     end
 end)
+
 
 
 
