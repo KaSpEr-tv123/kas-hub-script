@@ -363,57 +363,93 @@ if game.GameId == 2020908522 then
         end
     end)
 end
-
-local ars = gui.newTab("Arsenal")
+local ars = gui.newTab("aimtools")
 local localPlayer = game:GetService("Players").LocalPlayer
-
-local function getPlayerToAim()
-        local target = nil
-        local minDistance = math.huge
-
-        for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-            if player.Name ~= localPlayer.Name and player.Character and player.Character:FindFirstChild("Head") and
-                player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 and
-                player.TeamColor ~= localPlayer.TeamColor then
-                local distance = (player.Character.Head.Position - localPlayer.Character.Head.Position).magnitude
-
-                if distance < minDistance then
-                    target = player
-                    minDistance = distance
-                end
-            end
-        end
-
-        return target
-end
-
 local camera = game.Workspace.CurrentCamera
 local aim = false
+local key = Enum.KeyCode.LeftAlt
+local aimMode = 1 -- 1 = по команде, 2 = по ближайшему
 
-game:GetService("RunService").RenderStepped:Connect(function()
-        if aim then
-            local targetPlayer = getPlayerToAim()
-            if targetPlayer then
-                camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.Head.Position)
+-- Функция для режима 1: просто берём любого врага
+local function getAnyEnemyPlayer()
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor
+            and player.Character and player.Character:FindFirstChild("Head")
+            and player.Character:FindFirstChild("Humanoid")
+            and player.Character.Humanoid.Health > 0 then
+                return player
+        end
+    end
+    return nil
+end
+
+-- Функция для режима 2: ближайший враг
+local function getClosestEnemyPlayer()
+    local target = nil
+    local minDistance = math.huge
+
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor
+            and player.Character and player.Character:FindFirstChild("Head")
+            and player.Character:FindFirstChild("Humanoid")
+            and player.Character.Humanoid.Health > 0 then
+
+            local distance = (player.Character.Head.Position - localPlayer.Character.Head.Position).Magnitude
+            if distance < minDistance then
+                target = player
+                minDistance = distance
             end
         end
-end)
+    end
 
-ars.newToggle("AimBot", "", false, function()
-        aim = not aim
-end)
-
-local key = Enum.KeyCode.LeftAlt
-if not game.UserInputService.TouchEnabled then
-ars.newKeybind("Keybind aim", "", function(input)
-        key = input.KeyCode
-     end)
+    return target
 end
-game.UserInputService.InputBegan:Connect(function(input)
-        if input.KeyCode == key then
-            aim = not aim
+
+-- Наводка камеры
+game:GetService("RunService").RenderStepped:Connect(function()
+    if aim then
+        local targetPlayer = nil
+        if aimMode == 1 then
+            targetPlayer = getAnyEnemyPlayer()
+        elseif aimMode == 2 then
+            targetPlayer = getClosestEnemyPlayer()
         end
+
+        if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
+            camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.Head.Position)
+        end
+    end
 end)
+
+-- Включение/выключение aimbot
+ars.newToggle("AimBot", "Включает прицеливание", false, function(state)
+    aim = state
+end)
+
+-- Назначить клавишу переключения
+if not game.UserInputService.TouchEnabled then
+    ars.newKeybind("Клавиша Aim", "Назначь кнопку", function(input)
+        key = input.KeyCode
+    end)
+end
+
+game.UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == key then
+        aim = not aim
+    end
+end)
+
+-- Режимы прицеливания
+ars.newDropdown("Режим Aim", {"По команде", "По ближайшему"}, function(selected)
+    if selected == "По команде" then
+        aimMode = 1
+        print("[AIM] Режим: По команде")
+    elseif selected == "По ближайшему" then
+        aimMode = 2
+        print("[AIM] Режим: По ближайшему")
+    end
+end)
+
 
 
 if game.GameId == 3149100453 then
