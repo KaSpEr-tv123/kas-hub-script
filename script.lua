@@ -375,7 +375,9 @@ local aim = false
 local key = Enum.KeyCode.LeftAlt
 local aimMode = 1 -- 1 = по команде, 2 = ближайший
 
--- Поиск первого врага (по алфавиту)
+local currentTarget = nil
+
+-- По команде
 local function getFirstEnemy()
     local enemies = {}
 
@@ -395,10 +397,10 @@ local function getFirstEnemy()
     return enemies[1]
 end
 
--- Поиск ближайшего врага (динамически)
-local function getNearestEnemy()
-    local closestEnemy = nil
+-- По координатам — ближайший
+local function findNearestEnemy()
     local shortestDistance = math.huge
+    local nearest = nil
 
     local myChar = localPlayer.Character
     if not myChar or not myChar:FindFirstChild("Head") then return nil end
@@ -408,48 +410,53 @@ local function getNearestEnemy()
         if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor then
             local char = player.Character
             if char and char:FindFirstChild("Head") and char:FindFirstChild("Humanoid") and char.Humanoid.Health > 0 then
-                local distance = (char.Head.Position - myPos).Magnitude
-                if distance < shortestDistance then
-                    shortestDistance = distance
-                    closestEnemy = player
+                local theirPos = char.Head.Position
+                local dist = (theirPos - myPos).Magnitude
+
+                if dist < shortestDistance then
+                    shortestDistance = dist
+                    nearest = player
                 end
             end
         end
     end
 
-    return closestEnemy
+    return nearest
 end
 
--- Наведение каждый кадр
+-- 🔁 Обновляем цель каждый кадр, отдельно от наведения
 RunService.RenderStepped:Connect(function()
-    if aim then
-        local success, err = pcall(function()
-            local target = nil
-            if aimMode == 1 then
-                target = getFirstEnemy()
-            elseif aimMode == 2 then
-                target = getNearestEnemy()
-            end
+    if not aim then return end
 
-            if target and target.Character and target.Character:FindFirstChild("Head") then
-                camera.CFrame = CFrame.new(camera.CFrame.Position, target.Character.Head.Position)
-            end
-        end)
-
-        if not success then
-            warn("[AIM ERROR]:", err)
+    local success, err = pcall(function()
+        if aimMode == 1 then
+            currentTarget = getFirstEnemy()
+        elseif aimMode == 2 then
+            currentTarget = findNearestEnemy()
         end
+    end)
+
+    if not success then
+        warn("[AIM] Ошибка обновления цели:", err)
+        currentTarget = nil
+    end
+end)
+
+-- 🎯 Наведение отдельно
+RunService.RenderStepped:Connect(function()
+    if aim and currentTarget and currentTarget.Character and currentTarget.Character:FindFirstChild("Head") then
+        camera.CFrame = CFrame.new(camera.CFrame.Position, currentTarget.Character.Head.Position)
     end
 end)
 
 -- Вкл/выкл аима
-ars.newToggle("AimBot", "Включить или выключить прицел", false, function(state)
+ars.newToggle("AimBot", "Автонаведение", false, function(state)
     aim = state
 end)
 
 -- Назначение клавиши
 if not UserInputService.TouchEnabled then
-    ars.newKeybind("Keybind Aim", "Клавиша для аимбота", function(input)
+    ars.newKeybind("Keybind Aim", "Клавиша прицела", function(input)
         key = input.KeyCode
     end)
 end
@@ -460,17 +467,16 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
--- Дропдаун режима (с описанием — фикс)
-ars.newDropdown("Режим прицеливания", "Выберите стратегию наведения", {"По команде", "Ближайший"}, function(selected)
+-- Режим дропа
+ars.newDropdown("Режим прицеливания", "Метод выбора цели", {"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
-        print("[AIM] Режим: По команде (первый в списке)")
+        print("[AIM] Режим: По команде")
     elseif selected == "Ближайший" then
         aimMode = 2
-        print("[AIM] Режим: По ближайшему врагу")
+        print("[AIM] Режим: По координатам (ближайший)")
     end
 end)
-
 
 
 if game.GameId == 3149100453 then
