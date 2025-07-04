@@ -404,23 +404,26 @@ local function getFirstEnemy()
     return enemies[1]
 end
 
--- Ближайший враг
 local function findNearestEnemy()
     local shortestDistance = math.huge
     local nearest = nil
 
-    local myHeadPos = getHeadPosition(localPlayer)
-    if not myHeadPos then return nil end
+    local localChar = localPlayer.Character
+    if not localChar or not localChar:FindFirstChild("Head") then return nil end
+    local myHeadPos = localChar.Head.Position
 
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor then
-            local headPos = getHeadPosition(player)
-            local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-            if headPos and humanoid and humanoid.Health > 0 then
-                local dist = (headPos - myHeadPos).Magnitude
-                if dist < shortestDistance then
-                    shortestDistance = dist
-                    nearest = player
+            local char = player.Character
+            if char and char:FindFirstChild("Head") then
+                local humanoid = char:FindFirstChild("Humanoid")
+                if humanoid and humanoid.Health > 0 then
+                    local headPos = char.Head.Position
+                    local dist = (headPos - myHeadPos).Magnitude
+                    if dist < shortestDistance then
+                        shortestDistance = dist
+                        nearest = player
+                    end
                 end
             end
         end
@@ -428,6 +431,7 @@ local function findNearestEnemy()
 
     return nearest
 end
+
 
 -- Главный цикл наведения
 RunService.RenderStepped:Connect(function()
