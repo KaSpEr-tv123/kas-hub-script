@@ -363,37 +363,38 @@ if game.GameId == 2020908522 then
         end
     end)
 end
+
 local ars = gui.newTab("aimtools")
 local localPlayer = game:GetService("Players").LocalPlayer
-local camera = game.Workspace.CurrentCamera
+local camera = workspace.CurrentCamera
 local aim = false
 local key = Enum.KeyCode.LeftAlt
-local aimMode = 1 -- 1 = по команде, 2 = по ближайшему
 
--- Функция для режима 1: просто берём любого врага
-local function getAnyEnemyPlayer()
+-- 1 = по команде (любой враг), 2 = ближайший
+local aimMode = 1
+
+-- Получить первого доступного врага
+local function getFirstEnemy()
     for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor
-            and player.Character and player.Character:FindFirstChild("Head")
-            and player.Character:FindFirstChild("Humanoid")
-            and player.Character.Humanoid.Health > 0 then
-                return player
+        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor 
+        and player.Character and player.Character:FindFirstChild("Head")
+        and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
+            return player
         end
     end
     return nil
 end
 
--- Функция для режима 2: ближайший враг
-local function getClosestEnemyPlayer()
+-- Получить ближайшего врага
+local function getNearestEnemy()
     local target = nil
     local minDistance = math.huge
 
     for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor
-            and player.Character and player.Character:FindFirstChild("Head")
-            and player.Character:FindFirstChild("Humanoid")
-            and player.Character.Humanoid.Health > 0 then
-
+        if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor 
+        and player.Character and player.Character:FindFirstChild("Head")
+        and player.Character:FindFirstChild("Humanoid") and player.Character.Humanoid.Health > 0 then
+            
             local distance = (player.Character.Head.Position - localPlayer.Character.Head.Position).Magnitude
             if distance < minDistance then
                 target = player
@@ -405,14 +406,15 @@ local function getClosestEnemyPlayer()
     return target
 end
 
--- Наводка камеры
+-- Главная логика наведения
 game:GetService("RunService").RenderStepped:Connect(function()
     if aim then
         local targetPlayer = nil
+
         if aimMode == 1 then
-            targetPlayer = getAnyEnemyPlayer()
+            targetPlayer = getFirstEnemy()
         elseif aimMode == 2 then
-            targetPlayer = getClosestEnemyPlayer()
+            targetPlayer = getNearestEnemy()
         end
 
         if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head") then
@@ -421,32 +423,32 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
--- Включение/выключение aimbot
-ars.newToggle("AimBot", "Включает прицеливание", false, function(state)
+-- Тоггл активации
+ars.newToggle("AimBot", "Включить/выключить прицел", false, function(state)
     aim = state
 end)
 
--- Назначить клавишу переключения
+-- Привязка клавиши
 if not game.UserInputService.TouchEnabled then
-    ars.newKeybind("Клавиша Aim", "Назначь кнопку", function(input)
+    ars.newKeybind("Keybind Aim", "Клавиша для переключения прицела", function(input)
         key = input.KeyCode
     end)
 end
 
-game.UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed and input.KeyCode == key then
+game.UserInputService.InputBegan:Connect(function(input, gpe)
+    if not gpe and input.KeyCode == key then
         aim = not aim
     end
 end)
 
--- Режимы прицеливания
-ars.newDropdown("Режим Aim", {"По команде", "По ближайшему"}, function(selected)
+-- Выбор режима
+ars.newDropdown("Режим прицеливания", {"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
-        print("[AIM] Режим: По команде")
-    elseif selected == "По ближайшему" then
+        print("[AIM] Режим: По команде (любой враг)")
+    elseif selected == "Ближайший" then
         aimMode = 2
-        print("[AIM] Режим: По ближайшему")
+        print("[AIM] Режим: По ближайшему врагу")
     end
 end)
 
