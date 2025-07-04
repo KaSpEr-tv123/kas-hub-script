@@ -364,11 +364,10 @@ if game.GameId == 2020908522 then
     end)
 end
 
-if game.GameId == 111958650 then
-    local ars = gui.newTab("Arsenal")
-    local localPlayer = game:GetService("Players").LocalPlayer
+local ars = gui.newTab("Arsenal")
+local localPlayer = game:GetService("Players").LocalPlayer
 
-    local function getPlayerToAim()
+local function getPlayerToAim()
         local target = nil
         local minDistance = math.huge
 
@@ -386,37 +385,36 @@ if game.GameId == 111958650 then
         end
 
         return target
-    end
+end
 
-    local camera = game.Workspace.CurrentCamera
-    local aim = false
+local camera = game.Workspace.CurrentCamera
+local aim = false
 
-    game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function()
         if aim then
             local targetPlayer = getPlayerToAim()
             if targetPlayer then
                 camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.Head.Position)
             end
         end
-    end)
+end)
 
-    ars.newToggle("AimBot", "", false, function()
+ars.newToggle("AimBot", "", false, function()
         aim = not aim
-    end)
+end)
 
-    local key = Enum.KeyCode.LeftAlt
-    if not game.UserInputService.TouchEnabled then
-        ars.newKeybind("Keybind aim", "", function(input)
-            key = input.KeyCode
-        end)
-    end
-
-    game.UserInputService.InputBegan:Connect(function(input)
+local key = Enum.KeyCode.LeftAlt
+if not game.UserInputService.TouchEnabled then
+ars.newKeybind("Keybind aim", "", function(input)
+        key = input.KeyCode
+     end)
+end
+game.UserInputService.InputBegan:Connect(function(input)
         if input.KeyCode == key then
             aim = not aim
         end
-    end)
-end
+end)
+
 
 if game.GameId == 3149100453 then
 
