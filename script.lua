@@ -363,7 +363,6 @@ if game.GameId == 2020908522 then
         end
     end)
 end
-
 local ars = gui.newTab("aimtools")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -373,18 +372,28 @@ local camera = workspace.CurrentCamera
 
 local aim = false
 local key = Enum.KeyCode.LeftAlt
-local aimMode = 1 -- 1 = по команде, 2 = ближайший
+local aimMode = 1 -- 1 = по команде (первый враг), 2 = ближайший
 
 local currentTarget = nil
 
--- По команде
+-- Получаем голову игрока напрямую через Character.Head.CFrame.p
+local function getHeadPosition(player)
+    local char = player.Character
+    if char and char:FindFirstChild("Head") then
+        return char.Head.CFrame.p
+    end
+    return nil
+end
+
+-- Получить первого врага по алфавиту (без GetDescendants!)
 local function getFirstEnemy()
     local enemies = {}
 
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor then
-            local char = player.Character
-            if char and char:FindFirstChild("Head") and char:FindFirstChild("Humanoid") and char.Humanoid.Health > 0 then
+            local headPos = getHeadPosition(player)
+            local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+            if headPos and humanoid and humanoid.Health > 0 then
                 table.insert(enemies, player)
             end
         end
@@ -397,22 +406,20 @@ local function getFirstEnemy()
     return enemies[1]
 end
 
--- По координатам — ближайший
+-- Получить ближайшего врага по расстоянию через CFrame.p
 local function findNearestEnemy()
     local shortestDistance = math.huge
     local nearest = nil
 
-    local myChar = localPlayer.Character
-    if not myChar or not myChar:FindFirstChild("Head") then return nil end
-    local myPos = myChar.Head.Position
+    local myHeadPos = getHeadPosition(localPlayer)
+    if not myHeadPos then return nil end
 
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= localPlayer and player.TeamColor ~= localPlayer.TeamColor then
-            local char = player.Character
-            if char and char:FindFirstChild("Head") and char:FindFirstChild("Humanoid") and char.Humanoid.Health > 0 then
-                local theirPos = char.Head.Position
-                local dist = (theirPos - myPos).Magnitude
-
+            local headPos = getHeadPosition(player)
+            local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+            if headPos and humanoid and humanoid.Health > 0 then
+                local dist = (headPos - myHeadPos).Magnitude
                 if dist < shortestDistance then
                     shortestDistance = dist
                     nearest = player
@@ -424,9 +431,12 @@ local function findNearestEnemy()
     return nearest
 end
 
--- 🔁 Обновляем цель каждый кадр, отдельно от наведения
+-- Обновление цели отдельно
 RunService.RenderStepped:Connect(function()
-    if not aim then return end
+    if not aim then
+        currentTarget = nil
+        return
+    end
 
     local success, err = pcall(function()
         if aimMode == 1 then
@@ -437,26 +447,29 @@ RunService.RenderStepped:Connect(function()
     end)
 
     if not success then
-        warn("[AIM] Ошибка обновления цели:", err)
+        warn("[AIM] Ошибка при обновлении цели:", err)
         currentTarget = nil
     end
 end)
 
--- 🎯 Наведение отдельно
+-- Наведение камеры на цель
 RunService.RenderStepped:Connect(function()
-    if aim and currentTarget and currentTarget.Character and currentTarget.Character:FindFirstChild("Head") then
-        camera.CFrame = CFrame.new(camera.CFrame.Position, currentTarget.Character.Head.Position)
+    if aim and currentTarget then
+        local targetHeadPos = getHeadPosition(currentTarget)
+        if targetHeadPos then
+            camera.CFrame = CFrame.new(camera.CFrame.Position, targetHeadPos)
+        end
     end
 end)
 
--- Вкл/выкл аима
-ars.newToggle("AimBot", "Автонаведение", false, function(state)
+-- Вкл/выкл прицел
+ars.newToggle("AimBot", "Включить/выключить прицел", false, function(state)
     aim = state
 end)
 
 -- Назначение клавиши
 if not UserInputService.TouchEnabled then
-    ars.newKeybind("Keybind Aim", "Клавиша прицела", function(input)
+    ars.newKeybind("Keybind Aim", "Клавиша для активации аима", function(input)
         key = input.KeyCode
     end)
 end
@@ -467,14 +480,14 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
--- Режим дропа
-ars.newDropdown("Режим прицеливания", "Метод выбора цели", {"По команде", "Ближайший"}, function(selected)
+-- Выбор режима прицеливания
+ars.newDropdown("Режим прицеливания", "Выберите метод прицеливания", {"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
         print("[AIM] Режим: По команде")
     elseif selected == "Ближайший" then
         aimMode = 2
-        print("[AIM] Режим: По координатам (ближайший)")
+        print("[AIM] Режим: По ближайшему врагу")
     end
 end)
 
