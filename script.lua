@@ -404,6 +404,22 @@ local function getFirstEnemy()
     return enemies[1]
 end
 
+local function isInFOV(targetPos, fovDegrees)
+    local camPos = camera.CFrame.Position
+    local camLook = camera.CFrame.LookVector
+
+    local directionToTarget = (targetPos - camPos).Unit
+    local dot = camLook:Dot(directionToTarget)
+    
+    -- Угол между векторами: acos(dot) в радианах
+    local angle = math.acos(dot) * (180 / math.pi) -- в градусах
+
+    return angle <= fovDegrees
+end
+
+
+local FOV = 30 -- например, 30 градусов
+
 local function findNearestEnemy()
     local shortestDistance = math.huge
     local nearest = nil
@@ -420,7 +436,7 @@ local function findNearestEnemy()
                 if humanoid and humanoid.Health > 0 then
                     local headPos = char.Head.Position
                     local dist = (headPos - myHeadPos).Magnitude
-                    if dist < shortestDistance then
+                    if dist < shortestDistance and isInFOV(headPos, FOV) then
                         shortestDistance = dist
                         nearest = player
                     end
@@ -431,6 +447,7 @@ local function findNearestEnemy()
 
     return nearest
 end
+
 
 
 -- Главный цикл наведения
