@@ -372,11 +372,9 @@ local camera = workspace.CurrentCamera
 
 local aim = false
 local key = Enum.KeyCode.LeftAlt
-local aimMode = 1 -- 1 = по команде (первый враг), 2 = ближайший
+local aimMode = 1 -- 1 = по команде, 2 = ближайший
 
-local currentTarget = nil
-
--- Получаем голову игрока напрямую через Character.Head.CFrame.p
+-- Функция для получения позиции головы
 local function getHeadPosition(player)
     local char = player.Character
     if char and char:FindFirstChild("Head") then
@@ -385,7 +383,7 @@ local function getHeadPosition(player)
     return nil
 end
 
--- Получить первого врага по алфавиту (без GetDescendants!)
+-- Первый враг (алфавитный)
 local function getFirstEnemy()
     local enemies = {}
 
@@ -406,7 +404,7 @@ local function getFirstEnemy()
     return enemies[1]
 end
 
--- Получить ближайшего врага по расстоянию через CFrame.p
+-- Ближайший враг
 local function findNearestEnemy()
     local shortestDistance = math.huge
     local nearest = nil
@@ -431,45 +429,33 @@ local function findNearestEnemy()
     return nearest
 end
 
--- Обновление цели отдельно
+-- Главный цикл наведения
 RunService.RenderStepped:Connect(function()
-    if not aim then
-        currentTarget = nil
-        return
-    end
-
-    local success, err = pcall(function()
+    if aim then
+        local target
         if aimMode == 1 then
-            currentTarget = getFirstEnemy()
+            target = getFirstEnemy()
         elseif aimMode == 2 then
-            currentTarget = findNearestEnemy()
+            target = findNearestEnemy()
         end
-    end)
 
-    if not success then
-        warn("[AIM] Ошибка при обновлении цели:", err)
-        currentTarget = nil
-    end
-end)
-
--- Наведение камеры на цель
-RunService.RenderStepped:Connect(function()
-    if aim and currentTarget then
-        local targetHeadPos = getHeadPosition(currentTarget)
-        if targetHeadPos then
-            camera.CFrame = CFrame.new(camera.CFrame.Position, targetHeadPos)
+        if target then
+            local targetHeadPos = getHeadPosition(target)
+            if targetHeadPos then
+                camera.CFrame = CFrame.new(camera.CFrame.Position, targetHeadPos)
+            end
         end
     end
 end)
 
--- Вкл/выкл прицел
+-- Вкл/выкл аима
 ars.newToggle("AimBot", "Включить/выключить прицел", false, function(state)
     aim = state
 end)
 
 -- Назначение клавиши
 if not UserInputService.TouchEnabled then
-    ars.newKeybind("Keybind Aim", "Клавиша для активации аима", function(input)
+    ars.newKeybind("Keybind Aim", "Клавиша для аимбота", function(input)
         key = input.KeyCode
     end)
 end
@@ -480,14 +466,14 @@ UserInputService.InputBegan:Connect(function(input, gpe)
     end
 end)
 
--- Выбор режима прицеливания
+-- Режим прицеливания с описанием
 ars.newDropdown("Режим прицеливания", "Выберите метод прицеливания", {"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
         print("[AIM] Режим: По команде")
     elseif selected == "Ближайший" then
         aimMode = 2
-        print("[AIM] Режим: По ближайшему врагу")
+        print("[AIM] Режим: По ближайшему")
     end
 end)
 
