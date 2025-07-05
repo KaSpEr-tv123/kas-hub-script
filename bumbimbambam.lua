@@ -29,7 +29,7 @@ local function toggleBumbimbambam()
     
     if bumbimbambamEnabled then
         startBumbimbambam()
-        setupNoclip()
+        setupNoclipPlayers()
         setupAntifling()
     else
         stopBumbimbambam()
@@ -68,19 +68,23 @@ local function applyKnockback(player)
 end
 
 -- Функция для ноклипа
-local function setupNoclip()
+local function setupNoclipPlayers()
     if not NOCLIP_ENABLED then return end
-    
+
     local noclipConnection
     noclipConnection = RunService.Heartbeat:Connect(function()
-        if not bumbimbambamEnabled or not Character then
+        if not bumbimbambamEnabled then
             if noclipConnection then noclipConnection:Disconnect() end
             return
         end
-        
-        for _, part in pairs(Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
+
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character then
+                for _, part in pairs(player.Character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
             end
         end
     end)
@@ -183,7 +187,7 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
     
     if bumbimbambamEnabled then
         startBumbimbambam()
-        setupNoclip()
+        setupNoclipPlayers()
         setupAntifling()
     end
 end)
