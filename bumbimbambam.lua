@@ -29,7 +29,6 @@ local function toggleBumbimbambam()
     
     if bumbimbambamEnabled then
         startBumbimbambam()
-        setupNoclipPlayers()
         setupAntifling()
     else
         stopBumbimbambam()
@@ -65,29 +64,6 @@ local function applyKnockback(player)
     
     -- Удаляем BodyVelocity через некоторое время
     game:GetService("Debris"):AddItem(bodyVelocity, 0.5)
-end
-
--- Функция для ноклипа
-local function setupNoclipPlayers()
-    if not NOCLIP_ENABLED then return end
-
-    local noclipConnection
-    noclipConnection = RunService.Heartbeat:Connect(function()
-        if not bumbimbambamEnabled then
-            if noclipConnection then noclipConnection:Disconnect() end
-            return
-        end
-
-        for _, player in pairs(Players:GetPlayers()) do
-            if player ~= LocalPlayer and player.Character then
-                for _, part in pairs(player.Character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = false
-                    end
-                end
-            end
-        end
-    end)
 end
 
 -- Функция для антифлинг защиты
@@ -147,22 +123,32 @@ local function startBumbimbambam()
             if connection then connection:Disconnect() end
             return
         end
-        
+
         -- Вращаемся на месте
         spinAngle = spinAngle + SPIN_SPEED * RunService.Heartbeat:Wait()
         HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED), 0)
 
-        -- Рванка: кидаем всех в свою сторону
-        for _, player in pairs(getNearbyPlayers()) do
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                local targetRootPart = player.Character.HumanoidRootPart
-                local direction = (HumanoidRootPart.Position - targetRootPart.Position).Unit -- В СВОЮ сторону!
-                local bodyVelocity = Instance.new("BodyVelocity")
-                bodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-                bodyVelocity.Velocity = direction * KNOCKBACK_FORCE + Vector3.new(0, KNOCKBACK_UPWARD_FORCE, 0)
-                bodyVelocity.Parent = targetRootPart
-                game:GetService("Debris"):AddItem(bodyVelocity, 0.5)
+        -- Находим ближайшего игрока
+        local closestDist = math.huge
+        local closestPos = nil
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local pos = player.Character.HumanoidRootPart.Position
+                local dist = (pos - HumanoidRootPart.Position).Magnitude
+                if dist < closestDist then
+                    closestDist = dist
+                    closestPos = pos
+                end
             end
+        end
+
+        -- Если есть цель — двигаемся к ней
+        if closestPos then
+            local direction = (closestPos - HumanoidRootPart.Position).Unit
+            local speed = 80 -- скорость влёта, можно менять
+            HumanoidRootPart.Velocity = direction * speed
+        else
+            HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
         end
     end)
 end
@@ -187,7 +173,6 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
     
     if bumbimbambamEnabled then
         startBumbimbambam()
-        setupNoclipPlayers()
         setupAntifling()
     end
 end)
