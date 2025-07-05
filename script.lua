@@ -128,7 +128,7 @@ game:GetService("RunService").Stepped:Connect(function()
 end)
 
 other.newToggle("Bumbimbambam", "", false, function(toggleState)
-    bumbimbambam.toggleBumbimbambam()
+    bumbimbambam.toggle()
 end)
 
 other.newToggle("Noclip", "", false, function(toggleState)
