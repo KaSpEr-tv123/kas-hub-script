@@ -118,6 +118,21 @@ local function setupAntifling()
     end)
 end
 
+local function getClosestPlayerCFrame()
+    local closestDist = math.huge
+    local closestCFrame = nil
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local dist = (player.Character.HumanoidRootPart.Position - HumanoidRootPart.Position).Magnitude
+            if dist < closestDist then
+                closestDist = dist
+                closestCFrame = player.Character.HumanoidRootPart.CFrame
+            end
+        end
+    end
+    return closestCFrame
+end
+
 -- Основная функция закручивания
 local function startBumbimbambam()
     local connection
@@ -129,29 +144,18 @@ local function startBumbimbambam()
             return
         end
         
-        local nearbyPlayers = getNearbyPlayers()
-        
-        if #nearbyPlayers > 0 then
-            -- Вращаемся вокруг ближайшего игрока
-            local targetPlayer = nearbyPlayers[1]
-            if targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
-                
-                -- Вычисляем позицию для вращения вокруг игрока
-                spinAngle = spinAngle + SPIN_SPEED * RunService.Heartbeat:Wait()
-                local offset = Vector3.new(
-                    math.cos(spinAngle) * SPIN_RADIUS,
-                    0,
-                    math.sin(spinAngle) * SPIN_RADIUS
-                )
-                
-                -- Перемещаем игрока
-                HumanoidRootPart.CFrame = CFrame.new(targetPosition + offset, targetPosition)
-                
-                -- Применяем отбрасывание ко всем ближайшим игрокам
-                for _, player in pairs(nearbyPlayers) do
-                    applyKnockback(player)
-                end
+        local targetCFrame = getClosestPlayerCFrame()
+        if targetCFrame then
+            spinAngle = spinAngle + SPIN_SPEED * RunService.Heartbeat:Wait()
+            local offset = Vector3.new(
+                math.cos(spinAngle) * SPIN_RADIUS,
+                0,
+                math.sin(spinAngle) * SPIN_RADIUS
+            )
+            HumanoidRootPart.CFrame = CFrame.new(targetCFrame.Position + offset, targetCFrame.Position)
+            -- Применяем отбрасывание ко всем ближайшим игрокам
+            for _, player in pairs(getNearbyPlayers()) do
+                applyKnockback(player)
             end
         else
             -- Если нет игроков рядом, просто вращаемся на месте
