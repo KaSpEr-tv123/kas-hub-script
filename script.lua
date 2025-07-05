@@ -1,4 +1,5 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
+local bumbimbambam = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/bumbimbambam.lua"))()
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
 game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -124,6 +125,10 @@ game:GetService("RunService").Stepped:Connect(function()
             v.CanCollide = mode_noclip
         end
     end
+end)
+
+other.newToggle("Bumbimbambam", "", false, function(toggleState)
+    bumbimbambam.toggleBumbimbambam()
 end)
 
 other.newToggle("Noclip", "", false, function(toggleState)
