@@ -177,6 +177,33 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
     end
 end)
 
+-- Создание щитка (один раз при включении)
+local shield = Instance.new("Part")
+shield.Size = Vector3.new(5, 5, 1)
+shield.Transparency = 0.5
+shield.Anchored = false
+shield.CanCollide = true
+shield.Massless = false
+shield.Parent = workspace
+shield.Name = "BumbimShield"
+
+-- Weld к HumanoidRootPart
+local weld = Instance.new("WeldConstraint")
+weld.Part0 = HumanoidRootPart
+weld.Part1 = shield
+weld.Parent = shield
+
+-- Позиция щитка (например, сбоку)
+shield.Position = HumanoidRootPart.Position + Vector3.new(5, 0, 0)
+
+local angle = 0
+RunService.Heartbeat:Connect(function(dt)
+    if not bumbimbambamEnabled then return end
+    angle = angle + dt * 5 -- скорость вращения
+    local offset = Vector3.new(math.cos(angle) * 5, 0, math.sin(angle) * 5)
+    shield.Position = HumanoidRootPart.Position + offset
+end)
+
 -- Экспортируем функцию для внешнего вызова
 return {
     toggle = toggleBumbimbambam,
