@@ -144,23 +144,21 @@ local function startBumbimbambam()
             return
         end
         
-        local targetCFrame = getClosestPlayerCFrame()
-        if targetCFrame then
-            spinAngle = spinAngle + SPIN_SPEED * RunService.Heartbeat:Wait()
-            local offset = Vector3.new(
-                math.cos(spinAngle) * SPIN_RADIUS,
-                0,
-                math.sin(spinAngle) * SPIN_RADIUS
-            )
-            HumanoidRootPart.CFrame = CFrame.new(targetCFrame.Position + offset, targetCFrame.Position)
-            -- Применяем отбрасывание ко всем ближайшим игрокам
-            for _, player in pairs(getNearbyPlayers()) do
-                applyKnockback(player)
+        -- Вращаемся на месте
+        spinAngle = spinAngle + SPIN_SPEED * RunService.Heartbeat:Wait()
+        HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED), 0)
+
+        -- Рванка: кидаем всех в свою сторону
+        for _, player in pairs(getNearbyPlayers()) do
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local targetRootPart = player.Character.HumanoidRootPart
+                local direction = (HumanoidRootPart.Position - targetRootPart.Position).Unit -- В СВОЮ сторону!
+                local bodyVelocity = Instance.new("BodyVelocity")
+                bodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+                bodyVelocity.Velocity = direction * KNOCKBACK_FORCE + Vector3.new(0, KNOCKBACK_UPWARD_FORCE, 0)
+                bodyVelocity.Parent = targetRootPart
+                game:GetService("Debris"):AddItem(bodyVelocity, 0.5)
             end
-        else
-            -- Если нет игроков рядом, просто вращаемся на месте
-            spinAngle = spinAngle + SPIN_SPEED * RunService.Heartbeat:Wait()
-            HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED), 0)
         end
     end)
 end
