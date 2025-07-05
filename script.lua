@@ -127,8 +127,14 @@ game:GetService("RunService").Stepped:Connect(function()
     end
 end)
 
-other.newToggle("Bumbimbambam", "", false, function(toggleState)
+local function toggleBumbimbambam()
+    print("toggleBumbimbambam: старт")
     bumbimbambam.toggle()
+    print("toggleBumbimbambam: конец")
+end
+
+other.newToggle("Bumbimbambam", "", false, function(toggleState)
+    toggleBumbimbambam()
 end)
 
 other.newToggle("Noclip", "", false, function(toggleState)
