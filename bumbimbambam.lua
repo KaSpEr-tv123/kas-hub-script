@@ -79,27 +79,28 @@ local function toggleBumbimbambam()
     end
 end
 
-local function getAttackPoint(targetPos)
-    -- Телепорт на TELEPORT_DISTANCE от цели, на том же уровне Y
-    local angle = math.random() * 2 * math.pi
-    local dx = math.cos(angle) * TELEPORT_DISTANCE
-    local dz = math.sin(angle) * TELEPORT_DISTANCE
-    return Vector3.new(targetPos.X + dx, targetPos.Y + 2, targetPos.Z + dz)
-end
-
-local function spinAnimation(duration, speed)
-    local startTime = tick()
-    while tick() - startTime < duration do
-        HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(speed * RunService.Heartbeat:Wait()), 0)
+local function getSmartTeleportPoint(targetRootRootPart)
+    local pos = targetRootRootPart.Position
+    local vel = targetRootRootPart.Velocity
+    if vel.Magnitude < 2 then
+        -- Цель стоит: точка на сфере вокруг
+        local angle = math.random() * 2 * math.pi
+        local r = 1.5
+        return pos + Vector3.new(math.cos(angle)*r, 0, math.sin(angle)*r)
+    else
+        -- Цель двигается: точка впереди + немного влево/вправо
+        local forward = vel.Unit
+        local right = forward:Cross(Vector3.new(0,1,0)).Unit
+        local side = (math.random() > 0.5 and 1 or -1) * math.random() * 1.2
+        return pos + forward*2.5 + right*side
     end
 end
 
 local function attackTarget(targetPlayer)
     if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
     local targetRootPart = targetPlayer.Character.HumanoidRootPart
-    local targetPos = targetRootPart.Position
-    local attackFrom = getAttackPoint(targetPos)
-    -- 1. Телепорт к точке рядом с целью
+    local attackFrom = getSmartTeleportPoint(targetRootPart)
+    -- 1. Телепорт к точке
     HumanoidRootPart.CFrame = CFrame.new(attackFrom)
     -- 2. PlatformStand = true (отключаем физику Humanoid)
     if Humanoid and Humanoid.PlatformStand == false then
