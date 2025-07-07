@@ -2,6 +2,8 @@
 
 local GuiLibrary = {}
 
+print("[kasgui.lua] Модуль загружен")
+
 -- Function to apply modern styles to a GUI element
 local function applyModernStyles(guiElement)
     guiElement.BackgroundColor3 = Color3.fromRGB(75, 0, 130) -- Purple color
@@ -21,6 +23,7 @@ end
 
 -- Function to create a new GUI window with modern styles
 function GuiLibrary:CreateWindow(title, iconId)
+    print("[kasgui.lua] CreateWindow called: ", title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -49,6 +52,7 @@ function GuiLibrary:CreateWindow(title, iconId)
     icon.Parent = frame
     icon.ZIndex = 3
     
+    print("[kasgui.lua] Window created: ", window.Name, "Enabled:", window.Enabled)
     return window
 end
 
@@ -119,6 +123,7 @@ end
 
 -- Глобальная иконка для открытия/закрытия главного меню (теперь emoji)
 if not GuiLibrary._mainMenuIcon then
+    print("[kasgui.lua] Creating KasHubMenuIcon")
     GuiLibrary._mainMenuIcon = Instance.new("TextButton")
     GuiLibrary._mainMenuIcon.Name = "KasHubMenuIcon"
     GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 64, 0, 64)
@@ -132,10 +137,12 @@ if not GuiLibrary._mainMenuIcon then
     GuiLibrary._mainMenuIcon.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     GuiLibrary._mainMenuIcon.ZIndex = 10
     GuiLibrary._mainMenuIcon.Draggable = true
+    print("[kasgui.lua] KasHubMenuIcon создан, позиция:", tostring(GuiLibrary._mainMenuIcon.Position), "Visible:", GuiLibrary._mainMenuIcon.Visible)
 end
 
 -- Переопределяем CreateDefaultLayout для компактного окна
 function GuiLibrary:CreateDefaultLayout()
+    print("[kasgui.lua] CreateDefaultLayout called")
     local window = Instance.new("ScreenGui")
     window.Name = "Default Layout"
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -147,6 +154,7 @@ function GuiLibrary:CreateDefaultLayout()
     applyModernStyles(frame)
     frame.Parent = window
     frame.ZIndex = 2
+    print("[kasgui.lua] Default Layout создан, Enabled:", window.Enabled, "Frame pos:", tostring(frame.Position))
     -- Titlebar
     local titleBar = Instance.new("Frame")
     titleBar.Size = UDim2.new(1, 0, 0, 40)
@@ -178,7 +186,9 @@ function GuiLibrary:CreateDefaultLayout()
     closeBtn.TextSize = 20
     closeBtn.Parent = titleBar
     closeBtn.MouseButton1Click:Connect(function()
-        window.Enabled = false
+        print("[kasgui.lua] Клик по KasHubMenuIcon, переключаем главное меню")
+        window.Enabled = not window.Enabled
+        print("[kasgui.lua] Главное меню Enabled:", window.Enabled)
     end)
     closeBtn.ZIndex = 4
     -- Контейнер для контента
@@ -191,10 +201,6 @@ function GuiLibrary:CreateDefaultLayout()
     makeDraggable(frame)
     -- Изначально скрыто
     window.Enabled = false
-    -- Клик по иконке открывает/закрывает меню
-    GuiLibrary._mainMenuIcon.MouseButton1Click:Connect(function()
-        window.Enabled = not window.Enabled
-    end)
     return window
 end
 
@@ -583,6 +589,7 @@ end
 
 -- Универсальный метод создания кастомного окна
 function GuiLibrary:CreateCustomWindow(title, iconId)
+    print("[kasgui.lua] CreateCustomWindow called: ", title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title .. "Window"
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -594,6 +601,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     applyModernStyles(frame)
     frame.Parent = window
     frame.ZIndex = 2
+    print("[kasgui.lua] CustomWindow создан: ", window.Name, "Enabled:", window.Enabled, "Frame pos:", tostring(frame.Position))
     -- Titlebar
     local titleBar = Instance.new("Frame")
     titleBar.Size = UDim2.new(1, 0, 0, 40)
