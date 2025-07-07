@@ -97,19 +97,20 @@ local function attackTarget(targetPlayer)
     local targetRootPart = targetPlayer.Character.HumanoidRootPart
     local targetPos = targetRootPart.Position
     local attackFrom = getAttackPoint(targetPos)
+    -- 1. Телепорт к точке рядом с целью
     HumanoidRootPart.CFrame = CFrame.new(attackFrom)
-    spinAnimation(SPIN_TIME, SPIN_SPEED)
+    -- 2. Моментально задаём Velocity в сторону цели
     local freshTargetPos = targetRootPart.Position
     local direction = (freshTargetPos - HumanoidRootPart.Position).Unit
     HumanoidRootPart.Velocity = direction * ATTACK_SPEED
     lastAttackTime = tick()
-    -- Дать время на влет
-    local flyTime = 0.13
+    -- 3. Кручение параллельно (не задерживает влет)
+    local flyTime = 0.18
     local t0 = tick()
     while tick() - t0 < flyTime do
-        HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(36), 0)
-        RunService.Heartbeat:Wait()
+        HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED * RunService.Heartbeat:Wait()), 0)
     end
+    -- 4. Наносим удар
     local knockback = Instance.new("BodyVelocity")
     knockback.MaxForce = Vector3.new(1e5, 1e5, 1e5)
     knockback.Velocity = direction * ATTACK_FORCE + Vector3.new(0, 100, 0)
@@ -265,10 +266,10 @@ createTargetGui()
 
 return {
     toggle = toggleBumbimbambam,
-    enable = function()
+    enable = function() 
         if not bumbimbambamEnabled then toggleBumbimbambam() end
     end,
-    disable = function()
+    disable = function() 
         if bumbimbambamEnabled then toggleBumbimbambam() end
     end,
     isEnabled = function() return bumbimbambamEnabled end
