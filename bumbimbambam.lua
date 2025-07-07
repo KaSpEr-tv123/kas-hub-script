@@ -17,7 +17,7 @@ local attackThread = nil
 local lastAttackTime = 0
 
 -- Настройки
-local TELEPORT_DISTANCE = 3 -- Дистанция телепорта от цели (метров)
+local TELEPORT_DISTANCE = 1.5 -- Дистанция телепорта от цели (метров)
 local ATTACK_SPEED = 1400 -- Скорость влёта в игрока
 local ATTACK_FORCE = 1200 -- Сила отбрасывания
 local ATTACK_COOLDOWN = 0.1 -- Задержка между атаками
