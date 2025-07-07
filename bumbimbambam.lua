@@ -1,5 +1,5 @@
 -- Модуль Bumbimbambam для Kas Hub Script
--- Агрессивная атака: влет с большого расстояния на огромной скорости
+-- Агрессивная атака: кручение и влет строго в игрока с отключённой коллизией
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -13,54 +13,31 @@ local Humanoid = Character:WaitForChild("Humanoid")
 local bumbimbambamEnabled = false
 
 -- Настройки
-local SEARCH_RADIUS = 50 -- Радиус поиска цели (метров)
+local SEARCH_RADIUS = 60 -- Радиус поиска цели (метров)
 local TELEPORT_DISTANCE = 25 -- Дистанция телепорта от цели (метров)
-local ATTACK_SPEED = 800 -- Скорость влёта в игрока
-local ATTACK_FORCE = 500 -- Сила отбрасывания
+local ATTACK_SPEED = 900 -- Скорость влёта в игрока
+local ATTACK_FORCE = 600 -- Сила отбрасывания
 local ATTACK_COOLDOWN = 0.7 -- Задержка между атаками
-local DISABLE_COLLISION = true
-local ENABLE_COLLISION_FOR_OTHERS = true
+local SPIN_TIME = 0.4 -- Время кручения перед атакой (сек)
+local SPIN_SPEED = 1800 -- Скорость вращения (градусов/сек)
+
+local function setLocalCollision(state)
+    for _, part in pairs(Character:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = state
+        end
+    end
+end
 
 local function toggleBumbimbambam()
     bumbimbambamEnabled = not bumbimbambamEnabled
     print("Bumbimbambam:", bumbimbambamEnabled and "ВКЛЮЧЕН" or "ВЫКЛЮЧЕН")
     if bumbimbambamEnabled then
+        setLocalCollision(false)
         startBumbimbambam()
-        setupCollision()
     else
         stopBumbimbambam()
-        resetCollision()
-    end
-end
-
-local function setupCollision()
-    if DISABLE_COLLISION then
-        for _, part in pairs(Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-    end
-    if ENABLE_COLLISION_FOR_OTHERS then
-        for _, player in pairs(Players:GetPlayers()) do
-            if player ~= LocalPlayer and player.Character then
-                for _, part in pairs(player.Character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = true
-                    end
-                end
-            end
-        end
-    end
-end
-
-local function resetCollision()
-    if DISABLE_COLLISION then
-        for _, part in pairs(Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = true
-            end
-        end
+        setLocalCollision(true)
     end
 end
 
@@ -79,31 +56,39 @@ local function getClosestPlayer()
     return closestPlayer
 end
 
-local function getRandomPointAround(pos, distance)
+local function getAttackPoint(targetPos)
+    -- Телепорт на TELEPORT_DISTANCE от цели, на том же уровне Y
     local angle = math.random() * 2 * math.pi
-    local dx = math.cos(angle) * distance
-    local dz = math.sin(angle) * distance
-    return pos + Vector3.new(dx, 0, dz)
+    local dx = math.cos(angle) * TELEPORT_DISTANCE
+    local dz = math.sin(angle) * TELEPORT_DISTANCE
+    return Vector3.new(targetPos.X + dx, targetPos.Y + 2, targetPos.Z + dz)
+end
+
+local function spinAnimation(duration, speed)
+    local startTime = tick()
+    while tick() - startTime < duration do
+        HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(speed * RunService.Heartbeat:Wait()), 0)
+    end
 end
 
 local function attackTarget(targetPlayer)
     if not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
     local targetRootPart = targetPlayer.Character.HumanoidRootPart
     local targetPos = targetRootPart.Position
-    -- Выбираем случайную точку на TELEPORT_DISTANCE от цели
-    local attackFrom = getRandomPointAround(targetPos, TELEPORT_DISTANCE)
-    -- Телепортируемся в эту точку
-    HumanoidRootPart.CFrame = CFrame.new(attackFrom + Vector3.new(0, 2, 0))
-    -- Считаем направление
+    -- 1. Телепорт на 25м от цели, на том же уровне
+    local attackFrom = getAttackPoint(targetPos)
+    HumanoidRootPart.CFrame = CFrame.new(attackFrom)
+    -- 2. Краткая раскрутка
+    spinAnimation(SPIN_TIME, SPIN_SPEED)
+    -- 3. Влет строго в HumanoidRootPart цели
     local direction = (targetPos - HumanoidRootPart.Position).Unit
-    -- Влетаем в цель
     HumanoidRootPart.Velocity = direction * ATTACK_SPEED
-    -- Крутимся во время полёта
+    -- 4. Кручение во время полёта
     for i = 1, 10 do
         HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(36), 0)
         RunService.Heartbeat:Wait()
     end
-    -- Применяем отбрасывание к цели
+    -- 5. Применяем отбрасывание к цели
     local knockback = Instance.new("BodyVelocity")
     knockback.MaxForce = Vector3.new(1e5, 1e5, 1e5)
     knockback.Velocity = direction * ATTACK_FORCE + Vector3.new(0, 100, 0)
@@ -112,9 +97,8 @@ local function attackTarget(targetPlayer)
 end
 
 local function startBumbimbambam()
-    local running = true
     spawn(function()
-        while bumbimbambamEnabled and running do
+        while bumbimbambamEnabled do
             local target = getClosestPlayer()
             if target then
                 attackTarget(target)
@@ -135,8 +119,8 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
     HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
     Humanoid = Character:WaitForChild("Humanoid")
     if bumbimbambamEnabled then
+        setLocalCollision(false)
         startBumbimbambam()
-        setupCollision()
     end
 end)
 
