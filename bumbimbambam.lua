@@ -65,17 +65,112 @@ local function stopAntifling()
     antiflingConn = nil
 end
 
-local function toggleBumbimbambam()
+local function createTargetGui(windowObj)
+    local content = windowObj and windowObj.content
+    if not content then return end
+    -- Очищаем контент
+    for _, child in ipairs(content:GetChildren()) do
+        child:Destroy()
+    end
+
+    local header = Instance.new("TextLabel")
+    header.Size = UDim2.new(1, 0, 0, 30)
+    header.Position = UDim2.new(0, 0, 0, 0)
+    header.BackgroundTransparency = 1
+    header.Text = "Выберите цель для атаки:"
+    header.TextColor3 = Color3.fromRGB(220, 180, 255)
+    header.Font = Enum.Font.GothamBold
+    header.TextSize = 16
+    header.Parent = content
+
+    local playerList = Instance.new("ScrollingFrame")
+    playerList.Size = UDim2.new(1, 0, 0, 200)
+    playerList.Position = UDim2.new(0, 0, 0, 40)
+    playerList.BackgroundColor3 = Color3.fromRGB(50, 0, 100)
+    playerList.BorderSizePixel = 0
+    playerList.CanvasSize = UDim2.new(0, 0, 0, 0)
+    playerList.ScrollBarThickness = 6
+    playerList.Parent = content
+
+    local function refreshList()
+        for _, c in pairs(playerList:GetChildren()) do
+            if c:IsA("TextButton") then c:Destroy() end
+        end
+        local y = 0
+        for _, plr in ipairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer then
+                local btn = Instance.new("TextButton")
+                btn.Size = UDim2.new(1, -8, 0, 32)
+                btn.Position = UDim2.new(0, 4, 0, y)
+                btn.BackgroundColor3 = (selectedTarget == plr.Name) and Color3.fromRGB(180, 0, 255) or Color3.fromRGB(120, 0, 200)
+                btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                btn.Font = Enum.Font.Gotham
+                btn.TextSize = 16
+                btn.Text = plr.Name .. ((selectedTarget == plr.Name) and "  [ЦЕЛЬ]" or "")
+                btn.Parent = playerList
+                btn.MouseButton1Click:Connect(function()
+                    selectedTarget = plr.Name
+                    refreshList()
+                    StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель: "..plr.Name, Duration=2})
+                end)
+                y = y + 36
+            end
+        end
+        -- Кнопка снять цель
+        local btn = Instance.new("TextButton")
+        btn.Size = UDim2.new(1, -8, 0, 32)
+        btn.Position = UDim2.new(0, 4, 0, y)
+        btn.BackgroundColor3 = Color3.fromRGB(60, 0, 80)
+        btn.TextColor3 = Color3.fromRGB(200, 200, 255)
+        btn.Font = Enum.Font.Gotham
+        btn.TextSize = 16
+        btn.Text = "Снять цель (никого не атаковать)"
+        btn.Parent = playerList
+        btn.MouseButton1Click:Connect(function()
+            selectedTarget = nil
+            refreshList()
+            StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель снята", Duration=2})
+        end)
+        y = y + 36
+        playerList.CanvasSize = UDim2.new(0, 0, 0, y)
+    end
+
+    refreshList()
+    Players.PlayerAdded:Connect(refreshList)
+    Players.PlayerRemoving:Connect(refreshList)
+
+    -- Кнопка стоп атаки
+    local stopBtn = Instance.new("TextButton")
+    stopBtn.Size = UDim2.new(1, -40, 0, 36)
+    stopBtn.Position = UDim2.new(0, 20, 1, -44)
+    stopBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 80)
+    stopBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    stopBtn.Font = Enum.Font.GothamBold
+    stopBtn.TextSize = 18
+    stopBtn.Text = "Стоп атаки"
+    stopBtn.Parent = content
+    stopBtn.MouseButton1Click:Connect(function()
+        stopBumbimbambam()
+        StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Атака остановлена", Duration=2})
+    end)
+end
+
+local function toggleBumbimbambam(windowObj)
     bumbimbambamEnabled = not bumbimbambamEnabled
     print("Bumbimbambam:", bumbimbambamEnabled and "ВКЛЮЧЕН" or "ВЫКЛЮЧЕН")
     if bumbimbambamEnabled then
         setLocalCollision(false)
         if ANTIFLING_ENABLED then startAntifling() end
         startBumbimbambam()
+        if windowObj then
+            createTargetGui(windowObj)
+            windowObj.open()
+        end
     else
         stopBumbimbambam()
         stopAntifling()
         setLocalCollision(true)
+        if windowObj then windowObj.close() end
     end
 end
 
@@ -173,117 +268,13 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
     end
 end)
 
--- === Фиолетовое draggable GUI ===
-local function createTargetGui()
-    if game.CoreGui:FindFirstChild("BumbimTargetGui") then
-        game.CoreGui.BumbimTargetGui:Destroy()
-    end
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "BumbimTargetGui"
-    gui.Parent = game.CoreGui
-
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 260, 0, 380)
-    frame.Position = UDim2.new(0, 100, 0, 100)
-    frame.BackgroundColor3 = Color3.fromRGB(80, 0, 160)
-    frame.BorderSizePixel = 0
-    frame.Active = true
-    frame.Draggable = true
-    frame.Parent = gui
-
-    local title = Instance.new("TextLabel")
-    title.Text = "Bumbimbambam: Выбор цели"
-    title.Size = UDim2.new(1, 0, 0, 36)
-    title.BackgroundTransparency = 1
-    title.TextColor3 = Color3.fromRGB(220, 180, 255)
-    title.Font = Enum.Font.GothamBold
-    title.TextSize = 20
-    title.Parent = frame
-
-    local scroll = Instance.new("ScrollingFrame")
-    scroll.Size = UDim2.new(1, -20, 1, -96)
-    scroll.Position = UDim2.new(0, 10, 0, 46)
-    scroll.BackgroundColor3 = Color3.fromRGB(50, 0, 100)
-    scroll.BorderSizePixel = 0
-    scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-    scroll.ScrollBarThickness = 6
-    scroll.Parent = frame
-
-    local function refreshList()
-        for _, c in pairs(scroll:GetChildren()) do
-            if c:IsA("TextButton") then c:Destroy() end
-        end
-        local y = 0
-        for _, plr in ipairs(Players:GetPlayers()) do
-            if plr ~= LocalPlayer then
-                local btn = Instance.new("TextButton")
-                btn.Size = UDim2.new(1, -8, 0, 32)
-                btn.Position = UDim2.new(0, 4, 0, y)
-                btn.BackgroundColor3 = (selectedTarget == plr.Name) and Color3.fromRGB(180, 0, 255) or Color3.fromRGB(120, 0, 200)
-                btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-                btn.Font = Enum.Font.Gotham
-                btn.TextSize = 16
-                btn.Text = plr.Name .. ((selectedTarget == plr.Name) and "  [ЦЕЛЬ]" or "")
-                btn.Parent = scroll
-                btn.MouseButton1Click:Connect(function()
-                    selectedTarget = plr.Name
-                    refreshList()
-                    StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель: "..plr.Name, Duration=2})
-                    if bumbimbambamEnabled then
-                        startBumbimbambam()
-                    end
-                end)
-                y = y + 36
-            end
-        end
-        -- Кнопка снять цель
-        local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(1, -8, 0, 32)
-        btn.Position = UDim2.new(0, 4, 0, y)
-        btn.BackgroundColor3 = Color3.fromRGB(60, 0, 80)
-        btn.TextColor3 = Color3.fromRGB(200, 200, 255)
-        btn.Font = Enum.Font.Gotham
-        btn.TextSize = 16
-        btn.Text = "Снять цель (никого не атаковать)"
-        btn.Parent = scroll
-        btn.MouseButton1Click:Connect(function()
-            selectedTarget = nil
-            refreshList()
-            StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель снята", Duration=2})
-        end)
-        y = y + 36
-        scroll.CanvasSize = UDim2.new(0, 0, 0, y)
-    end
-
-    refreshList()
-    Players.PlayerAdded:Connect(refreshList)
-    Players.PlayerRemoving:Connect(refreshList)
-
-    -- Кнопка стоп атаки
-    local stopBtn = Instance.new("TextButton")
-    stopBtn.Size = UDim2.new(1, -40, 0, 36)
-    stopBtn.Position = UDim2.new(0, 20, 1, -44)
-    stopBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 80)
-    stopBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    stopBtn.Font = Enum.Font.GothamBold
-    stopBtn.TextSize = 18
-    stopBtn.Text = "Стоп атаки"
-    stopBtn.Parent = frame
-    stopBtn.MouseButton1Click:Connect(function()
-        stopBumbimbambam()
-        StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Атака остановлена", Duration=2})
-    end)
-end
-
-createTargetGui()
-
 return {
     toggle = toggleBumbimbambam,
-    enable = function() 
-        if not bumbimbambamEnabled then toggleBumbimbambam() end
+    enable = function(windowObj)
+        if not bumbimbambamEnabled then toggleBumbimbambam(windowObj) end
     end,
-    disable = function() 
-        if bumbimbambamEnabled then toggleBumbimbambam() end
+    disable = function(windowObj)
+        if bumbimbambamEnabled then toggleBumbimbambam(windowObj) end
     end,
     isEnabled = function() return bumbimbambamEnabled end
 }

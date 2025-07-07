@@ -26,14 +26,84 @@ local SCAN_INTERVAL = 0.5 -- Интервал сканирования в сек
 local foundObjects = {}
 local attackObjects = {}
 
--- Функция для включения/выключения модуля
-local function toggleScan()
+local scanWindow = nil
+local scanInfoLabel, scanTargetList
+
+-- Функция обновления окна сканера
+local function updateScanWindow()
+    if not scanWindow or not scanWindow.content then return end
+    if not scanInfoLabel or not scanTargetList then return end
+    scanInfoLabel.Text = "Найдено объектов: " .. tostring(#foundObjects)
+    -- Очищаем список целей
+    for _, c in ipairs(scanTargetList:GetChildren()) do if c:IsA("TextLabel") then c:Destroy() end end
+    local y = 0
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (player.Character.HumanoidRootPart.Position - HumanoidRootPart.Position).Magnitude
+            if distance <= SCAN_RADIUS then
+                local label = Instance.new("TextLabel")
+                label.Size = UDim2.new(1, -8, 0, 24)
+                label.Position = UDim2.new(0, 4, 0, y)
+                label.BackgroundTransparency = 1
+                label.TextColor3 = Color3.fromRGB(255, 255, 255)
+                label.Font = Enum.Font.Gotham
+                label.TextSize = 14
+                label.Text = player.Name .. " (" .. math.floor(distance) .. "м)"
+                label.Parent = scanTargetList
+                y = y + 26
+            end
+        end
+    end
+    scanTargetList.CanvasSize = UDim2.new(0, 0, 0, y)
+end
+
+-- Функция для создания окна сканера
+local function createScanWindow(windowObj)
+    local content = windowObj and windowObj.content
+    if not content then return end
+    for _, child in ipairs(content:GetChildren()) do child:Destroy() end
+    local header = Instance.new("TextLabel")
+    header.Size = UDim2.new(1, 0, 0, 30)
+    header.Position = UDim2.new(0, 0, 0, 0)
+    header.BackgroundTransparency = 1
+    header.Text = "PartScan: Информация"
+    header.TextColor3 = Color3.fromRGB(220, 180, 255)
+    header.Font = Enum.Font.GothamBold
+    header.TextSize = 16
+    header.Parent = content
+    scanInfoLabel = Instance.new("TextLabel")
+    scanInfoLabel.Size = UDim2.new(1, 0, 0, 28)
+    scanInfoLabel.Position = UDim2.new(0, 0, 0, 36)
+    scanInfoLabel.BackgroundTransparency = 1
+    scanInfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    scanInfoLabel.Font = Enum.Font.Gotham
+    scanInfoLabel.TextSize = 15
+    scanInfoLabel.Text = "Найдено объектов: 0"
+    scanInfoLabel.Parent = content
+    scanTargetList = Instance.new("ScrollingFrame")
+    scanTargetList.Size = UDim2.new(1, 0, 0, 120)
+    scanTargetList.Position = UDim2.new(0, 0, 0, 70)
+    scanTargetList.BackgroundColor3 = Color3.fromRGB(50, 0, 100)
+    scanTargetList.BorderSizePixel = 0
+    scanTargetList.CanvasSize = UDim2.new(0, 0, 0, 0)
+    scanTargetList.ScrollBarThickness = 6
+    scanTargetList.Parent = content
+    updateScanWindow()
+end
+
+-- Функция для включения/выключения модуля с окном
+local function toggleScan(windowObj)
     scanEnabled = not scanEnabled
     print("Scan:", scanEnabled and "ВКЛЮЧЕН" or "ВЫКЛЮЧЕН")
-    
     if scanEnabled then
+        if windowObj then
+            scanWindow = windowObj
+            createScanWindow(scanWindow)
+            scanWindow.open()
+        end
         startScanning()
     else
+        if scanWindow then scanWindow.close() end
         stopScanning()
     end
 end
@@ -141,6 +211,7 @@ local function attackNearbyPlayers()
             end
         end
     end
+    updateScanWindow()
 end
 
 -- Основная функция сканирования
@@ -158,7 +229,7 @@ local function startScanning()
         -- Сканируем каждые SCAN_INTERVAL секунд
         if tick() % SCAN_INTERVAL < RunService.Heartbeat:Wait() then
             foundObjects = findUnanchoredObjects()
-            print("Найдено объектов:", #foundObjects)
+            updateScanWindow()
         end
     end)
     
@@ -197,15 +268,11 @@ end)
 -- Экспортируем функцию для внешнего вызова
 return {
     toggle = toggleScan,
-    enable = function() 
-        if not scanEnabled then 
-            toggleScan() 
-        end 
+    enable = function(windowObj)
+        if not scanEnabled then toggleScan(windowObj) end
     end,
-    disable = function() 
-        if scanEnabled then 
-            toggleScan() 
-        end 
+    disable = function(windowObj)
+        if scanEnabled then toggleScan(windowObj) end
     end,
     isEnabled = function() return scanEnabled end,
     getObjectCount = function() return #foundObjects end

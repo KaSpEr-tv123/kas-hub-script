@@ -1,22 +1,31 @@
-local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
+local GuiLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasgui.lua"))()
 local bumbimbambam = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/bumbimbambam.lua"))()
+local kasperfly = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperfly.lua"))()
 local partscan = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/partscan.lua"))()
 local player = game.Players.LocalPlayer
-local window = gui:Load("kasper studios 😈", "15074833174")
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "kasper studios 😈",
-    Text = "by kasperenok"
-})
-Duration = 5;
-local function notify(title, text)
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = title,
-        Text = text,
-        Duration = Duration
-    })
-end
 
-local hacks = gui.newTab("Hacks", "15046690373")
+-- Создание главного окна и вкладок
+local mainLayout = GuiLibrary:CreateDefaultLayout()
+local hacksTab = GuiLibrary:AddTab("Hacks", "15046690373")
+local otherTab = GuiLibrary:AddTab("Other", "15046690373")
+local tpTab = GuiLibrary:AddTab("TP Utility", "15046690373")
+
+-- Установка баннера
+GuiLibrary:SetBanner("kasper studios 😈 by kasperenok")
+
+-- Пример уведомления
+GuiLibrary:CreateNotification("kasper studios 😈 by kasperenok", 5)
+
+-- Кастомизация вкладок
+GuiLibrary:CustomizeTabLayout(mainLayout, "vertical", 100)
+
+-- Переключение GUI по клавише F
+local UserInputService = game:GetService("UserInputService")
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.F and not gameProcessed then
+        GuiLibrary:ToggleWindow(mainLayout)
+    end
+end)
 
 -- puk
 local hui = false
@@ -37,15 +46,14 @@ local add_jump = function()
     game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
 end
 
-hacks.newSlider("SpeedHack", "Change youre speed", 1000, false, function(num)
+GuiLibrary:AddSlider(hacksTab, "SpeedHack", "Change your speed", 1000, speed, function(num)
     speed = num
 end)
 
-hacks.newSlider("JumpHack", "Change youre jump power", 1000, false, function(num)
+GuiLibrary:AddSlider(hacksTab, "JumpHack", "Change your jump power", 1000, jump, function(num)
     jump = num
 end)
 
-local other = gui.newTab("Other", "15046690373")
 local player = game.Players.LocalPlayer
 local humanoid = player.Character:WaitForChild("Humanoid")
 local mode_fly = false
@@ -56,13 +64,29 @@ game:GetService("UserInputService").JumpRequest:Connect(function()
     end
 end)
 
-other.newToggle("Inf. Jump", "", false, function(toggleState)
+-- Кастомное окно для флая
+local flyWindow = nil
+GuiLibrary:AddToggle(otherTab, "Fly Menu", "Открыть меню флая", false, function(toggleState)
+    if toggleState then
+        flyWindow = GuiLibrary:CreateCustomWindow("KasperFly", "15074833174")
+        kasperfly.toggle(flyWindow)
+        flyWindow.open()
+    else
+        if flyWindow then flyWindow.close() end
+    end
+end)
+
+GuiLibrary:AddToggle(otherTab, "Inf. Jump", "", false, function(toggleState)
     mode_fly = toggleState
 end)
-other.newButton("Activate Fly", "Get the kasperfly", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperfly.lua"))()
+
+GuiLibrary:AddButton(otherTab, "Activate Fly", "Get the kasperfly", function()
+    flyWindow = GuiLibrary:CreateCustomWindow("KasperFly", "15074833174")
+    kasperfly.toggle(flyWindow)
+    flyWindow.open()
 end)
-local mode_tp = false -- Переменная для включения/выключения телепортации
+
+local mode_tp = false
 
 -- Создаем инструмент (Tool)
 local tool = Instance.new("Tool")
@@ -109,16 +133,14 @@ end
 
 tool.Activated:Connect(function()
     if mode_tp then
-        local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0) -- Устанавливаем позицию с небольшим смещением по Y
+        local pos = mouse.Hit.Position + Vector3.new(0, 2.5, 0)
         Teleport(pos)
         game:GetService("ReplicatedStorage").Remotes.Location:FireServer()
     end
 end)
 
--- Пример добавления инструмента в инвентарь
 tool.Parent = game.Players.LocalPlayer.Backpack
 
-tool.Parent = game.Players.LocalPlayer.Backpack
 local mode_noclip = true
 game:GetService("RunService").Stepped:Connect(function()
     for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
@@ -128,62 +150,71 @@ game:GetService("RunService").Stepped:Connect(function()
     end
 end)
 
+-- Кастомное окно для бумбимбамбама
+local bumbimbambamWindow = nil
 local function toggleBumbimbambam()
     print("toggleBumbimbambam: старт")
-    bumbimbambam.toggle()
+    if not bumbimbambamWindow then
+        bumbimbambamWindow = GuiLibrary:CreateCustomWindow("Bumbimbambam", "15074833174")
+    end
+    bumbimbambam.toggle(bumbimbambamWindow)
     print("toggleBumbimbambam: конец")
 end
 
-local function togglePartScan()
-    print("togglePartScan: старт")
-    partscan.toggle()
-    print("togglePartScan: конец")
-end
-
-other.newToggle("Bumbimbambam", "", false, function(toggleState)
-    toggleBumbimbambam()
+local partscanWindow = nil
+GuiLibrary:AddToggle(otherTab, "Part Scan Attack", "Сканирует и атакует объектами", false, function(toggleState)
+    if toggleState then
+        partscanWindow = GuiLibrary:CreateCustomWindow("PartScan", "15074833174")
+        partscan.toggle(partscanWindow)
+    else
+        if partscanWindow then partscanWindow.close() end
+        partscan.toggle(partscanWindow)
+    end
 end)
 
-other.newToggle("Part Scan Attack", "Сканирует и атакует объектами", false, function(toggleState)
-    togglePartScan()
-end)
-
-other.newToggle("Noclip", "", false, function(toggleState)
+GuiLibrary:AddToggle(otherTab, "Noclip", "", false, function(toggleState)
     mode_noclip = not toggleState
 end)
 
-other.newToggle("ESP Players", "", false, function(toggleState)
+GuiLibrary:AddToggle(otherTab, "ESP Players", "", false, function(toggleState)
     _G.esp = toggleState
 end)
-other.newButton("Rejoin", "", function()
+
+GuiLibrary:AddButton(otherTab, "Rejoin", "", function()
     game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
 end)
-other.newButton("DEX", "explorer files game", function()
+
+GuiLibrary:AddButton(otherTab, "DEX", "explorer files game", function()
     loadstring(game:HttpGet("https://cdn.wearedevs.net/scripts/Dex%20Explorer.txt"))()
 end)
-other.newButton("Scan Game UI (beta)", "script", function()
+
+GuiLibrary:AddButton(otherTab, "Scan Game UI (beta)", "script", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/scan.lua"))()
 end)
-other.newButton("Infinite Yield", "script", function()
+
+GuiLibrary:AddButton(otherTab, "Infinite Yield", "script", function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 end)
-other.newButton("Vape", "script", function()
+
+GuiLibrary:AddButton(otherTab, "Vape", "script", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua"))()
 end)
-other.newButton("SimpleSpyMobile", "script", function()
+
+GuiLibrary:AddButton(otherTab, "SimpleSpyMobile", "script", function()
     loadstring(game:HttpGet(
         "https://raw.githubusercontent.com/Devzinh/Roblox/132b5cc84c60237b30b468a550f1aee4a37bcf0e/SimpleSpyMobile.lua"))()
 end)
 
-local tp = gui.newTab("TP Utility")
 local position = nil
-tp.newToggle("Click TP", "", false, function(toggleState)
+GuiLibrary:AddToggle(tpTab, "Click TP", "", false, function(toggleState)
     mode_tp = toggleState
 end)
-tp.newButton("Get Click TP item", "", function()
+
+GuiLibrary:AddButton(tpTab, "Get Click TP item", "", function()
     tool.Parent = game.Players.LocalPlayer.Backpack
 end)
-tp.newButton("TP all to you", "", function()
+
+GuiLibrary:AddButton(tpTab, "TP all to you", "", function()
     for i, v in pairs(game.Players:GetChildren()) do
         if v ~= game.Players.LocalPlayer then
             if true then
@@ -192,18 +223,22 @@ tp.newButton("TP all to you", "", function()
         end
     end
 end)
-tp.newButton("Save your position", "", function()
+
+GuiLibrary:AddButton(tpTab, "Save your position", "", function()
     position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    notify("TP Utility", "Position saved")
+    GuiLibrary:CreateNotification("Position saved", 3)
 end)
-tp.newButton("TP in saved position", "", function()
+
+GuiLibrary:AddButton(tpTab, "TP in saved position", "", function()
     Teleport(position)
 end)
+
 local playerN
-tp.newInput("Player", "Enter player name", function(playerName)
+GuiLibrary:AddInput(tpTab, "Player", "Enter player name", function(playerName)
     playerN = playerName
 end)
-tp.newButton("TP to this player", "", function()
+
+GuiLibrary:AddButton(tpTab, "TP to this player", "", function()
     local playerToTeleport = game.Players:FindFirstChild(playerN)
     if playerToTeleport then
         local playerCharacter = playerToTeleport.Character
@@ -212,21 +247,21 @@ tp.newButton("TP to this player", "", function()
             if humanoidRootPart then
                 Teleport(humanoidRootPart.Position)
             else
-                notify("TP Utility", "Character not found for player: " .. playerN)
+                GuiLibrary:CreateNotification("Character not found for player: " .. playerN, 3)
             end
         else
-            notify("TP Utility", "Character not found for player: " .. playerN)
+            GuiLibrary:CreateNotification("Character not found for player: " .. playerN, 3)
         end
     else
-        notify("TP Utility", "Player not found: " .. playerN)
+        GuiLibrary:CreateNotification("Player not found: " .. playerN, 3)
     end
 end)
 
 if game.GameId == 1268927906 then
-    local ml = gui.newTab("Muscle Legends")
+    local ml = GuiLibrary:AddTab("Muscle Legends")
     local auto_farm = false
 
-    ml.newToggle("Auto Farm", "", false, function(Value)
+    GuiLibrary:AddToggle(ml, "Auto Farm", "", false, function(Value)
         elias999 = 1
 
         while elias999 == 1 do
@@ -243,7 +278,7 @@ if game.GameId == 1268927906 then
         end
     end)
 
-    ml.newToggle("Auto Rebirth", "", false, function(Value2)
+    GuiLibrary:AddToggle(ml, "Auto Rebirth", "", false, function(Value2)
         elias782k = 1
         while elias782k == 1 do
             if Value2 == false then
@@ -257,7 +292,7 @@ if game.GameId == 1268927906 then
         end
     end)
 
-    ml.newToggle("Auto Farm Durability", "", false, function(state)
+    GuiLibrary:AddToggle(ml, "Auto Farm Durability", "", false, function(state)
 
         m = game.Players.LocalPlayer:GetMouse()
         elias782k = 1
@@ -276,42 +311,42 @@ if game.GameId == 1268927906 then
 
     end)
 
-    ml.newButton("TP in lobby", "", function()
+    GuiLibrary:AddButton(ml, "TP in lobby", "", function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(141.109604, 3.71060801, 282.039124)
     end)
-    ml.newButton("TP in 1 rebirths location", "", function()
+    GuiLibrary:AddButton(ml, "TP in 1 rebirths location", "", function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2643.46362, 3.71060801, -405.459961)
     end)
-    ml.newButton("TP in 5 rebirths location", "", function()
+    GuiLibrary:AddButton(ml, "TP in 5 rebirths location", "", function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2332.45288, 3.71060729, 1078.07373)
     end)
-    ml.newButton("TP in 15 rebirths location", "", function()
+    GuiLibrary:AddButton(ml, "TP in 15 rebirths location", "", function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6873.23535, 3.71062183, -1273.39368)
     end)
-    ml.newButton("TP in 30 rebirths location", "", function()
+    GuiLibrary:AddButton(ml, "TP in 30 rebirths location", "", function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4507.60156, 987.863586, -3884.51514)
     end)
-    ml.newButton("TP in Muscle King location", "", function()
+    GuiLibrary:AddButton(ml, "TP in Muscle King location", "", function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-8662.07129, 13.5606356, -5782.43555)
     end)
 
-    ml.newInput("Fake Strength", "Change your strength", function(text)
+    GuiLibrary:AddInput(ml, "Fake Strength", "Change your strength", function(text)
         game.Players.LocalPlayer.leaderstats.Strength.Value = tonumber(text)
     end)
-    ml.newInput("Fake Kills", "Change your kills", function(text)
+    GuiLibrary:AddInput(ml, "Fake Kills", "Change your kills", function(text)
         game.Players.LocalPlayer.leaderstats.Kills.Value = tonumber(text)
     end)
-    ml.newInput("Fake Brawls", "Change your brawls", function(text)
+    GuiLibrary:AddInput(ml, "Fake Brawls", "Change your brawls", function(text)
         game.Players.LocalPlayer.leaderstats.Brawls.Value = tonumber(text)
     end)
-    ml.newInput("Fake Rebirths", "Change your rebirths", function(text)
+    GuiLibrary:AddInput(ml, "Fake Rebirths", "Change your rebirths", function(text)
         game.Players.LocalPlayer.leaderstats.Rebirths.Value = tonumber(text)
     end)
 end
 
 if game.GameId == 2020908522 then
-    local hds = gui.newTab("Hide And Seek")
-    hds.newButton("Kill all", "Kill all players for you win (if you are the seeker)", function()
+    local hds = GuiLibrary:AddTab("Hide And Seek")
+    GuiLibrary:AddButton(hds, "Kill all", "Kill all players for you win (if you are the seeker)", function()
         -- kill, not tp
         for i, v in pairs(game.Players:GetChildren()) do
             if v ~= game.Players.LocalPlayer then
@@ -368,13 +403,13 @@ if game.GameId == 2020908522 then
         until not afc
     end
 
-    hds.newButton("Auto farm coins", "", function()
+    GuiLibrary:AddButton(hds, "Auto farm coins", "", function()
         afc = not afc
         if afc then
             spawn(autoFarmCoins) -- Запускаем функцию в новом потоке
         end
     end)
-    hds.newButton("Unfreeze", "unfreeze all players (if you are the hider)", function()
+    GuiLibrary:AddButton(hds, "Unfreeze", "unfreeze all players (if you are the hider)", function()
         for i, v in pairs(game.Players:GetChildren()) do
             if v ~= game.Players.LocalPlayer then
                 if not v.Character.Head:FindFirstChild("SeekerTitle") then
@@ -385,7 +420,7 @@ if game.GameId == 2020908522 then
         end
     end)
 end
-local ars = gui.newTab("aimtools")
+local ars = GuiLibrary:AddTab("aimtools")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -461,13 +496,13 @@ end)
 
 
 -- Вкл/выкл аима
-ars.newToggle("AimBot", "Включить/выключить прицел", false, function(state)
+GuiLibrary:AddToggle(ars, "AimBot", "Включить/выключить прицел", false, function(state)
     aim = state
 end)
 
 -- Назначение клавиши
 if not UserInputService.TouchEnabled then
-    ars.newKeybind("Keybind Aim", "Клавиша для аимбота", function(input)
+    GuiLibrary:AddKeybind(ars, "Keybind Aim", "Клавиша для аимбота", function(input)
         key = input.KeyCode
     end)
 end
@@ -479,7 +514,7 @@ UserInputService.InputBegan:Connect(function(input, gpe)
 end)
 
 -- Режим прицеливания с описанием
-ars.newDropdown("Режим прицеливания", "Выберите метод прицеливания", {"По команде", "Ближайший"}, function(selected)
+GuiLibrary:AddDropdown(ars, "Режим прицеливания", "Выберите метод прицеливания", {"По команде", "Ближайший"}, function(selected)
     if selected == "По команде" then
         aimMode = 1
         print("[AIM] Режим: По команде")
@@ -492,7 +527,7 @@ end)
 
 if game.GameId == 3149100453 then
 
-    local blobs = gui.newTab("Blobs")
+    local blobs = GuiLibrary:AddTab("Blobs")
 
     local afb = false
 
@@ -556,7 +591,7 @@ if game.GameId == 3149100453 then
         until not afb
     end
 
-    blobs.newButton("Auto farm blobs", "", function()
+    GuiLibrary:AddButton(blobs, "Auto farm blobs", "", function()
         afb = not afb
         if afb then
             spawn(autoFarmBlobs) -- Запускаем функцию в новом потоке
@@ -574,7 +609,7 @@ if game.GameId == 3149100453 then
         end
     end
 
-    blobs.newButton("Auto spin free", "", function()
+    GuiLibrary:AddButton(blobs, "Auto spin free", "", function()
         freespin = not freespin
         if freespin then
             spawn(autoSpinFree)
@@ -591,7 +626,7 @@ if game.GameId == 3149100453 then
         end
     end
 
-    blobs.newButton("Auto spin", "", function()
+    GuiLibrary:AddButton(blobs, "Auto spin", "", function()
         spin = not spin
         if spin then
             spawn(autoSpin)
@@ -685,11 +720,11 @@ if game.GameId == 3149100453 then
             .GiftService.RF.RequestGift:InvokeServer(unpack(args))
     end
 
-    blobs.newButton("Auto get gifts", "", function()
+    GuiLibrary:AddButton(blobs, "Auto get gifts", "", function()
         spam(autoGetGifts)
     end)
 
-    blobs.newButton("Kill all", "", function()
+    GuiLibrary:AddButton(blobs, "Kill all", "", function()
         for i, v in pairs(game.Players:GetChildren()) do
             if v ~= game.Players.LocalPlayer then
                 if game.Players.LocalPlayer.Character.HumanoidRootPart.RealSize.Value >
@@ -703,8 +738,8 @@ if game.GameId == 3149100453 then
 end
 
 if game.GameId == 994732206 then
-    local bf = gui.newTab("BloxFruits")
-    bf.newButton("load script for BloxFruits", "", function()
+    local bf = GuiLibrary:AddTab("BloxFruits")
+    GuiLibrary:AddButton(bf, "load script for BloxFruits", "", function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
     end)
     wait(5)
@@ -745,9 +780,9 @@ end
 local autoTeleport = false
 
 if game.GameId == 3317771874 then
-    local other = gui.newTab("PS99")
+    local other = GuiLibrary:AddTab("PS99")
 
-    other.newToggle("Auto farm coins", "", false, function(Value)
+    GuiLibrary:AddToggle(other, "Auto farm coins", "", false, function(Value)
         autoTeleport = Value
     end)
 
@@ -802,14 +837,14 @@ local function teleportSmoothly(targetPos)
 end
 
 if game.GameId == 3808081382 then
-    local tsb = gui.newTab("TSB(beta)")
+    local tsb = GuiLibrary:AddTab("TSB(beta)")
 
-    tsb.newButton("Load script for Main Account", "Телепорт и спам кликов", function()
+    GuiLibrary:AddButton(tsb, "Load script for Main Account", "Телепорт и спам кликов", function()
         getgenv().teleport = not getgenv().teleport
         teleportSmoothly(targetPosition)
     end)
 
-    tsb.newButton("Load script for Other Accounts", "Телепорт без атак", function()
+    GuiLibrary:AddButton(tsb, "Load script for Other Accounts", "Телепорт без атак", function()
         getgenv().teleportOther = not getgenv().teleportOther
         teleportSmoothly(targetPosition)
     end)
