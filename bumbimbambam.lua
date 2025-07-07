@@ -165,6 +165,9 @@ local function createTargetGui()
                     selectedTarget = plr.Name
                     refreshList()
                     StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель: "..plr.Name, Duration=2})
+                    if bumbimbambamEnabled then
+                        startBumbimbambam()
+                    end
                 end)
                 y = y + 36
             end
