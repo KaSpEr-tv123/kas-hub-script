@@ -15,11 +15,11 @@ local bumbimbambamEnabled = false
 local selectedTarget = nil
 
 -- Настройки
-local TELEPORT_DISTANCE = 25 -- Дистанция телепорта от цели (метров)
+local TELEPORT_DISTANCE = 14 -- Дистанция телепорта от цели (метров)
 local ATTACK_SPEED = 900 -- Скорость влёта в игрока
 local ATTACK_FORCE = 600 -- Сила отбрасывания
-local ATTACK_COOLDOWN = 0.7 -- Задержка между атаками
-local SPIN_TIME = 0.4 -- Время кручения перед атакой (сек)
+local ATTACK_COOLDOWN = 0.3 -- Задержка между атаками
+local SPIN_TIME = 0.15 -- Время кручения перед атакой (сек)
 local SPIN_SPEED = 1800 -- Скорость вращения (градусов/сек)
 
 local function setLocalCollision(state)
@@ -61,20 +61,17 @@ local function attackTarget(targetPlayer)
     if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
     local targetRootPart = targetPlayer.Character.HumanoidRootPart
     local targetPos = targetRootPart.Position
-    -- 1. Телепорт на 25м от цели, на том же уровне
     local attackFrom = getAttackPoint(targetPos)
     HumanoidRootPart.CFrame = CFrame.new(attackFrom)
-    -- 2. Краткая раскрутка
     spinAnimation(SPIN_TIME, SPIN_SPEED)
-    -- 3. Влет строго в HumanoidRootPart цели
-    local direction = (targetPos - HumanoidRootPart.Position).Unit
+    -- Пересчитываем направление прямо перед влетом
+    local freshTargetPos = targetRootPart.Position
+    local direction = (freshTargetPos - HumanoidRootPart.Position).Unit
     HumanoidRootPart.Velocity = direction * ATTACK_SPEED
-    -- 4. Кручение во время полёта
     for i = 1, 10 do
         HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(36), 0)
         RunService.Heartbeat:Wait()
     end
-    -- 5. Применяем отбрасывание к цели
     local knockback = Instance.new("BodyVelocity")
     knockback.MaxForce = Vector3.new(1e5, 1e5, 1e5)
     knockback.Velocity = direction * ATTACK_FORCE + Vector3.new(0, 100, 0)
