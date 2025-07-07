@@ -23,6 +23,10 @@ local ATTACK_COOLDOWN = 0.1 -- Задержка между атаками
 local SPIN_TIME = 0.08 -- Время кручения перед атакой (сек)
 local SPIN_SPEED = 2200 -- Скорость вращения (градусов/сек)
 
+local ANTIFLING_ENABLED = true
+
+local antiflingConn = nil
+
 local function setLocalCollision(state)
     for _, part in pairs(Character:GetDescendants()) do
         if part:IsA("BasePart") then
@@ -31,14 +35,41 @@ local function setLocalCollision(state)
     end
 end
 
+local function startAntifling()
+    if antiflingConn then antiflingConn:Disconnect() end
+    antiflingConn = RunService.Heartbeat:Connect(function()
+        if not Character or not HumanoidRootPart then return end
+        -- Удаляем все BodyMover из HumanoidRootPart
+        for _, obj in pairs(HumanoidRootPart:GetChildren()) do
+            if obj:IsA("BodyMover") or obj:IsA("BodyVelocity") or obj:IsA("BodyAngularVelocity") or obj:IsA("BodyForce") then
+                obj:Destroy()
+            end
+        end
+        -- Ограничиваем скорость
+        if HumanoidRootPart.Velocity.Magnitude > 150 then
+            HumanoidRootPart.Velocity = HumanoidRootPart.Velocity.Unit * 50
+        end
+        if HumanoidRootPart.RotVelocity.Magnitude > 30 then
+            HumanoidRootPart.RotVelocity = Vector3.new()
+        end
+    end)
+end
+
+local function stopAntifling()
+    if antiflingConn then antiflingConn:Disconnect() end
+    antiflingConn = nil
+end
+
 local function toggleBumbimbambam()
     bumbimbambamEnabled = not bumbimbambamEnabled
     print("Bumbimbambam:", bumbimbambamEnabled and "ВКЛЮЧЕН" or "ВЫКЛЮЧЕН")
     if bumbimbambamEnabled then
         setLocalCollision(false)
+        if ANTIFLING_ENABLED then startAntifling() end
         startBumbimbambam()
     else
         stopBumbimbambam()
+        stopAntifling()
         setLocalCollision(true)
     end
 end
@@ -117,6 +148,7 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
     Humanoid = Character:WaitForChild("Humanoid")
     if bumbimbambamEnabled then
         setLocalCollision(false)
+        if ANTIFLING_ENABLED then startAntifling() end
         startBumbimbambam()
     end
 end)
