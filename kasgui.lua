@@ -690,4 +690,79 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     }
 end
 
+-- Loading overlay
+function GuiLibrary:ShowLoading(text)
+    if self._loadingGui then self._loadingGui:Destroy() end
+    local loadingGui = Instance.new("ScreenGui")
+    loadingGui.Name = "KasHubLoading"
+    loadingGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    loadingGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    local bg = Instance.new("Frame")
+    bg.Size = UDim2.new(1, 0, 1, 0)
+    bg.BackgroundColor3 = Color3.fromRGB(60, 0, 120)
+    bg.BackgroundTransparency = 0.3
+    bg.Parent = loadingGui
+    local spinner = Instance.new("ImageLabel")
+    spinner.Size = UDim2.new(0, 64, 0, 64)
+    spinner.Position = UDim2.new(0.5, -32, 0.5, -64)
+    spinner.BackgroundTransparency = 1
+    spinner.Image = "rbxassetid://6031091009" -- стандартный Roblox спиннер
+    spinner.Parent = bg
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0, 300, 0, 40)
+    label.Position = UDim2.new(0.5, -150, 0.5, 16)
+    label.BackgroundTransparency = 1
+    label.Text = text or "Загрузка..."
+    label.TextColor3 = Color3.fromRGB(220, 180, 255)
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 22
+    label.Parent = bg
+    self._loadingGui = loadingGui
+    -- Анимация спиннера
+    spawn(function()
+        while loadingGui.Parent do
+            spinner.Rotation = (spinner.Rotation + 6) % 360
+            wait(0.03)
+        end
+    end)
+end
+
+function GuiLibrary:HideLoading()
+    if self._loadingGui then self._loadingGui:Destroy() self._loadingGui = nil end
+end
+
+-- Error overlay/уведомление
+function GuiLibrary:ShowError(text)
+    self:CreateNotification("[ОШИБКА] "..text, 5)
+    self:LogError(text)
+end
+
+-- Окно логов ошибок
+function GuiLibrary:LogError(text)
+    if not self._errorLogWindow then
+        self._errorLogWindow = self:CreateCustomWindow("KasHub Errors", "15074833174")
+        self._errorLogWindowLogs = Instance.new("ScrollingFrame")
+        self._errorLogWindowLogs.Size = UDim2.new(1, 0, 1, 0)
+        self._errorLogWindowLogs.Position = UDim2.new(0, 0, 0, 0)
+        self._errorLogWindowLogs.BackgroundTransparency = 1
+        self._errorLogWindowLogs.CanvasSize = UDim2.new(0, 0, 0, 0)
+        self._errorLogWindowLogs.ScrollBarThickness = 6
+        self._errorLogWindowLogs.Parent = self._errorLogWindow.content
+    end
+    local y = 0
+    for _, c in ipairs(self._errorLogWindowLogs:GetChildren()) do
+        if c:IsA("TextLabel") then y = y + 26 end
+    end
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -8, 0, 24)
+    label.Position = UDim2.new(0, 4, 0, y)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.fromRGB(255, 80, 80)
+    label.Font = Enum.Font.Gotham
+    label.TextSize = 14
+    label.Text = os.date("[%H:%M:%S] ")..text
+    label.Parent = self._errorLogWindowLogs
+    self._errorLogWindowLogs.CanvasSize = UDim2.new(0, 0, 0, y+26)
+end
+
 return GuiLibrary
