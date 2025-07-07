@@ -17,7 +17,7 @@ local attackThread = nil
 local lastAttackTime = 0
 
 -- Настройки
-local TELEPORT_DISTANCE = 10 -- Дистанция телепорта от цели (метров)
+local TELEPORT_DISTANCE = 3 -- Дистанция телепорта от цели (метров)
 local ATTACK_SPEED = 1400 -- Скорость влёта в игрока
 local ATTACK_FORCE = 1200 -- Сила отбрасывания
 local ATTACK_COOLDOWN = 0.1 -- Задержка между атаками
@@ -27,6 +27,7 @@ local SPIN_SPEED = 2200 -- Скорость вращения (градусов/�
 local ANTIFLING_ENABLED = true
 
 local antiflingConn = nil
+local antiflingPaused = false
 
 local function setLocalCollision(state)
     for _, part in pairs(Character:GetDescendants()) do
@@ -40,6 +41,7 @@ local function startAntifling()
     if antiflingConn then antiflingConn:Disconnect() end
     antiflingConn = RunService.Heartbeat:Connect(function()
         if not Character or not HumanoidRootPart then return end
+        if antiflingPaused then return end
         -- Удаляем все BodyMover из HumanoidRootPart
         for _, obj in pairs(HumanoidRootPart:GetChildren()) do
             if obj:IsA("BodyMover") or obj:IsA("BodyVelocity") or obj:IsA("BodyAngularVelocity") or obj:IsA("BodyForce") then
@@ -99,18 +101,28 @@ local function attackTarget(targetPlayer)
     local attackFrom = getAttackPoint(targetPos)
     -- 1. Телепорт к точке рядом с целью
     HumanoidRootPart.CFrame = CFrame.new(attackFrom)
-    -- 2. Моментально задаём Velocity в сторону цели
+    -- 2. PlatformStand = true (отключаем физику Humanoid)
+    if Humanoid and Humanoid.PlatformStand == false then
+        Humanoid.PlatformStand = true
+    end
+    antiflingPaused = true
+    -- 3. Моментально задаём Velocity в сторону цели
     local freshTargetPos = targetRootPart.Position
     local direction = (freshTargetPos - HumanoidRootPart.Position).Unit
     HumanoidRootPart.Velocity = direction * ATTACK_SPEED
     lastAttackTime = tick()
-    -- 3. Кручение параллельно (не задерживает влет)
-    local flyTime = 0.18
+    -- 4. Кручение параллельно (не задерживает влет)
+    local flyTime = 0.25
     local t0 = tick()
     while tick() - t0 < flyTime do
         HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED * RunService.Heartbeat:Wait()), 0)
     end
-    -- 4. Наносим удар
+    -- 5. PlatformStand = false (возвращаем физику)
+    if Humanoid and Humanoid.PlatformStand == true then
+        Humanoid.PlatformStand = false
+    end
+    antiflingPaused = false
+    -- 6. Наносим удар
     local knockback = Instance.new("BodyVelocity")
     knockback.MaxForce = Vector3.new(1e5, 1e5, 1e5)
     knockback.Velocity = direction * ATTACK_FORCE + Vector3.new(0, 100, 0)
