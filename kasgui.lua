@@ -126,8 +126,8 @@ if not GuiLibrary._mainMenuIcon then
     print("[kasgui.lua] Creating KasHubMenuIcon")
     GuiLibrary._mainMenuIcon = Instance.new("TextButton")
     GuiLibrary._mainMenuIcon.Name = "KasHubMenuIcon"
-    GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 64, 0, 64)
-    GuiLibrary._mainMenuIcon.Position = UDim2.new(0.5, -32, 0.5, -32)
+    GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 60, 0, 60)
+    GuiLibrary._mainMenuIcon.Position = UDim2.new(0.5, -30, 0.5, -30)
     GuiLibrary._mainMenuIcon.BackgroundTransparency = 0.2
     GuiLibrary._mainMenuIcon.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
     GuiLibrary._mainMenuIcon.Text = "😈"
