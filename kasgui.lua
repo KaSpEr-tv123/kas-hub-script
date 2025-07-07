@@ -26,7 +26,7 @@ function GuiLibrary:CreateWindow(title, iconId)
     print("[kasgui.lua] CreateWindow called: ", title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.Parent = game:GetService("CoreGui")
     window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     window.DisplayOrder = 0
     local frame = Instance.new("Frame")
@@ -34,7 +34,7 @@ function GuiLibrary:CreateWindow(title, iconId)
     
     -- Set up the window
     window.Name = title
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.Parent = game:GetService("CoreGui")
     window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     window.DisplayOrder = 0
     
@@ -134,7 +134,7 @@ if not GuiLibrary._mainMenuIcon then
     GuiLibrary._mainMenuIcon.TextSize = 48
     GuiLibrary._mainMenuIcon.TextColor3 = Color3.fromRGB(255,255,255)
     GuiLibrary._mainMenuIcon.Font = Enum.Font.GothamBlack
-    GuiLibrary._mainMenuIcon.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    GuiLibrary._mainMenuIcon.Parent = game:GetService("CoreGui")
     GuiLibrary._mainMenuIcon.ZIndex = 10
     GuiLibrary._mainMenuIcon.Draggable = true
     print("[kasgui.lua] KasHubMenuIcon создан, позиция:", tostring(GuiLibrary._mainMenuIcon.Position), "Visible:", GuiLibrary._mainMenuIcon.Visible)
@@ -145,7 +145,7 @@ function GuiLibrary:CreateDefaultLayout()
     print("[kasgui.lua] CreateDefaultLayout called")
     local window = Instance.new("ScreenGui")
     window.Name = "Default Layout"
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.Parent = game:GetService("CoreGui")
     window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     window.DisplayOrder = 0
     local frame = Instance.new("Frame")
@@ -240,7 +240,7 @@ function GuiLibrary:CreateNotification(message, duration)
     notification.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     notification.TextColor3 = Color3.fromRGB(255, 255, 255)
     notification.Text = message
-    notification.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    notification.Parent = game:GetService("CoreGui")
     
     -- Tween to fade out
     local tweenService = game:GetService("TweenService")
@@ -325,7 +325,7 @@ function GuiLibrary:SetBanner(text)
         self._banner.TextSize = 20
         self._banner.TextStrokeTransparency = 0.7
         self._banner.TextStrokeColor3 = Color3.fromRGB(80, 0, 160)
-        self._banner.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+        self._banner.Parent = game:GetService("CoreGui")
         self._banner.ZIndex = 1000
     end
     self._banner.Text = text
@@ -456,7 +456,7 @@ function GuiLibrary:AddDropdown(parent, text, options, callback)
         menu.Size = UDim2.new(0, 120, 0, #options*28)
         menu.Position = UDim2.new(0, dropdown.AbsolutePosition.X, 0, dropdown.AbsolutePosition.Y+36)
         menu.BackgroundColor3 = Color3.fromRGB(80, 0, 160)
-        menu.Parent = game.Players.LocalPlayer.PlayerGui
+        menu.Parent = game:GetService("CoreGui")
         for i, opt in ipairs(options) do
             local btn = Instance.new("TextButton")
             btn.Size = UDim2.new(1, 0, 0, 28)
@@ -515,7 +515,7 @@ GuiLibrary._functionWindows = {}
 function GuiLibrary:CreateFunctionWindow(title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title .. "Window"
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.Parent = game:GetService("CoreGui")
     window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     window.DisplayOrder = 0
     local frame = Instance.new("Frame")
@@ -592,7 +592,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     print("[kasgui.lua] CreateCustomWindow called: ", title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title .. "Window"
-    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.Parent = game:GetService("CoreGui")
     window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     window.DisplayOrder = 0
     local frame = Instance.new("Frame")
@@ -721,7 +721,7 @@ function GuiLibrary:ShowLoading(text)
     if self._loadingGui then self._loadingGui:Destroy() end
     local loadingGui = Instance.new("ScreenGui")
     loadingGui.Name = "KasHubLoading"
-    loadingGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    loadingGui.Parent = game:GetService("CoreGui")
     loadingGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     loadingGui.DisplayOrder = 1000
     local bg = Instance.new("Frame")
