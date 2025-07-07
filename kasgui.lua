@@ -138,6 +138,16 @@ if not GuiLibrary._mainMenuIcon then
     GuiLibrary._mainMenuIcon.ZIndex = 10
     GuiLibrary._mainMenuIcon.Draggable = true
     print("[kasgui.lua] KasHubMenuIcon создан, позиция:", tostring(GuiLibrary._mainMenuIcon.Position), "Visible:", GuiLibrary._mainMenuIcon.Visible)
+    -- DEBUG BUTTON
+    local dbgBtn = Instance.new("TextButton")
+    dbgBtn.Size = UDim2.new(0, 120, 0, 40)
+    dbgBtn.Position = UDim2.new(0.5, -60, 0.7, 0)
+    dbgBtn.Text = "KAS DEBUG"
+    dbgBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    dbgBtn.TextColor3 = Color3.fromRGB(255,255,255)
+    dbgBtn.Font = Enum.Font.GothamBold
+    dbgBtn.TextSize = 20
+    dbgBtn.Parent = game:GetService("CoreGui")
 end
 
 -- Переопределяем CreateDefaultLayout для компактного окна
