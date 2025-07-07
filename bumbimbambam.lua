@@ -14,6 +14,7 @@ local Humanoid = Character:WaitForChild("Humanoid")
 local bumbimbambamEnabled = false
 local selectedTarget = nil
 local attackThread = nil
+local lastAttackTime = 0
 
 -- Настройки
 local TELEPORT_DISTANCE = 10 -- Дистанция телепорта от цели (метров)
@@ -45,12 +46,14 @@ local function startAntifling()
                 obj:Destroy()
             end
         end
-        -- Ограничиваем скорость
-        if HumanoidRootPart.Velocity.Magnitude > 150 then
-            HumanoidRootPart.Velocity = HumanoidRootPart.Velocity.Unit * 50
-        end
-        if HumanoidRootPart.RotVelocity.Magnitude > 30 then
-            HumanoidRootPart.RotVelocity = Vector3.new()
+        -- Ограничиваем скорость, если не только что была атака
+        if tick() - lastAttackTime > 0.13 then
+            if HumanoidRootPart.Velocity.Magnitude > 150 then
+                HumanoidRootPart.Velocity = HumanoidRootPart.Velocity.Unit * 50
+            end
+            if HumanoidRootPart.RotVelocity.Magnitude > 30 then
+                HumanoidRootPart.RotVelocity = Vector3.new()
+            end
         end
     end)
 end
@@ -96,11 +99,14 @@ local function attackTarget(targetPlayer)
     local attackFrom = getAttackPoint(targetPos)
     HumanoidRootPart.CFrame = CFrame.new(attackFrom)
     spinAnimation(SPIN_TIME, SPIN_SPEED)
-    -- Пересчитываем направление прямо перед влетом
     local freshTargetPos = targetRootPart.Position
     local direction = (freshTargetPos - HumanoidRootPart.Position).Unit
     HumanoidRootPart.Velocity = direction * ATTACK_SPEED
-    for i = 1, 10 do
+    lastAttackTime = tick()
+    -- Дать время на влет
+    local flyTime = 0.13
+    local t0 = tick()
+    while tick() - t0 < flyTime do
         HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(36), 0)
         RunService.Heartbeat:Wait()
     end
