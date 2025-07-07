@@ -1,3 +1,12 @@
+local sg = Instance.new("ScreenGui")
+sg.Name = "TestGui"
+sg.Parent = game:GetService("CoreGui")
+local btn = Instance.new("TextButton")
+btn.Size = UDim2.new(0, 100, 0, 100)
+btn.Position = UDim2.new(0.5, -50, 0.5, -50)
+btn.Text = "TEST"
+btn.Parent = sg
+
 local GuiLibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/kasgui.lua"))()
 local bumbimbambam = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/bumbimbambam.lua"))()
 local kasperfly = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperfly.lua"))()
