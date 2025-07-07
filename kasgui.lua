@@ -786,48 +786,4 @@ function GuiLibrary:LogError(text)
     self._errorLogWindowLogs.CanvasSize = UDim2.new(0, 0, 0, y+26)
 end
 
--- Сохранение и загрузка настроек в Workspace
-function GuiLibrary:SaveSettings(key, value)
-    local ws = game:GetService("Workspace")
-    local settingsFolder = ws:FindFirstChild("KasHub_Settings")
-    if not settingsFolder then
-        settingsFolder = Instance.new("Folder")
-        settingsFolder.Name = "KasHub_Settings"
-        settingsFolder.Parent = ws
-    end
-    local v = settingsFolder:FindFirstChild(key)
-    if not v then
-        v = Instance.new("StringValue")
-        v.Name = key
-        v.Parent = settingsFolder
-    end
-    v.Value = value
-end
-
-function GuiLibrary:LoadSettings(key)
-    local ws = game:GetService("Workspace")
-    local settingsFolder = ws:FindFirstChild("KasHub_Settings")
-    if not settingsFolder then return nil end
-    local v = settingsFolder:FindFirstChild(key)
-    if v then return v.Value end
-    return nil
-end
-
--- Автосохранение позиции иконки
-if GuiLibrary._mainMenuIcon then
-    local function saveIconPos()
-        local pos = GuiLibrary._mainMenuIcon.Position
-        GuiLibrary:SaveSettings("MainMenuIconPos", string.format("%f,%d,%f,%d", pos.X.Scale, pos.X.Offset, pos.Y.Scale, pos.Y.Offset))
-    end
-    GuiLibrary._mainMenuIcon:GetPropertyChangedSignal("Position"):Connect(saveIconPos)
-    -- При запуске — загрузить позицию
-    local saved = GuiLibrary:LoadSettings("MainMenuIconPos")
-    if saved then
-        local s = string.split(saved, ",")
-        if #s == 4 then
-            GuiLibrary._mainMenuIcon.Position = UDim2.new(tonumber(s[1]), tonumber(s[2]), tonumber(s[3]), tonumber(s[4]))
-        end
-    end
-end
-
 return GuiLibrary
