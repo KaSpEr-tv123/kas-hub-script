@@ -15,12 +15,12 @@ local bumbimbambamEnabled = false
 local selectedTarget = nil
 
 -- Настройки
-local TELEPORT_DISTANCE = 14 -- Дистанция телепорта от цели (метров)
-local ATTACK_SPEED = 900 -- Скорость влёта в игрока
-local ATTACK_FORCE = 600 -- Сила отбрасывания
-local ATTACK_COOLDOWN = 0.3 -- Задержка между атаками
-local SPIN_TIME = 0.15 -- Время кручения перед атакой (сек)
-local SPIN_SPEED = 1800 -- Скорость вращения (градусов/сек)
+local TELEPORT_DISTANCE = 10 -- Дистанция телепорта от цели (метров)
+local ATTACK_SPEED = 1400 -- Скорость влёта в игрока
+local ATTACK_FORCE = 1200 -- Сила отбрасывания
+local ATTACK_COOLDOWN = 0.1 -- Задержка между атаками
+local SPIN_TIME = 0.08 -- Время кручения перед атакой (сек)
+local SPIN_SPEED = 2200 -- Скорость вращения (градусов/сек)
 
 local function setLocalCollision(state)
     for _, part in pairs(Character:GetDescendants()) do
@@ -83,11 +83,17 @@ local function startBumbimbambam()
     spawn(function()
         while bumbimbambamEnabled do
             if selectedTarget and Players:FindFirstChild(selectedTarget) then
+                -- Постоянное кручение даже между атаками
+                local spinStart = tick()
+                while tick() - spinStart < ATTACK_COOLDOWN do
+                    HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED * RunService.Heartbeat:Wait()), 0)
+                end
                 attackTarget(Players[selectedTarget])
             else
+                -- Крутимся на месте, если нет цели
                 HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+                HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED * RunService.Heartbeat:Wait()), 0)
             end
-            wait(ATTACK_COOLDOWN)
         end
     end)
 end
