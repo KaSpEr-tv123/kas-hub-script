@@ -77,8 +77,8 @@ local function createFlyGui(windowObj)
 		if speedValue > 1 then
 			speedValue = speedValue - 1
 			speedLabel.Text = "Скорость: " .. tostring(speedValue) .. "x"
-		end
-	end)
+	end
+end)
 
 	-- Минимизация
 	local miniBtn = Instance.new("TextButton")

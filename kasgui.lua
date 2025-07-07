@@ -109,27 +109,73 @@ local function makeResizable(guiElement)
     end)
 end
 
--- Function to create a default layout with modern styles
+-- Глобальная иконка для открытия/закрытия главного меню
+if not GuiLibrary._mainMenuIcon then
+    GuiLibrary._mainMenuIcon = Instance.new("ImageButton")
+    GuiLibrary._mainMenuIcon.Name = "KasHubMenuIcon"
+    GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 48, 0, 48)
+    GuiLibrary._mainMenuIcon.Position = UDim2.new(0, 16, 0, 16)
+    GuiLibrary._mainMenuIcon.BackgroundTransparency = 1
+    GuiLibrary._mainMenuIcon.Image = "rbxassetid://15074833174" -- твоя иконка
+    GuiLibrary._mainMenuIcon.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    GuiLibrary._mainMenuIcon.ZIndex = 9999
+    GuiLibrary._mainMenuIcon.Draggable = true
+end
+
+-- Переопределяем CreateDefaultLayout для компактного окна
 function GuiLibrary:CreateDefaultLayout()
-    local window = self:CreateWindow("Default Layout", "123456789")
-    
-    -- Create vertical tabs on the left with modern styles
-    local tabFrame = Instance.new("Frame")
-    tabFrame.Size = UDim2.new(0, 100, 1, 0)
-    tabFrame.Position = UDim2.new(0, 0, 0, 0)
-    applyModernStyles(tabFrame)
-    tabFrame.Parent = window
-    
-    -- Create content area on the right with modern styles
+    local window = Instance.new("ScreenGui")
+    window.Name = "Default Layout"
+    window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 350, 0, 500)
+    frame.Position = UDim2.new(0.5, -175, 0.5, -250)
+    applyModernStyles(frame)
+    frame.Parent = window
+    -- Titlebar
+    local titleBar = Instance.new("Frame")
+    titleBar.Size = UDim2.new(1, 0, 0, 40)
+    titleBar.Position = UDim2.new(0, 0, 0, 0)
+    titleBar.BackgroundColor3 = Color3.fromRGB(100, 0, 180)
+    titleBar.Parent = frame
+    titleBar.Active = true
+    titleBar.Draggable = true
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, -40, 1, 0)
+    titleLabel.Position = UDim2.new(0, 10, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = "kas-hub menu"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 18
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = titleBar
+    -- Кнопка закрытия
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.Size = UDim2.new(0, 32, 0, 32)
+    closeBtn.Position = UDim2.new(1, -36, 0, 4)
+    closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+    closeBtn.Text = "X"
+    closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeBtn.Font = Enum.Font.GothamBold
+    closeBtn.TextSize = 20
+    closeBtn.Parent = titleBar
+    closeBtn.MouseButton1Click:Connect(function()
+        window.Enabled = false
+    end)
+    -- Контейнер для контента
     local contentFrame = Instance.new("Frame")
-    contentFrame.Size = UDim2.new(1, -100, 1, 0)
-    contentFrame.Position = UDim2.new(0, 100, 0, 0)
-    applyModernStyles(contentFrame)
-    contentFrame.Parent = window
-    
-    makeDraggable(window)
-    makeResizable(window)
-    
+    contentFrame.Size = UDim2.new(1, -20, 1, -50)
+    contentFrame.Position = UDim2.new(0, 10, 0, 40)
+    contentFrame.BackgroundTransparency = 1
+    contentFrame.Parent = frame
+    makeDraggable(frame)
+    -- Изначально скрыто
+    window.Enabled = false
+    -- Клик по иконке открывает/закрывает меню
+    GuiLibrary._mainMenuIcon.MouseButton1Click:Connect(function()
+        window.Enabled = not window.Enabled
+    end)
     return window
 end
 
