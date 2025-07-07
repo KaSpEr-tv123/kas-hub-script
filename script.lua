@@ -1,5 +1,6 @@
 local gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/DrRay-UI-Library/main/DrRay.lua"))()
 local bumbimbambam = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/bumbimbambam.lua"))()
+local partscan = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/partscan.lua"))()
 local player = game.Players.LocalPlayer
 local window = gui:Load("kasper studios 😈", "15074833174")
 game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -133,8 +134,18 @@ local function toggleBumbimbambam()
     print("toggleBumbimbambam: конец")
 end
 
+local function togglePartScan()
+    print("togglePartScan: старт")
+    partscan.toggle()
+    print("togglePartScan: конец")
+end
+
 other.newToggle("Bumbimbambam", "", false, function(toggleState)
     toggleBumbimbambam()
+end)
+
+other.newToggle("Part Scan Attack", "Сканирует и атакует объектами", false, function(toggleState)
+    togglePartScan()
 end)
 
 other.newToggle("Noclip", "", false, function(toggleState)
