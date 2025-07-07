@@ -13,6 +13,7 @@ local Humanoid = Character:WaitForChild("Humanoid")
 
 local bumbimbambamEnabled = false
 local selectedTarget = nil
+local attackThread = nil
 
 -- Настройки
 local TELEPORT_DISTANCE = 10 -- Дистанция телепорта от цели (метров)
@@ -80,25 +81,33 @@ local function attackTarget(targetPlayer)
 end
 
 local function startBumbimbambam()
-    spawn(function()
+    if attackThread and coroutine.status(attackThread) ~= "dead" then return end
+    attackThread = coroutine.create(function()
         while bumbimbambamEnabled do
             if selectedTarget and Players:FindFirstChild(selectedTarget) then
-                -- Постоянное кручение даже между атаками
+                -- Кручение и атака только если есть цель
                 local spinStart = tick()
-                while tick() - spinStart < ATTACK_COOLDOWN do
+                while tick() - spinStart < ATTACK_COOLDOWN and bumbimbambamEnabled and selectedTarget do
                     HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED * RunService.Heartbeat:Wait()), 0)
                 end
-                attackTarget(Players[selectedTarget])
+                if bumbimbambamEnabled and selectedTarget then
+                    attackTarget(Players[selectedTarget])
+                end
             else
-                -- Крутимся на месте, если нет цели
+                -- Нет цели — стоим на месте
                 HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
-                HumanoidRootPart.CFrame = HumanoidRootPart.CFrame * CFrame.Angles(0, math.rad(SPIN_SPEED * RunService.Heartbeat:Wait()), 0)
+                RunService.Heartbeat:Wait()
             end
         end
     end)
+    coroutine.resume(attackThread)
 end
 
 local function stopBumbimbambam()
+    bumbimbambamEnabled = false
+    if attackThread and coroutine.status(attackThread) ~= "dead" then
+        attackThread = nil
+    end
     HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
 end
 
@@ -209,7 +218,6 @@ local function createTargetGui()
     stopBtn.Text = "Стоп атаки"
     stopBtn.Parent = frame
     stopBtn.MouseButton1Click:Connect(function()
-        bumbimbambamEnabled = false
         stopBumbimbambam()
         StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Атака остановлена", Duration=2})
     end)
