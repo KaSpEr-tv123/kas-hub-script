@@ -109,14 +109,18 @@ local function makeResizable(guiElement)
     end)
 end
 
--- Глобальная иконка для открытия/закрытия главного меню
+-- Глобальная иконка для открытия/закрытия главного меню (теперь emoji)
 if not GuiLibrary._mainMenuIcon then
-    GuiLibrary._mainMenuIcon = Instance.new("ImageButton")
+    GuiLibrary._mainMenuIcon = Instance.new("TextButton")
     GuiLibrary._mainMenuIcon.Name = "KasHubMenuIcon"
-    GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 48, 0, 48)
-    GuiLibrary._mainMenuIcon.Position = UDim2.new(0, 16, 0, 16)
-    GuiLibrary._mainMenuIcon.BackgroundTransparency = 1
-    GuiLibrary._mainMenuIcon.Image = "rbxassetid://15074833174" -- твоя иконка
+    GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 64, 0, 64)
+    GuiLibrary._mainMenuIcon.Position = UDim2.new(0.5, -32, 0.5, -32)
+    GuiLibrary._mainMenuIcon.BackgroundTransparency = 0.2
+    GuiLibrary._mainMenuIcon.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+    GuiLibrary._mainMenuIcon.Text = "😈"
+    GuiLibrary._mainMenuIcon.TextSize = 48
+    GuiLibrary._mainMenuIcon.TextColor3 = Color3.fromRGB(255,255,255)
+    GuiLibrary._mainMenuIcon.Font = Enum.Font.GothamBlack
     GuiLibrary._mainMenuIcon.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
     GuiLibrary._mainMenuIcon.ZIndex = 9999
     GuiLibrary._mainMenuIcon.Draggable = true
@@ -570,13 +574,11 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title .. "Window"
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 300, 0, 400)
     frame.Position = UDim2.new(0.5, -150, 0.5, -200)
     applyModernStyles(frame)
     frame.Parent = window
-    
     -- Titlebar
     local titleBar = Instance.new("Frame")
     titleBar.Size = UDim2.new(1, 0, 0, 40)
@@ -585,15 +587,16 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     titleBar.Parent = frame
     titleBar.Active = true
     titleBar.Draggable = true
-    
-    -- Иконка окна
-    local icon = Instance.new("ImageLabel")
+    -- Emoji вместо иконки
+    local icon = Instance.new("TextLabel")
     icon.Size = UDim2.new(0, 28, 0, 28)
     icon.Position = UDim2.new(0, 6, 0, 6)
     icon.BackgroundTransparency = 1
-    icon.Image = iconId and ("rbxassetid://"..iconId) or ""
+    icon.Text = "😈"
+    icon.TextSize = 24
+    icon.TextColor3 = Color3.fromRGB(255,255,255)
+    icon.Font = Enum.Font.GothamBlack
     icon.Parent = titleBar
-    
     -- Заголовок
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -110, 1, 0)
@@ -605,7 +608,6 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     titleLabel.TextSize = 18
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = titleBar
-    
     -- Кнопка свернуть
     local minimizeBtn = Instance.new("TextButton")
     minimizeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -616,7 +618,6 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     minimizeBtn.Font = Enum.Font.GothamBold
     minimizeBtn.TextSize = 24
     minimizeBtn.Parent = titleBar
-    
     -- Кнопка развернуть (максимизация)
     local maximizeBtn = Instance.new("TextButton")
     maximizeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -627,7 +628,6 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     maximizeBtn.Font = Enum.Font.GothamBold
     maximizeBtn.TextSize = 20
     maximizeBtn.Parent = titleBar
-    
     -- Кнопка закрытия
     local closeBtn = Instance.new("TextButton")
     closeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -638,16 +638,13 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     closeBtn.Font = Enum.Font.GothamBold
     closeBtn.TextSize = 20
     closeBtn.Parent = titleBar
-    
     -- Контейнер для контента
     local contentFrame = Instance.new("Frame")
     contentFrame.Size = UDim2.new(1, -20, 1, -50)
     contentFrame.Position = UDim2.new(0, 10, 0, 40)
     contentFrame.BackgroundTransparency = 1
     contentFrame.Parent = frame
-    
     makeDraggable(frame)
-    
     -- Анимация сворачивания/разворачивания
     local minimized = false
     local origSize = frame.Size
@@ -681,7 +678,6 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     closeBtn.MouseButton1Click:Connect(function()
         window.Enabled = false
     end)
-    
     return {
         window = window,
         content = contentFrame,
