@@ -28,18 +28,22 @@ function GuiLibrary:CreateWindow(title, iconId)
     -- Set up the window
     window.Name = title
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    window.DisplayOrder = 1000
     
     -- Set up the frame with modern styles
     frame.Size = UDim2.new(0, 300, 0, 400)
     frame.Position = UDim2.new(0.5, -150, 0.5, -200)
     applyModernStyles(frame)
     frame.Parent = window
+    frame.ZIndex = 1001
     
     -- Set up the icon
     icon.Size = UDim2.new(0, 50, 0, 50)
     icon.Position = UDim2.new(0, 10, 0, 10)
     icon.Image = "rbxassetid://" .. iconId
     icon.Parent = frame
+    icon.ZIndex = 1002
     
     return window
 end
@@ -122,7 +126,7 @@ if not GuiLibrary._mainMenuIcon then
     GuiLibrary._mainMenuIcon.TextColor3 = Color3.fromRGB(255,255,255)
     GuiLibrary._mainMenuIcon.Font = Enum.Font.GothamBlack
     GuiLibrary._mainMenuIcon.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-    GuiLibrary._mainMenuIcon.ZIndex = 9999
+    GuiLibrary._mainMenuIcon.ZIndex = 2000
     GuiLibrary._mainMenuIcon.Draggable = true
 end
 
@@ -131,11 +135,14 @@ function GuiLibrary:CreateDefaultLayout()
     local window = Instance.new("ScreenGui")
     window.Name = "Default Layout"
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    window.DisplayOrder = 1000
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 350, 0, 500)
     frame.Position = UDim2.new(0.5, -175, 0.5, -250)
     applyModernStyles(frame)
     frame.Parent = window
+    frame.ZIndex = 1001
     -- Titlebar
     local titleBar = Instance.new("Frame")
     titleBar.Size = UDim2.new(1, 0, 0, 40)
@@ -144,6 +151,7 @@ function GuiLibrary:CreateDefaultLayout()
     titleBar.Parent = frame
     titleBar.Active = true
     titleBar.Draggable = true
+    titleBar.ZIndex = 1002
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -40, 1, 0)
     titleLabel.Position = UDim2.new(0, 10, 0, 0)
@@ -154,6 +162,7 @@ function GuiLibrary:CreateDefaultLayout()
     titleLabel.TextSize = 18
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = titleBar
+    titleLabel.ZIndex = 1003
     -- Кнопка закрытия
     local closeBtn = Instance.new("TextButton")
     closeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -167,12 +176,14 @@ function GuiLibrary:CreateDefaultLayout()
     closeBtn.MouseButton1Click:Connect(function()
         window.Enabled = false
     end)
+    closeBtn.ZIndex = 1003
     -- Контейнер для контента
     local contentFrame = Instance.new("Frame")
     contentFrame.Size = UDim2.new(1, -20, 1, -50)
     contentFrame.Position = UDim2.new(0, 10, 0, 40)
     contentFrame.BackgroundTransparency = 1
     contentFrame.Parent = frame
+    contentFrame.ZIndex = 1002
     makeDraggable(frame)
     -- Изначально скрыто
     window.Enabled = false
@@ -495,12 +506,15 @@ function GuiLibrary:CreateFunctionWindow(title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title .. "Window"
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    window.DisplayOrder = 1000
     
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 300, 0, 400)
     frame.Position = UDim2.new(0.5, -150, 0.5, -200)
     applyModernStyles(frame)
     frame.Parent = window
+    frame.ZIndex = 1001
     
     -- Заголовок окна
     local titleBar = Instance.new("Frame")
@@ -508,6 +522,7 @@ function GuiLibrary:CreateFunctionWindow(title, iconId)
     titleBar.Position = UDim2.new(0, 0, 0, 0)
     titleBar.BackgroundColor3 = Color3.fromRGB(100, 0, 180)
     titleBar.Parent = frame
+    titleBar.ZIndex = 1002
     
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -50, 1, 0)
@@ -518,6 +533,7 @@ function GuiLibrary:CreateFunctionWindow(title, iconId)
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextSize = 18
     titleLabel.Parent = titleBar
+    titleLabel.ZIndex = 1003
     
     -- Кнопка закрытия
     local closeBtn = Instance.new("TextButton")
@@ -532,6 +548,7 @@ function GuiLibrary:CreateFunctionWindow(title, iconId)
     closeBtn.MouseButton1Click:Connect(function()
         window.Enabled = false
     end)
+    closeBtn.ZIndex = 1003
     
     -- Контейнер для контента
     local contentFrame = Instance.new("Frame")
@@ -539,6 +556,7 @@ function GuiLibrary:CreateFunctionWindow(title, iconId)
     contentFrame.Position = UDim2.new(0, 10, 0, 40)
     contentFrame.BackgroundTransparency = 1
     contentFrame.Parent = frame
+    contentFrame.ZIndex = 1002
     
     -- Делаем окно перетаскиваемым
     makeDraggable(frame)
@@ -574,11 +592,14 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     local window = Instance.new("ScreenGui")
     window.Name = title .. "Window"
     window.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+    window.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    window.DisplayOrder = 1000
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 300, 0, 400)
     frame.Position = UDim2.new(0.5, -150, 0.5, -200)
     applyModernStyles(frame)
     frame.Parent = window
+    frame.ZIndex = 1001
     -- Titlebar
     local titleBar = Instance.new("Frame")
     titleBar.Size = UDim2.new(1, 0, 0, 40)
@@ -587,6 +608,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     titleBar.Parent = frame
     titleBar.Active = true
     titleBar.Draggable = true
+    titleBar.ZIndex = 1002
     -- Emoji вместо иконки
     local icon = Instance.new("TextLabel")
     icon.Size = UDim2.new(0, 28, 0, 28)
@@ -597,6 +619,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     icon.TextColor3 = Color3.fromRGB(255,255,255)
     icon.Font = Enum.Font.GothamBlack
     icon.Parent = titleBar
+    icon.ZIndex = 1003
     -- Заголовок
     local titleLabel = Instance.new("TextLabel")
     titleLabel.Size = UDim2.new(1, -110, 1, 0)
@@ -608,6 +631,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     titleLabel.TextSize = 18
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = titleBar
+    titleLabel.ZIndex = 1003
     -- Кнопка свернуть
     local minimizeBtn = Instance.new("TextButton")
     minimizeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -618,6 +642,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     minimizeBtn.Font = Enum.Font.GothamBold
     minimizeBtn.TextSize = 24
     minimizeBtn.Parent = titleBar
+    minimizeBtn.ZIndex = 1003
     -- Кнопка развернуть (максимизация)
     local maximizeBtn = Instance.new("TextButton")
     maximizeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -628,6 +653,7 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     maximizeBtn.Font = Enum.Font.GothamBold
     maximizeBtn.TextSize = 20
     maximizeBtn.Parent = titleBar
+    maximizeBtn.ZIndex = 1003
     -- Кнопка закрытия
     local closeBtn = Instance.new("TextButton")
     closeBtn.Size = UDim2.new(0, 32, 0, 32)
@@ -638,12 +664,14 @@ function GuiLibrary:CreateCustomWindow(title, iconId)
     closeBtn.Font = Enum.Font.GothamBold
     closeBtn.TextSize = 20
     closeBtn.Parent = titleBar
+    closeBtn.ZIndex = 1003
     -- Контейнер для контента
     local contentFrame = Instance.new("Frame")
     contentFrame.Size = UDim2.new(1, -20, 1, -50)
     contentFrame.Position = UDim2.new(0, 10, 0, 40)
     contentFrame.BackgroundTransparency = 1
     contentFrame.Parent = frame
+    contentFrame.ZIndex = 1002
     makeDraggable(frame)
     -- Анимация сворачивания/разворачивания
     local minimized = false
@@ -759,6 +787,50 @@ function GuiLibrary:LogError(text)
     label.Text = os.date("[%H:%M:%S] ")..text
     label.Parent = self._errorLogWindowLogs
     self._errorLogWindowLogs.CanvasSize = UDim2.new(0, 0, 0, y+26)
+end
+
+-- Сохранение и загрузка настроек в Workspace
+function GuiLibrary:SaveSettings(key, value)
+    local ws = game:GetService("Workspace")
+    local settingsFolder = ws:FindFirstChild("KasHub_Settings")
+    if not settingsFolder then
+        settingsFolder = Instance.new("Folder")
+        settingsFolder.Name = "KasHub_Settings"
+        settingsFolder.Parent = ws
+    end
+    local v = settingsFolder:FindFirstChild(key)
+    if not v then
+        v = Instance.new("StringValue")
+        v.Name = key
+        v.Parent = settingsFolder
+    end
+    v.Value = value
+end
+
+function GuiLibrary:LoadSettings(key)
+    local ws = game:GetService("Workspace")
+    local settingsFolder = ws:FindFirstChild("KasHub_Settings")
+    if not settingsFolder then return nil end
+    local v = settingsFolder:FindFirstChild(key)
+    if v then return v.Value end
+    return nil
+end
+
+-- Автосохранение позиции иконки
+if GuiLibrary._mainMenuIcon then
+    local function saveIconPos()
+        local pos = GuiLibrary._mainMenuIcon.Position
+        GuiLibrary:SaveSettings("MainMenuIconPos", string.format("%f,%d,%f,%d", pos.X.Scale, pos.X.Offset, pos.Y.Scale, pos.Y.Offset))
+    end
+    GuiLibrary._mainMenuIcon:GetPropertyChangedSignal("Position"):Connect(saveIconPos)
+    -- При запуске — загрузить позицию
+    local saved = GuiLibrary:LoadSettings("MainMenuIconPos")
+    if saved then
+        local s = string.split(saved, ",")
+        if #s == 4 then
+            GuiLibrary._mainMenuIcon.Position = UDim2.new(tonumber(s[1]), tonumber(s[2]), tonumber(s[3]), tonumber(s[4]))
+        end
+    end
 end
 
 return GuiLibrary
