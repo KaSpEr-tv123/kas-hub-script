@@ -1,9 +1,10 @@
 -- Модуль Bumbimbambam для Kas Hub Script
--- Агрессивная атака: кручение и влет строго в игрока с отключённой коллизией
+-- Агрессивная атака: кручение и влет строго в выбранного игрока с отключённой коллизией и GUI-меню
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Debris = game:GetService("Debris")
+local StarterGui = game:GetService("StarterGui")
 
 local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
@@ -11,9 +12,9 @@ local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 local Humanoid = Character:WaitForChild("Humanoid")
 
 local bumbimbambamEnabled = false
+local selectedTarget = nil
 
 -- Настройки
-local SEARCH_RADIUS = 60 -- Радиус поиска цели (метров)
 local TELEPORT_DISTANCE = 25 -- Дистанция телепорта от цели (метров)
 local ATTACK_SPEED = 900 -- Скорость влёта в игрока
 local ATTACK_FORCE = 600 -- Сила отбрасывания
@@ -41,21 +42,6 @@ local function toggleBumbimbambam()
     end
 end
 
-local function getClosestPlayer()
-    local closestDist = math.huge
-    local closestPlayer = nil
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            local dist = (player.Character.HumanoidRootPart.Position - HumanoidRootPart.Position).Magnitude
-            if dist < closestDist and dist <= SEARCH_RADIUS then
-                closestDist = dist
-                closestPlayer = player
-            end
-        end
-    end
-    return closestPlayer
-end
-
 local function getAttackPoint(targetPos)
     -- Телепорт на TELEPORT_DISTANCE от цели, на том же уровне Y
     local angle = math.random() * 2 * math.pi
@@ -72,7 +58,7 @@ local function spinAnimation(duration, speed)
 end
 
 local function attackTarget(targetPlayer)
-    if not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
+    if not targetPlayer or not targetPlayer.Character or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
     local targetRootPart = targetPlayer.Character.HumanoidRootPart
     local targetPos = targetRootPart.Position
     -- 1. Телепорт на 25м от цели, на том же уровне
@@ -99,9 +85,8 @@ end
 local function startBumbimbambam()
     spawn(function()
         while bumbimbambamEnabled do
-            local target = getClosestPlayer()
-            if target then
-                attackTarget(target)
+            if selectedTarget and Players:FindFirstChild(selectedTarget) then
+                attackTarget(Players[selectedTarget])
             else
                 HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
             end
@@ -123,6 +108,108 @@ LocalPlayer.CharacterAdded:Connect(function(newCharacter)
         startBumbimbambam()
     end
 end)
+
+-- === Фиолетовое draggable GUI ===
+local function createTargetGui()
+    if game.CoreGui:FindFirstChild("BumbimTargetGui") then
+        game.CoreGui.BumbimTargetGui:Destroy()
+    end
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "BumbimTargetGui"
+    gui.Parent = game.CoreGui
+
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 260, 0, 380)
+    frame.Position = UDim2.new(0, 100, 0, 100)
+    frame.BackgroundColor3 = Color3.fromRGB(80, 0, 160)
+    frame.BorderSizePixel = 0
+    frame.Active = true
+    frame.Draggable = true
+    frame.Parent = gui
+
+    local title = Instance.new("TextLabel")
+    title.Text = "Bumbimbambam: Выбор цели"
+    title.Size = UDim2.new(1, 0, 0, 36)
+    title.BackgroundTransparency = 1
+    title.TextColor3 = Color3.fromRGB(220, 180, 255)
+    title.Font = Enum.Font.GothamBold
+    title.TextSize = 20
+    title.Parent = frame
+
+    local scroll = Instance.new("ScrollingFrame")
+    scroll.Size = UDim2.new(1, -20, 1, -96)
+    scroll.Position = UDim2.new(0, 10, 0, 46)
+    scroll.BackgroundColor3 = Color3.fromRGB(50, 0, 100)
+    scroll.BorderSizePixel = 0
+    scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    scroll.ScrollBarThickness = 6
+    scroll.Parent = frame
+
+    local function refreshList()
+        for _, c in pairs(scroll:GetChildren()) do
+            if c:IsA("TextButton") then c:Destroy() end
+        end
+        local y = 0
+        for _, plr in ipairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer then
+                local btn = Instance.new("TextButton")
+                btn.Size = UDim2.new(1, -8, 0, 32)
+                btn.Position = UDim2.new(0, 4, 0, y)
+                btn.BackgroundColor3 = (selectedTarget == plr.Name) and Color3.fromRGB(180, 0, 255) or Color3.fromRGB(120, 0, 200)
+                btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+                btn.Font = Enum.Font.Gotham
+                btn.TextSize = 16
+                btn.Text = plr.Name .. ((selectedTarget == plr.Name) and "  [ЦЕЛЬ]" or "")
+                btn.Parent = scroll
+                btn.MouseButton1Click:Connect(function()
+                    selectedTarget = plr.Name
+                    refreshList()
+                    StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель: "..plr.Name, Duration=2})
+                end)
+                y = y + 36
+            end
+        end
+        -- Кнопка снять цель
+        local btn = Instance.new("TextButton")
+        btn.Size = UDim2.new(1, -8, 0, 32)
+        btn.Position = UDim2.new(0, 4, 0, y)
+        btn.BackgroundColor3 = Color3.fromRGB(60, 0, 80)
+        btn.TextColor3 = Color3.fromRGB(200, 200, 255)
+        btn.Font = Enum.Font.Gotham
+        btn.TextSize = 16
+        btn.Text = "Снять цель (никого не атаковать)"
+        btn.Parent = scroll
+        btn.MouseButton1Click:Connect(function()
+            selectedTarget = nil
+            refreshList()
+            StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Цель снята", Duration=2})
+        end)
+        y = y + 36
+        scroll.CanvasSize = UDim2.new(0, 0, 0, y)
+    end
+
+    refreshList()
+    Players.PlayerAdded:Connect(refreshList)
+    Players.PlayerRemoving:Connect(refreshList)
+
+    -- Кнопка стоп атаки
+    local stopBtn = Instance.new("TextButton")
+    stopBtn.Size = UDim2.new(1, -40, 0, 36)
+    stopBtn.Position = UDim2.new(0, 20, 1, -44)
+    stopBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 80)
+    stopBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    stopBtn.Font = Enum.Font.GothamBold
+    stopBtn.TextSize = 18
+    stopBtn.Text = "Стоп атаки"
+    stopBtn.Parent = frame
+    stopBtn.MouseButton1Click:Connect(function()
+        bumbimbambamEnabled = false
+        stopBumbimbambam()
+        StarterGui:SetCore("SendNotification", {Title="Bumbimbambam", Text="Атака остановлена", Duration=2})
+    end)
+end
+
+createTargetGui()
 
 return {
     toggle = toggleBumbimbambam,
