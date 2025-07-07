@@ -20,7 +20,7 @@ local lastAttackTime = 0
 local TELEPORT_DISTANCE = 1-- Дистанция телепорта от цели (метров)
 local ATTACK_SPEED = 1400 -- Скорость влёта в игрока
 local ATTACK_FORCE = 1200 -- Сила отбрасывания
-local ATTACK_COOLDOWN = 0.1 -- Задержка между атаками
+local ATTACK_COOLDOWN = 0.01 -- Задержка между атаками
 local SPIN_TIME = 0.01 -- Время кручения перед атакой (сек)
 local SPIN_SPEED = 2200 -- Скорость вращения (градусов/сек)
 
