@@ -8,7 +8,7 @@ local hacksTab = GuiLibrary:AddTab("Hacks", "15046690373")
 local otherTab = GuiLibrary:AddTab("Other", "15046690373")
 local tpTab = GuiLibrary:AddTab("TP Utility", "15046690373")
 -- Установка баннера
-GuiLibrary:SetBanner("discord.gg/dYStejMq6d")
+-- GuiLibrary:SetBanner("kasper studios 😈 by kasperenok")
 
 -- Пример уведомления
 GuiLibrary:CreateNotification("kasper studios 😈, by kasperenok", 5)
