@@ -1,11 +1,3 @@
--- Custom GUI Library for Roblox
-local test = Instance.new("TextLabel")
-test.Text = "KAS TEST"
-test.Size = UDim2.new(0,200,0,50)
-test.Position = UDim2.new(0.5,-100,0.1,0)
-test.BackgroundColor3 = Color3.fromRGB(255,0,255)
-test.TextColor3 = Color3.fromRGB(255,255,255)
-test.Parent = game:GetService("CoreGui")
 local GuiLibrary = {}
 
 print("[kasgui.lua] Модуль загружен")
@@ -221,7 +213,7 @@ function GuiLibrary:CreateDefaultLayout()
 end
 
 -- Example usage
-local myLayout = GuiLibrary:CreateDefaultLayout()
+-- local myLayout = GuiLibrary:CreateDefaultLayout()
 
 -- Keybind to toggle the GUI
 local UserInputService = game:GetService("UserInputService")
@@ -270,7 +262,7 @@ function GuiLibrary:CreateNotification(message, duration)
 end
 
 -- Example usage of notification
-GuiLibrary:CreateNotification("Hello, World!", 3)
+-- GuiLibrary:CreateNotification("Hello, World!", 3)
 
 -- Таб-менеджер
 GuiLibrary._tabs = {}
@@ -603,7 +595,7 @@ function GuiLibrary:GetFunctionWindow(title)
     return GuiLibrary._functionWindows[title]
 end
 
--- Универсальный метод создания кастомного окна
+-- Function to create a custom window
 function GuiLibrary:CreateCustomWindow(title, iconId)
     print("[kasgui.lua] CreateCustomWindow called: ", title, iconId)
     local window = Instance.new("ScreenGui")
