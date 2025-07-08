@@ -9,15 +9,25 @@ local mainLayout = GuiLibrary:CreateDefaultLayout()
 local hacksTab = GuiLibrary:AddTab("Hacks", "15046690373")
 local otherTab = GuiLibrary:AddTab("Other", "15046690373")
 local tpTab = GuiLibrary:AddTab("TP Utility", "15046690373")
-
 -- Установка баннера
-GuiLibrary:SetBanner("kasper studios 😈 by kasperenok")
+GuiLibrary:SetBanner("discord.gg/dYStejMq6d")
 
 -- Пример уведомления
-GuiLibrary:CreateNotification("kasper studios 😈 by kasperenok", 5)
+GuiLibrary:CreateNotification("kasper studios 😈, by kasperenok", 5)
+-- Проверка наличия Frame в mainLayout
+local tabFrame = mainLayout:FindFirstChild("Frame")
+if tabFrame then
+    print("[script.lua] Frame найден в mainLayout: ", tabFrame.Name)
+else
+    warn("[script.lua] Frame НЕ найден в mainLayout! CustomizeTabLayout вызван не будет.")
+end
 
 -- Кастомизация вкладок
-GuiLibrary:CustomizeTabLayout(mainLayout, "vertical", 100)
+if tabFrame then
+    GuiLibrary:CustomizeTabLayout(mainLayout, "vertical", 100)
+else
+    -- Можно добавить обработку ошибки или альтернативное поведение
+end
 
 -- Переключение GUI по клавише F
 local UserInputService = game:GetService("UserInputService")
