@@ -29,10 +29,10 @@ else
     -- Можно добавить обработку ошибки или альтернативное поведение
 end
 
--- Переключение GUI по клавише F
+-- Переключение GUI по клавише RightAlt
 local UserInputService = game:GetService("UserInputService")
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if input.KeyCode == Enum.KeyCode.F and not gameProcessed then
+    if input.KeyCode == Enum.KeyCode.RightAlt and not gameProcessed then
         GuiLibrary:ToggleWindow(mainLayout)
     end
 end)

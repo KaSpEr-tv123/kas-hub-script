@@ -140,9 +140,18 @@ if not GuiLibrary._mainMenuIcon then
     GuiLibrary._mainMenuIcon.TextColor3 = Color3.fromRGB(255,255,255)
     GuiLibrary._mainMenuIcon.Font = Enum.Font.GothamBlack
     GuiLibrary._mainMenuIcon.Parent = game:GetService("CoreGui")
-    GuiLibrary._mainMenuIcon.ZIndex = 10
+    GuiLibrary._mainMenuIcon.ZIndex = 10000
     GuiLibrary._mainMenuIcon.Draggable = true
+    GuiLibrary._mainMenuIcon.Visible = true
+    GuiLibrary._mainMenuIcon.Active = true
+    GuiLibrary._mainMenuIcon.AutoButtonColor = true
     print("[kasgui.lua] KasHubMenuIcon создан, позиция:", tostring(GuiLibrary._mainMenuIcon.Position), "Visible:", GuiLibrary._mainMenuIcon.Visible)
+    -- Клик по иконке открывает/закрывает главное меню
+    GuiLibrary._mainMenuIcon.MouseButton1Click:Connect(function()
+        if GuiLibrary._mainMenuWindow then
+            GuiLibrary:ToggleWindow(GuiLibrary._mainMenuWindow)
+        end
+    end)
     -- DEBUG BUTTON
     local dbgBtn = Instance.new("TextButton")
     dbgBtn.Size = UDim2.new(0, 120, 0, 40)
