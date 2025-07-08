@@ -12,16 +12,8 @@ GuiLibrary:SetBanner("discord.gg/dYStejMq6d")
 
 -- Пример уведомления
 GuiLibrary:CreateNotification("kasper studios 😈, by kasperenok", 5)
--- Проверка наличия Frame в mainLayout
-local tabFrame = mainLayout:FindFirstChild("Frame")
-if tabFrame then
-    print("[script.lua] Frame найден в mainLayout: ", tabFrame.Name)
-else
-    warn("[script.lua] Frame НЕ найден в mainLayout! CustomizeTabLayout вызван не будет.")
-end
 
--- Переключение GUI по клавише RightAlt
-local UserInputService = game:GetService("UserInputService")
+UserInputService = game:GetService("UserInputService")
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if input.KeyCode == Enum.KeyCode.RightAlt and not gameProcessed then
         GuiLibrary:ToggleWindow(mainLayout)
