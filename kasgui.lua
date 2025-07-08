@@ -35,6 +35,7 @@ function GuiLibrary:CreateWindow(title, iconId)
     window.Parent = game:GetService("CoreGui")
     window.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     window.DisplayOrder = 0
+    print("[kasgui.lua] Window created and added to CoreGui: ", window.Name)
     
     -- Set up the frame with modern styles
     frame.Size = UDim2.new(0, 300, 0, 400)
@@ -42,6 +43,7 @@ function GuiLibrary:CreateWindow(title, iconId)
     applyModernStyles(frame)
     frame.Parent = window
     frame.ZIndex = 2
+    print("[kasgui.lua] Frame created and added to window: ", frame.Size, frame.Position)
     
     -- Set up the icon
     icon.Size = UDim2.new(0, 50, 0, 50)
@@ -49,6 +51,7 @@ function GuiLibrary:CreateWindow(title, iconId)
     icon.Image = "rbxassetid://" .. iconId
     icon.Parent = frame
     icon.ZIndex = 3
+    print("[kasgui.lua] Icon created and added to frame: ", icon.Image)
     
     print("[kasgui.lua] Window created: ", window.Name, "Enabled:", window.Enabled)
     return window
@@ -57,6 +60,7 @@ end
 -- Function to toggle the visibility of the GUI window
 function GuiLibrary:ToggleWindow(window)
     window.Enabled = not window.Enabled
+    print("[kasgui.lua] Toggled window visibility: ", window.Name, "Enabled:", window.Enabled)
 end
 
 -- Function to make a GUI element draggable
@@ -69,10 +73,12 @@ local function makeDraggable(guiElement)
             dragging = true
             mousePos = input.Position
             framePos = guiElement.Position
+            print("[kasgui.lua] Dragging started for: ", guiElement.Name)
             
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
+                    print("[kasgui.lua] Dragging ended for: ", guiElement.Name)
                 end
             end)
         end
@@ -88,6 +94,7 @@ local function makeDraggable(guiElement)
         if input == dragInput and dragging then
             local delta = input.Position - mousePos
             guiElement.Position = UDim2.new(framePos.X.Scale, framePos.X.Offset + delta.X, framePos.Y.Scale, framePos.Y.Offset + delta.Y)
+            print("[kasgui.lua] Dragging position updated for: ", guiElement.Name, "Position:", guiElement.Position)
         end
     end)
 end
