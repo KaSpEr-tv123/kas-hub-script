@@ -236,9 +236,6 @@ function GuiLibrary:CustomizeTabLayout(window, layoutType, tabSize)
     end
 end
 
--- Example usage of customization
-GuiLibrary:CustomizeTabLayout(myLayout, "horizontal", 50)
-
 -- Function to create a custom notification
 function GuiLibrary:CreateNotification(message, duration)
     local notification = Instance.new("TextLabel")
