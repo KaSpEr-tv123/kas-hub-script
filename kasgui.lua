@@ -1,5 +1,11 @@
 -- Custom GUI Library for Roblox
-
+local test = Instance.new("TextLabel")
+test.Text = "KAS TEST"
+test.Size = UDim2.new(0,200,0,50)
+test.Position = UDim2.new(0.5,-100,0.1,0)
+test.BackgroundColor3 = Color3.fromRGB(255,0,255)
+test.TextColor3 = Color3.fromRGB(255,255,255)
+test.Parent = game:GetService("CoreGui")
 local GuiLibrary = {}
 
 print("[kasgui.lua] Модуль загружен")
@@ -803,13 +809,5 @@ function GuiLibrary:LogError(text)
     label.Parent = self._errorLogWindowLogs
     self._errorLogWindowLogs.CanvasSize = UDim2.new(0, 0, 0, y+26)
 end
-
-local test = Instance.new("TextLabel")
-test.Text = "KAS TEST"
-test.Size = UDim2.new(0,200,0,50)
-test.Position = UDim2.new(0.5,-100,0.1,0)
-test.BackgroundColor3 = Color3.fromRGB(255,0,255)
-test.TextColor3 = Color3.fromRGB(255,255,255)
-test.Parent = game:GetService("CoreGui")
 
 return GuiLibrary
