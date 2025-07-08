@@ -215,14 +215,6 @@ end
 -- Example usage
 -- local myLayout = GuiLibrary:CreateDefaultLayout()
 
--- Keybind to toggle the GUI
-local UserInputService = game:GetService("UserInputService")
-UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if input.KeyCode == Enum.KeyCode.F and not gameProcessed then
-        GuiLibrary:ToggleWindow(myLayout)
-    end
-end)
-
 -- Function to customize the tab layout
 function GuiLibrary:CustomizeTabLayout(window, layoutType, tabSize)
     local tabFrame = window:FindFirstChild("Frame")
