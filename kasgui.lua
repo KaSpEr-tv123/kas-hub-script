@@ -126,43 +126,85 @@ local function makeResizable(guiElement)
     end)
 end
 
--- Глобальная иконка для открытия/закрытия главного меню (теперь emoji)
-if not GuiLibrary._mainMenuIcon then
-    print("[kasgui.lua] Creating KasHubMenuIcon")
-    GuiLibrary._mainMenuIcon = Instance.new("TextButton")
-    GuiLibrary._mainMenuIcon.Name = "KasHubMenuIcon"
-    GuiLibrary._mainMenuIcon.Size = UDim2.new(0, 60, 0, 60)
-    GuiLibrary._mainMenuIcon.Position = UDim2.new(0.5, -30, 0.5, -30)
-    GuiLibrary._mainMenuIcon.BackgroundTransparency = 0.2
-    GuiLibrary._mainMenuIcon.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
-    GuiLibrary._mainMenuIcon.Text = "😈"
-    GuiLibrary._mainMenuIcon.TextSize = 48
-    GuiLibrary._mainMenuIcon.TextColor3 = Color3.fromRGB(255,255,255)
-    GuiLibrary._mainMenuIcon.Font = Enum.Font.GothamBlack
-    GuiLibrary._mainMenuIcon.Parent = game:GetService("CoreGui")
-    GuiLibrary._mainMenuIcon.ZIndex = 10000
-    GuiLibrary._mainMenuIcon.Draggable = true
-    GuiLibrary._mainMenuIcon.Visible = true
-    GuiLibrary._mainMenuIcon.Active = true
-    GuiLibrary._mainMenuIcon.AutoButtonColor = true
-    print("[kasgui.lua] KasHubMenuIcon создан, позиция:", tostring(GuiLibrary._mainMenuIcon.Position), "Visible:", GuiLibrary._mainMenuIcon.Visible)
-    -- Клик по иконке открывает/закрывает главное меню
-    GuiLibrary._mainMenuIcon.MouseButton1Click:Connect(function()
-        if GuiLibrary._mainMenuWindow then
-            GuiLibrary:ToggleWindow(GuiLibrary._mainMenuWindow)
-        end
-    end)
-    -- DEBUG BUTTON
-    local dbgBtn = Instance.new("TextButton")
-    dbgBtn.Size = UDim2.new(0, 120, 0, 40)
-    dbgBtn.Position = UDim2.new(0.5, -60, 0.7, 0)
-    dbgBtn.Text = "KAS DEBUG"
-    dbgBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    dbgBtn.TextColor3 = Color3.fromRGB(255,255,255)
-    dbgBtn.Font = Enum.Font.GothamBold
-    dbgBtn.TextSize = 20
-    dbgBtn.Parent = game:GetService("CoreGui")
+-- Современная иконка для открытия меню
+if GuiLibrary._mainMenuIcon and GuiLibrary._mainMenuIcon.Parent then
+    GuiLibrary._mainMenuIcon:Destroy()
 end
+
+local icon = Instance.new("TextButton")
+icon.Name = "KasHubMenuIcon"
+icon.Size = UDim2.new(0, 56, 0, 56)
+icon.Position = UDim2.new(0, 24, 0, 24)
+icon.BackgroundTransparency = 0
+icon.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+icon.Text = "😈"
+icon.TextSize = 40
+icon.TextColor3 = Color3.fromRGB(255,255,255)
+icon.Font = Enum.Font.GothamBlack
+icon.Parent = game:GetService("CoreGui")
+icon.ZIndex = 10000
+icon.Draggable = true
+icon.Visible = true
+icon.Active = true
+icon.AutoButtonColor = false
+icon.BorderSizePixel = 0
+icon.ClipsDescendants = true
+
+-- Градиент
+local grad = Instance.new("UIGradient")
+grad.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(180, 80, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(75, 0, 130))
+}
+grad.Rotation = 45
+grad.Parent = icon
+
+-- Тень
+local shadow = Instance.new("ImageLabel")
+shadow.Name = "Shadow"
+shadow.Size = UDim2.new(1, 16, 1, 16)
+shadow.Position = UDim2.new(0, -8, 0, -8)
+shadow.BackgroundTransparency = 1
+shadow.Image = "rbxassetid://1316045217"
+shadow.ImageTransparency = 0.6
+shadow.ZIndex = 9999
+shadow.Parent = icon
+
+-- Анимация появления
+icon.BackgroundTransparency = 1
+icon.TextTransparency = 1
+shadow.ImageTransparency = 1
+spawn(function()
+    for i = 1, 10 do
+        icon.BackgroundTransparency = 1 - i*0.09
+        icon.TextTransparency = 1 - i*0.09
+        shadow.ImageTransparency = 1 - i*0.09
+        wait(0.02)
+    end
+    icon.BackgroundTransparency = 0.1
+    icon.TextTransparency = 0
+    shadow.ImageTransparency = 0.6
+end)
+
+-- Hover-эффект
+local origSize = icon.Size
+icon.MouseEnter:Connect(function()
+    icon:TweenSize(UDim2.new(0, 64, 0, 64), "Out", "Quad", 0.12, true)
+    icon.BackgroundColor3 = Color3.fromRGB(180, 80, 255)
+end)
+icon.MouseLeave:Connect(function()
+    icon:TweenSize(origSize, "Out", "Quad", 0.12, true)
+    icon.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+end)
+
+-- Клик по иконке открывает/закрывает главное меню
+icon.MouseButton1Click:Connect(function()
+    if GuiLibrary._mainMenuWindow then
+        GuiLibrary:ToggleWindow(GuiLibrary._mainMenuWindow)
+    end
+end)
+
+GuiLibrary._mainMenuIcon = icon
 
 -- Переопределяем CreateDefaultLayout для компактного окна
 function GuiLibrary:CreateDefaultLayout()
