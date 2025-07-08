@@ -4,8 +4,6 @@ local kasperfly = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaS
 local partscan = loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/refs/heads/main/partscan.lua"))()
 local player = game.Players.LocalPlayer
 
--- Создание главного окна и вкладок
-local mainLayout = GuiLibrary:CreateDefaultLayout()
 local hacksTab = GuiLibrary:AddTab("Hacks", "15046690373")
 local otherTab = GuiLibrary:AddTab("Other", "15046690373")
 local tpTab = GuiLibrary:AddTab("TP Utility", "15046690373")
@@ -20,13 +18,6 @@ if tabFrame then
     print("[script.lua] Frame найден в mainLayout: ", tabFrame.Name)
 else
     warn("[script.lua] Frame НЕ найден в mainLayout! CustomizeTabLayout вызван не будет.")
-end
-
--- Кастомизация вкладок
-if tabFrame then
-    GuiLibrary:CustomizeTabLayout(mainLayout, "vertical", 100)
-else
-    -- Можно добавить обработку ошибки или альтернативное поведение
 end
 
 -- Переключение GUI по клавише RightAlt
