@@ -51,40 +51,38 @@ shadow.ZIndex = 9
 shadow.Parent = mainFrame
 
 -- TitleBar
-    local titleBar = Instance.new("Frame")
+local titleBar = Instance.new("Frame")
 titleBar.Name = "TitleBar"
 titleBar.Size = UDim2.new(1, 0, 0, 48)
-    titleBar.Position = UDim2.new(0, 0, 0, 0)
+titleBar.Position = UDim2.new(0, 0, 0, 0)
 titleBar.BackgroundColor3 = TITLE_COLOR
 titleBar.BorderSizePixel = 0
 titleBar.Parent = mainFrame
 titleBar.ZIndex = 11
-    titleBar.Active = true
-    titleBar.Draggable = true
 
-    local titleLabel = Instance.new("TextLabel")
+local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, -48, 1, 0)
 titleLabel.Position = UDim2.new(0, 16, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Text = "kas-hub menu"
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "kas-hub menu"
 titleLabel.TextColor3 = WHITE
-    titleLabel.Font = Enum.Font.GothamBold
+titleLabel.Font = Enum.Font.GothamBold
 titleLabel.TextSize = 22
-    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    titleLabel.Parent = titleBar
+titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+titleLabel.Parent = titleBar
 titleLabel.ZIndex = 12
 
-    local closeBtn = Instance.new("TextButton")
+local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 40, 0, 40)
 closeBtn.Position = UDim2.new(1, -44, 0, 4)
-    closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-    closeBtn.Text = "X"
+closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+closeBtn.Text = "X"
 closeBtn.TextColor3 = WHITE
-    closeBtn.Font = Enum.Font.GothamBold
+closeBtn.Font = Enum.Font.GothamBold
 closeBtn.TextSize = 22
-    closeBtn.Parent = titleBar
+closeBtn.Parent = titleBar
 closeBtn.ZIndex = 13
-    closeBtn.MouseButton1Click:Connect(function()
+closeBtn.MouseButton1Click:Connect(function()
     screenGui.Enabled = false
 end)
 
@@ -99,11 +97,11 @@ tabBar.Parent = mainFrame
 tabBar.ZIndex = 11
 
 -- ContentFrame (контейнер для контента вкладок)
-    local contentFrame = Instance.new("Frame")
+local contentFrame = Instance.new("Frame")
 contentFrame.Name = "ContentFrame"
 contentFrame.Size = UDim2.new(1, -120, 1, -48)
 contentFrame.Position = UDim2.new(0, 120, 0, 48)
-    contentFrame.BackgroundTransparency = 1
+contentFrame.BackgroundTransparency = 1
 contentFrame.Parent = mainFrame
 contentFrame.ZIndex = 11
 
@@ -125,10 +123,10 @@ function GuiLibrary:AddTab(tabName, iconId)
     tabBtn.AutoButtonColor = true
     -- Иконка (если есть)
     if iconId then
-    local icon = Instance.new("ImageLabel")
+        local icon = Instance.new("ImageLabel")
         icon.Size = UDim2.new(0, 28, 0, 28)
         icon.Position = UDim2.new(0, 8, 0, 10)
-    icon.BackgroundTransparency = 1
+        icon.BackgroundTransparency = 1
         icon.Image = "rbxassetid://"..iconId
         icon.Parent = tabBtn
         icon.ZIndex = 13
