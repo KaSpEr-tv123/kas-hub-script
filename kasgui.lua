@@ -51,38 +51,38 @@ shadow.ZIndex = 9
 shadow.Parent = mainFrame
 
 -- TitleBar
-local titleBar = Instance.new("Frame")
+    local titleBar = Instance.new("Frame")
 titleBar.Name = "TitleBar"
 titleBar.Size = UDim2.new(1, 0, 0, 48)
-titleBar.Position = UDim2.new(0, 0, 0, 0)
+    titleBar.Position = UDim2.new(0, 0, 0, 0)
 titleBar.BackgroundColor3 = TITLE_COLOR
 titleBar.BorderSizePixel = 0
 titleBar.Parent = mainFrame
 titleBar.ZIndex = 11
 
-local titleLabel = Instance.new("TextLabel")
+    local titleLabel = Instance.new("TextLabel")
 titleLabel.Size = UDim2.new(1, -48, 1, 0)
 titleLabel.Position = UDim2.new(0, 16, 0, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "kas-hub menu"
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = "kas-hub menu"
 titleLabel.TextColor3 = WHITE
-titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.Font = Enum.Font.GothamBold
 titleLabel.TextSize = 22
-titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-titleLabel.Parent = titleBar
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = titleBar
 titleLabel.ZIndex = 12
 
-local closeBtn = Instance.new("TextButton")
+    local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 40, 0, 40)
 closeBtn.Position = UDim2.new(1, -44, 0, 4)
-closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-closeBtn.Text = "X"
+    closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+    closeBtn.Text = "X"
 closeBtn.TextColor3 = WHITE
-closeBtn.Font = Enum.Font.GothamBold
+    closeBtn.Font = Enum.Font.GothamBold
 closeBtn.TextSize = 22
-closeBtn.Parent = titleBar
+    closeBtn.Parent = titleBar
 closeBtn.ZIndex = 13
-closeBtn.MouseButton1Click:Connect(function()
+    closeBtn.MouseButton1Click:Connect(function()
     screenGui.Enabled = false
 end)
 
@@ -97,11 +97,11 @@ tabBar.Parent = mainFrame
 tabBar.ZIndex = 11
 
 -- ContentFrame (контейнер для контента вкладок)
-local contentFrame = Instance.new("Frame")
+    local contentFrame = Instance.new("Frame")
 contentFrame.Name = "ContentFrame"
 contentFrame.Size = UDim2.new(1, -120, 1, -48)
 contentFrame.Position = UDim2.new(0, 120, 0, 48)
-contentFrame.BackgroundTransparency = 1
+    contentFrame.BackgroundTransparency = 1
 contentFrame.Parent = mainFrame
 contentFrame.ZIndex = 11
 
@@ -123,10 +123,10 @@ function GuiLibrary:AddTab(tabName, iconId)
     tabBtn.AutoButtonColor = true
     -- Иконка (если есть)
     if iconId then
-        local icon = Instance.new("ImageLabel")
+    local icon = Instance.new("ImageLabel")
         icon.Size = UDim2.new(0, 28, 0, 28)
         icon.Position = UDim2.new(0, 8, 0, 10)
-        icon.BackgroundTransparency = 1
+    icon.BackgroundTransparency = 1
         icon.Image = "rbxassetid://"..iconId
         icon.Parent = tabBtn
         icon.ZIndex = 13
@@ -185,41 +185,89 @@ function GuiLibrary:AddButton(parent, text, desc, callback)
     return button
 end
 
--- Добавление слайдера
+-- Добавление слайдера (современный, drag&drop)
 function GuiLibrary:AddSlider(parent, text, max, default, callback)
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(1, -20, 0, 44)
-    frame.Position = UDim2.new(0, 10, 0, #parent:GetChildren()*48)
+    frame.Size = UDim2.new(1, -20, 0, 54)
+    frame.Position = UDim2.new(0, 10, 0, #parent:GetChildren()*58)
     frame.BackgroundColor3 = Color3.fromRGB(60, 0, 120)
     frame.Parent = parent
     frame.ZIndex = 13
+
     local label = Instance.new("TextLabel")
     label.Text = text .. ": " .. tostring(default)
-    label.Size = UDim2.new(0.5, 0, 1, 0)
-    label.Position = UDim2.new(0, 0, 0, 0)
+    label.Size = UDim2.new(1, -20, 0, 20)
+    label.Position = UDim2.new(0, 10, 0, 0)
     label.BackgroundTransparency = 1
     label.TextColor3 = Color3.fromRGB(220, 180, 255)
     label.Font = Enum.Font.Gotham
     label.TextSize = 15
     label.Parent = frame
-    local slider = Instance.new("TextButton")
-    slider.Size = UDim2.new(0.5, -10, 1, -8)
-    slider.Position = UDim2.new(0.5, 5, 0, 4)
-    slider.BackgroundColor3 = MAIN_COLOR
-    slider.Text = tostring(default)
-    slider.TextColor3 = WHITE
-    slider.Font = Enum.Font.GothamBold
-    slider.TextSize = 15
-    slider.Parent = frame
-    slider.ZIndex = 14
-    slider.MouseButton1Click:Connect(function()
-        local new = tonumber(game:GetService("Players").LocalPlayer:PromptInput("Введите значение (макс. "..max..")"))
-        if new and new <= max then
-            slider.Text = tostring(new)
-            label.Text = text .. ": " .. tostring(new)
-            if callback then callback(new) end
+
+    local sliderBar = Instance.new("Frame")
+    sliderBar.Size = UDim2.new(1, -40, 0, 8)
+    sliderBar.Position = UDim2.new(0, 20, 0, 28)
+    sliderBar.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+    sliderBar.BorderSizePixel = 0
+    sliderBar.Parent = frame
+    sliderBar.ZIndex = 14
+
+    local fill = Instance.new("Frame")
+    fill.Size = UDim2.new((default/max), 0, 1, 0)
+    fill.Position = UDim2.new(0, 0, 0, 0)
+    fill.BackgroundColor3 = Color3.fromRGB(180, 80, 255)
+    fill.BorderSizePixel = 0
+    fill.Parent = sliderBar
+    fill.ZIndex = 15
+
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.new(0, 18, 0, 18)
+    knob.Position = UDim2.new((default/max), -9, 0.5, -9)
+    knob.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    knob.BorderSizePixel = 0
+    knob.Parent = sliderBar
+    knob.ZIndex = 16
+    knob.Active = true
+
+    local dragging = false
+    local value = default
+
+    local function setValueFromX(x)
+        local rel = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+        value = math.floor(rel * max + 0.5)
+        fill.Size = UDim2.new(rel, 0, 1, 0)
+        knob.Position = UDim2.new(rel, -9, 0.5, -9)
+        label.Text = text .. ": " .. tostring(value)
+        if callback then callback(value) end
+    end
+
+    knob.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
         end
     end)
+    knob.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+    sliderBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            setValueFromX(input.Position.X)
+        end
+    end)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            setValueFromX(input.Position.X)
+        end
+    end)
+    game:GetService("UserInputService").InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+
     return frame
 end
 
@@ -401,5 +449,91 @@ function GuiLibrary:ToggleWindow()
     screenGui.Enabled = not screenGui.Enabled
 end
 
+-- Функция для смены размера главного окна
+function GuiLibrary:SetMainWindowSize(sizeName)
+    local sizes = {
+        Small = {size = UDim2.new(0, 320, 0, 360), pos = UDim2.new(0.5, -160, 0.5, -180)},
+        Medium = {size = UDim2.new(0, 420, 0, 540), pos = UDim2.new(0.5, -210, 0.5, -270)},
+        Large = {size = UDim2.new(0, 600, 0, 700), pos = UDim2.new(0.5, -300, 0.5, -350)}
+    }
+    local preset = sizes[sizeName] or sizes["Medium"]
+    mainFrame:TweenSize(preset.size, "Out", "Quad", 0.18, true)
+    mainFrame:TweenPosition(preset.pos, "Out", "Quad", 0.18, true)
+end
+
+-- Пример использования (добавить в нужную вкладку):
+-- GuiLibrary:AddDropdown(otherTab, "Размер окна", {"Small", "Medium", "Large"}, function(opt)
+--     GuiLibrary:SetMainWindowSize(opt)
+-- end)
+
 -- Экспорт
+function GuiLibrary:CreateWindow(title)
+    local win = Instance.new("Frame")
+    win.Size = UDim2.new(0, 340, 0, 320)
+    win.Position = UDim2.new(0.5, -170, 0.5, -160)
+    win.BackgroundColor3 = MAIN_COLOR
+    win.BackgroundTransparency = 0.08
+    win.BorderSizePixel = 0
+    win.Parent = game:GetService("CoreGui")
+    win.ZIndex = 100
+    win.Active = true
+    win.Draggable = true
+
+    local grad = Instance.new("UIGradient")
+    grad.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, GRAD_COLOR),
+        ColorSequenceKeypoint.new(1, MAIN_COLOR)
+    }
+    grad.Rotation = 45
+    grad.Parent = win
+
+    local titleBar = Instance.new("Frame")
+    titleBar.Size = UDim2.new(1, 0, 0, 40)
+    titleBar.BackgroundColor3 = TITLE_COLOR
+    titleBar.Parent = win
+    titleBar.ZIndex = 101
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, -40, 1, 0)
+    titleLabel.Position = UDim2.new(0, 10, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title
+    titleLabel.TextColor3 = WHITE
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 18
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = titleBar
+    titleLabel.ZIndex = 102
+
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.Size = UDim2.new(0, 32, 0, 32)
+    closeBtn.Position = UDim2.new(1, -36, 0, 4)
+    closeBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+    closeBtn.Text = "X"
+    closeBtn.TextColor3 = WHITE
+    closeBtn.Font = Enum.Font.GothamBold
+    closeBtn.TextSize = 18
+    closeBtn.Parent = titleBar
+    closeBtn.ZIndex = 103
+    closeBtn.MouseButton1Click:Connect(function()
+        win.Visible = false
+    end)
+
+    local content = Instance.new("Frame")
+    content.Size = UDim2.new(1, -20, 1, -50)
+    content.Position = UDim2.new(0, 10, 0, 40)
+    content.BackgroundTransparency = 1
+    content.Parent = win
+    content.ZIndex = 101
+
+    win.Visible = false
+
+    return {
+        window = win,
+        content = content,
+        open = function() win.Visible = true end,
+        close = function() win.Visible = false end
+    }
+end
+
 return GuiLibrary

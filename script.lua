@@ -7,6 +7,7 @@ local player = game.Players.LocalPlayer
 local hacksTab = GuiLibrary:AddTab("Hacks", "15046690373")
 local otherTab = GuiLibrary:AddTab("Other", "15046690373")
 local tpTab = GuiLibrary:AddTab("TP Utility", "15046690373")
+local settingsTab = GuiLibrary:AddTab("Settings", "15046690373")
 -- Установка баннера
 -- GuiLibrary:SetBanner("kasper studios 😈 by kasperenok")
 
@@ -57,26 +58,13 @@ game:GetService("UserInputService").JumpRequest:Connect(function()
     end
 end)
 
--- Кастомное окно для флая
-local flyWindow = nil
-GuiLibrary:AddToggle(otherTab, "Fly Menu", "Открыть меню флая", false, function(toggleState)
-    if toggleState then
-        flyWindow = GuiLibrary:CreateCustomWindow("KasperFly", "15074833174")
-        kasperfly.toggle(flyWindow)
-        flyWindow.open()
-    else
-        if flyWindow then flyWindow.close() end
-    end
-end)
-
 GuiLibrary:AddToggle(otherTab, "Inf. Jump", "", false, function(toggleState)
     mode_fly = toggleState
 end)
 
 GuiLibrary:AddButton(otherTab, "Activate Fly", "Get the kasperfly", function()
     flyWindow = GuiLibrary:CreateCustomWindow("KasperFly", "15074833174")
-    kasperfly.toggle(flyWindow)
-    flyWindow.open()
+    kasperfly.createFlyGui(flyWindow)
 end)
 
 local mode_tp = false
@@ -868,3 +856,7 @@ spawn(tpp)
 spawn(add_jump)
 spawn(add_speed)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/KaSpEr-tv123/kas-hub-script/main/kasperesp.lua"))()
+
+GuiLibrary:AddDropdown(settingsTab, "Размер окна", {"Small", "Medium", "Large"}, function(opt)
+    GuiLibrary:SetMainWindowSize(opt)
+end)
