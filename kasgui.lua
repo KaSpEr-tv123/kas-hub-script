@@ -3,13 +3,13 @@ local GuiLibrary = {}
 
 print("[kasgui.lua] Модуль загружен (новая архитектура)")
 
--- Палитра
-local MAIN_COLOR = Color3.fromRGB(120, 0, 200)
-local GRAD_COLOR = Color3.fromRGB(180, 80, 255)
-local TITLE_COLOR = Color3.fromRGB(100, 0, 180)
-local TAB_COLOR = Color3.fromRGB(80, 0, 160)
-local TAB_ACTIVE = Color3.fromRGB(180, 80, 255)
-local WHITE = Color3.fromRGB(255,255,255)
+-- Обновленная палитра
+local MAIN_COLOR = Color3.fromRGB(100, 150, 250)
+local GRAD_COLOR = Color3.fromRGB(150, 200, 255)
+local TITLE_COLOR = Color3.fromRGB(80, 130, 230)
+local TAB_COLOR = Color3.fromRGB(60, 110, 210)
+local TAB_ACTIVE = Color3.fromRGB(150, 200, 255)
+local WHITE = Color3.fromRGB(255, 255, 255)
 
 -- ScreenGui
 local screenGui = Instance.new("ScreenGui")
@@ -109,6 +109,19 @@ contentFrame.ZIndex = 11
 local tabs = {}
 local activeTab = nil
 
+-- Добавление анимации для открытия/закрытия окна
+function GuiLibrary:ToggleWindow()
+    if screenGui.Enabled then
+        mainFrame:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Quad", 0.3, true, function()
+            screenGui.Enabled = false
+        end)
+    else
+        screenGui.Enabled = true
+        mainFrame:TweenSize(UDim2.new(0, 420, 0, 540), "Out", "Quad", 0.3, true)
+    end
+end
+
+-- Добавление анимации для переключения вкладок
 function GuiLibrary:AddTab(tabName, iconId)
     local tabBtn = Instance.new("TextButton")
     tabBtn.Size = UDim2.new(1, 0, 0, 48)
@@ -123,10 +136,10 @@ function GuiLibrary:AddTab(tabName, iconId)
     tabBtn.AutoButtonColor = true
     -- Иконка (если есть)
     if iconId then
-    local icon = Instance.new("ImageLabel")
+        local icon = Instance.new("ImageLabel")
         icon.Size = UDim2.new(0, 28, 0, 28)
         icon.Position = UDim2.new(0, 8, 0, 10)
-    icon.BackgroundTransparency = 1
+        icon.BackgroundTransparency = 1
         icon.Image = "rbxassetid://"..iconId
         icon.Parent = tabBtn
         icon.ZIndex = 13
@@ -149,6 +162,7 @@ function GuiLibrary:AddTab(tabName, iconId)
         tabBtn.BackgroundColor3 = TAB_ACTIVE
         tabContent.Visible = true
         activeTab = tabContent
+        tabContent:TweenPosition(UDim2.new(0, 0, 0, 0), "Out", "Quad", 0.2, true)
     end)
     -- Добавляем в список
     table.insert(tabs, {btn = tabBtn, content = tabContent})
@@ -161,7 +175,7 @@ function GuiLibrary:AddTab(tabName, iconId)
     return tabContent
 end
 
--- Добавление кнопки
+-- Обновление кнопок
 function GuiLibrary:AddButton(parent, text, desc, callback)
     local button = Instance.new("TextButton")
     button.Size = UDim2.new(1, -20, 0, 40)
@@ -182,10 +196,17 @@ function GuiLibrary:AddButton(parent, text, desc, callback)
             GuiLibrary:CreateNotification(desc, 2)
         end)
     end
+    -- Анимация нажатия
+    button.MouseButton1Down:Connect(function()
+        button:TweenSize(UDim2.new(1, -24, 0, 36), "Out", "Quad", 0.1, true)
+    end)
+    button.MouseButton1Up:Connect(function()
+        button:TweenSize(UDim2.new(1, -20, 0, 40), "Out", "Quad", 0.1, true)
+    end)
     return button
 end
 
--- Добавление слайдера (современный, drag&drop)
+-- Обновление слайдеров
 function GuiLibrary:AddSlider(parent, text, max, default, callback)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, -20, 0, 54)
@@ -271,7 +292,7 @@ function GuiLibrary:AddSlider(parent, text, max, default, callback)
     return frame
 end
 
--- Добавление тоггла
+-- Обновление тогглов
 function GuiLibrary:AddToggle(parent, text, desc, default, callback)
     local toggle = Instance.new("TextButton")
     toggle.Size = UDim2.new(1, -20, 0, 40)
@@ -295,10 +316,17 @@ function GuiLibrary:AddToggle(parent, text, desc, default, callback)
             GuiLibrary:CreateNotification(desc, 2)
         end)
     end
+    -- Анимация переключения
+    toggle.MouseButton1Down:Connect(function()
+        toggle:TweenSize(UDim2.new(1, -24, 0, 36), "Out", "Quad", 0.1, true)
+    end)
+    toggle.MouseButton1Up:Connect(function()
+        toggle:TweenSize(UDim2.new(1, -20, 0, 40), "Out", "Quad", 0.1, true)
+    end)
     return toggle
 end
 
--- Добавление инпута
+-- Обновление инпутов
 function GuiLibrary:AddInput(parent, text, placeholder, callback)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, -20, 0, 40)
@@ -332,7 +360,7 @@ function GuiLibrary:AddInput(parent, text, placeholder, callback)
     return frame
 end
 
--- Добавление дропдауна
+-- Обновление дропдаунов
 function GuiLibrary:AddDropdown(parent, text, options, callback)
     local frame = Instance.new("Frame")
     frame.Size = UDim2.new(1, -20, 0, 40)
@@ -385,7 +413,7 @@ function GuiLibrary:AddDropdown(parent, text, options, callback)
     return frame
 end
 
--- Добавление хоткея
+-- Обновление хоткеев
 function GuiLibrary:AddKeybind(parent, text, desc, callback)
     local keybind = Instance.new("TextButton")
     keybind.Size = UDim2.new(1, -20, 0, 40)
@@ -414,6 +442,13 @@ function GuiLibrary:AddKeybind(parent, text, desc, callback)
             GuiLibrary:CreateNotification(desc, 2)
         end)
     end
+    -- Анимация нажатия
+    keybind.MouseButton1Down:Connect(function()
+        keybind:TweenSize(UDim2.new(1, -24, 0, 36), "Out", "Quad", 0.1, true)
+    end)
+    keybind.MouseButton1Up:Connect(function()
+        keybind:TweenSize(UDim2.new(1, -20, 0, 40), "Out", "Quad", 0.1, true)
+    end)
     return keybind
 end
 
@@ -442,11 +477,6 @@ function GuiLibrary:CreateNotification(message, duration)
         end
         notification:Destroy()
     end)
-end
-
--- Открытие/закрытие главного меню
-function GuiLibrary:ToggleWindow()
-    screenGui.Enabled = not screenGui.Enabled
 end
 
 -- Функция для смены размера главного окна
